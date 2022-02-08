@@ -30,7 +30,7 @@ class Listing
 
 class CollectionNFT
 {
-  * -- 0..1 UserAccount userAccounts;
+  * -- 1 UserAccount userAccounts;
   * -- * Listing listings;
   Long collectionID;
   title;

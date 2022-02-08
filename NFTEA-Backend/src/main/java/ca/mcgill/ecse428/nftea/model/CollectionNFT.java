@@ -24,10 +24,15 @@ public class CollectionNFT
   // CONSTRUCTOR
   //------------------------
 
-  public CollectionNFT(Long aCollectionID, String aTitle)
+  public CollectionNFT(Long aCollectionID, String aTitle, UserAccount aUserAccounts)
   {
     collectionID = aCollectionID;
     title = aTitle;
+    boolean didAddUserAccounts = setUserAccounts(aUserAccounts);
+    if (!didAddUserAccounts)
+    {
+      throw new RuntimeException("Unable to create collectionNFT due to userAccounts. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     listings = new ArrayList<Listing>();
   }
 
@@ -65,12 +70,6 @@ public class CollectionNFT
   {
     return userAccounts;
   }
-
-  public boolean hasUserAccounts()
-  {
-    boolean has = userAccounts != null;
-    return has;
-  }
   /* Code from template association_GetMany */
   public Listing getListing(int index)
   {
@@ -101,20 +100,22 @@ public class CollectionNFT
     int index = listings.indexOf(aListing);
     return index;
   }
-  /* Code from template association_SetOptionalOneToMany */
+  /* Code from template association_SetOneToMany */
   public boolean setUserAccounts(UserAccount aUserAccounts)
   {
     boolean wasSet = false;
+    if (aUserAccounts == null)
+    {
+      return wasSet;
+    }
+
     UserAccount existingUserAccounts = userAccounts;
     userAccounts = aUserAccounts;
     if (existingUserAccounts != null && !existingUserAccounts.equals(aUserAccounts))
     {
       existingUserAccounts.removeCollectionNFT(this);
     }
-    if (aUserAccounts != null)
-    {
-      aUserAccounts.addCollectionNFT(this);
-    }
+    userAccounts.addCollectionNFT(this);
     wasSet = true;
     return wasSet;
   }
@@ -203,10 +204,10 @@ public class CollectionNFT
 
   public void delete()
   {
-    if (userAccounts != null)
+    UserAccount placeholderUserAccounts = userAccounts;
+    this.userAccounts = null;
+    if(placeholderUserAccounts != null)
     {
-      UserAccount placeholderUserAccounts = userAccounts;
-      this.userAccounts = null;
       placeholderUserAccounts.removeCollectionNFT(this);
     }
     ArrayList<Listing> copyOfListings = new ArrayList<Listing>(listings);

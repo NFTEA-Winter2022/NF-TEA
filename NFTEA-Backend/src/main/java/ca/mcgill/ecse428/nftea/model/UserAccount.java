@@ -299,20 +299,21 @@ public class UserAccount
   {
     return 0;
   }
-  /* Code from template association_AddManyToOptionalOne */
+  /* Code from template association_AddManyToOne */
+  public CollectionNFT addCollectionNFT(Long aCollectionID, String aTitle)
+  {
+    return new CollectionNFT(aCollectionID, aTitle, this);
+  }
+
   public boolean addCollectionNFT(CollectionNFT aCollectionNFT)
   {
     boolean wasAdded = false;
     if (collectionNFTs.contains(aCollectionNFT)) { return false; }
     UserAccount existingUserAccounts = aCollectionNFT.getUserAccounts();
-    if (existingUserAccounts == null)
+    boolean isNewUserAccounts = existingUserAccounts != null && !this.equals(existingUserAccounts);
+    if (isNewUserAccounts)
     {
       aCollectionNFT.setUserAccounts(this);
-    }
-    else if (!this.equals(existingUserAccounts))
-    {
-      existingUserAccounts.removeCollectionNFT(aCollectionNFT);
-      addCollectionNFT(aCollectionNFT);
     }
     else
     {
@@ -325,10 +326,10 @@ public class UserAccount
   public boolean removeCollectionNFT(CollectionNFT aCollectionNFT)
   {
     boolean wasRemoved = false;
-    if (collectionNFTs.contains(aCollectionNFT))
+    //Unable to remove aCollectionNFT, as it must always have a userAccounts
+    if (!this.equals(aCollectionNFT.getUserAccounts()))
     {
       collectionNFTs.remove(aCollectionNFT);
-      aCollectionNFT.setUserAccounts(null);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -373,9 +374,10 @@ public class UserAccount
       Listing aListing = listing.get(i - 1);
       aListing.delete();
     }
-    while( !collectionNFTs.isEmpty() )
+    for(int i=collectionNFTs.size(); i > 0; i--)
     {
-      collectionNFTs.get(0).setUserAccounts(null);
+      CollectionNFT aCollectionNFT = collectionNFTs.get(i - 1);
+      aCollectionNFT.delete();
     }
   }
 
