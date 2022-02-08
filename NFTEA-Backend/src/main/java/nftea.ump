@@ -1,0 +1,37 @@
+namespace ca.mcgill.ecse428.nftea.model;
+
+class UserAccount
+{
+  1 -- * Listing listing;
+  Long numberID;
+  firstName;
+  lastName;
+  userEmail;
+  username;
+  password;
+  Boolean isLoggedIn;
+  UserRole userRole;
+  enum UserRole
+  {
+    Admin,
+    Customer
+  }
+}
+
+
+
+class Listing
+{
+  Long listingID;
+  title;
+  Long price;
+  nftLink;
+}
+
+class CollectionNFT
+{
+  * -- 0..1 UserAccount userAccounts;
+  * -- * Listing listings;
+  Long collectionID;
+  title;
+}
