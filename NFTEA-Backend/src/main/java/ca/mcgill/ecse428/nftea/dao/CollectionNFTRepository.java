@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CollectionNFTRepository extends CrudRepository<CollectionNFT,Long> {
     List<CollectionNFT> findByUserAccount(UserAccount userAccount);
-    List<CollectionNFT> findByCollectionID(Long collectionID);
+    CollectionNFT findByCollectionID(Long collectionID);
 }
