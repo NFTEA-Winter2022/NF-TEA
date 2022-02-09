@@ -26,6 +26,8 @@ public class TestListingPersistence {
 
     @Test
     public void testPersistAndLoadListingByListingID(){
+
+        // Creating a listing
         Long listingID = 12345L;
         String title = "Manky";
         Long price = 123L;
@@ -37,17 +39,20 @@ public class TestListingPersistence {
         listing.setPrice(price);
         listing.setNftLink(nftLink);
 
+        // Saving listing to repo
         listingRepository.save(listing);
 
+        // Finding the listing through the ID
         listing = null;
-
         listing = listingRepository.findListingByListingID(listingID);
 
+        // Assertions
         assertNotNull(listing);
         assertEquals(listingID, listing.getListingID());
         assertEquals(title, listing.getTitle());
         assertEquals(price, listing.getPrice());
         assertEquals(nftLink, listing.getNftLink());
     }
+
 
 }
