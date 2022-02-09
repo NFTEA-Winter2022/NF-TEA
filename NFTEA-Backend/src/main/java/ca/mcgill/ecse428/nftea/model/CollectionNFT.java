@@ -3,9 +3,7 @@
 
 package ca.mcgill.ecse428.nftea.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 // line 30 "../../../../../Hello.ump"
 @Entity
@@ -22,7 +20,7 @@ public class CollectionNFT
   private String title;
 
   //CollectionNFT Associations
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   private UserAccount userAccount;
 
   //------------------------

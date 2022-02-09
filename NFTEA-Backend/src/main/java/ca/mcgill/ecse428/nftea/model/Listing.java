@@ -3,6 +3,7 @@
 
 package ca.mcgill.ecse428.nftea.model;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.*;
@@ -24,7 +25,7 @@ public class Listing
   private String nftLink;
 
   //Listing Associations
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   private List<CollectionNFT> collectionNFTs;
 
   //------------------------
