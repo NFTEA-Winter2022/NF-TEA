@@ -55,19 +55,24 @@ public class TestCollectionNFTPersistence {
         userAccount.setIsLoggedIn(isLoggedIn);
         userAccount.setUserRole(userRole);
 
+        //Saving UserAccount to database
         userAccountRepository.save(userAccount);
 
+        //Creating a CollectionNFT
         CollectionNFT collectionNFT = new CollectionNFT();
         collectionNFT.setCollectionID(collectionID);
         collectionNFT.setTitle(title);
         collectionNFT.setUserAccount(userAccount);
 
+        //Saving the CollectionNFT to database
         collectionNFTRepository.save(collectionNFT);
 
         collectionNFT = null;
 
+        //Get the CollectionNFT from the database
         collectionNFT = collectionNFTRepository.findByCollectionID(collectionID);
 
+        //Assertions
         assertNotNull(collectionNFT);
         assertEquals(collectionID, collectionNFT.getCollectionID());
         assertEquals(title, collectionNFT.getTitle());

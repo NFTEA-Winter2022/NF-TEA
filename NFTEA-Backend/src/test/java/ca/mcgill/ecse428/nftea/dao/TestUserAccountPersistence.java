@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 public class TestUserAccountPersistence {
 
-
     @Autowired
     private UserAccountRepository userAccountRepository;
 
@@ -35,6 +34,7 @@ public class TestUserAccountPersistence {
         boolean isLoggedIn = false;
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
+        //Creating an UserAccount
         UserAccount userAccount = new UserAccount();
         userAccount.setNumberID(numberID);
         userAccount.setFirstName(firstName);
@@ -45,12 +45,15 @@ public class TestUserAccountPersistence {
         userAccount.setIsLoggedIn(isLoggedIn);
         userAccount.setUserRole(userRole);
 
+        //Save UserAccount to database
         userAccountRepository.save(userAccount);
 
         userAccount = null;
 
+        //Get UserAccount from the database
         userAccount = userAccountRepository.findUserAccountByNumberID(numberID);
 
+        //Assertions
         assertNotNull(userAccount);
         assertEquals(numberID, userAccount.getNumberID());
         assertEquals(firstName, userAccount.getFirstName());
