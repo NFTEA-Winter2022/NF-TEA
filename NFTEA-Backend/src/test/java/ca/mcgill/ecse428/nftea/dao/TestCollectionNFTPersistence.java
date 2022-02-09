@@ -31,7 +31,7 @@ public class TestCollectionNFTPersistence {
     }
 
     @Test
-    public void testPersistAndLoadUserAccountByCollectionID() {
+    public void testPersistAndCollectionNFTByCollectionID() {
         Long collectionID = 37290000000L;
         String title = "My first collection";
 
