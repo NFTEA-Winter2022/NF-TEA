@@ -1,10 +1,14 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
-import java.util.*;
 
-// line 31 "../../../../../nftea.ump"
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+// line 30 "../../../../../Hello.ump"
+@Entity
 public class CollectionNFT
 {
 
@@ -13,27 +17,26 @@ public class CollectionNFT
   //------------------------
 
   //CollectionNFT Attributes
+  @Id
   private Long collectionID;
   private String title;
 
   //CollectionNFT Associations
-  private UserAccount userAccounts;
-  private List<Listing> listings;
+  @ManyToOne
+  private UserAccount userAccount;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public CollectionNFT(Long aCollectionID, String aTitle, UserAccount aUserAccounts)
+
+  public CollectionNFT(){
+
+  }
+  public CollectionNFT(Long aCollectionID, String aTitle)
   {
     collectionID = aCollectionID;
     title = aTitle;
-    boolean didAddUserAccounts = setUserAccounts(aUserAccounts);
-    if (!didAddUserAccounts)
-    {
-      throw new RuntimeException("Unable to create collectionNFT due to userAccounts. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    listings = new ArrayList<Listing>();
   }
 
   //------------------------
@@ -66,156 +69,28 @@ public class CollectionNFT
     return title;
   }
   /* Code from template association_GetOne */
-  public UserAccount getUserAccounts()
+  public UserAccount getUserAccount()
   {
-    return userAccounts;
-  }
-  /* Code from template association_GetMany */
-  public Listing getListing(int index)
-  {
-    Listing aListing = listings.get(index);
-    return aListing;
+    return userAccount;
   }
 
-  public List<Listing> getListings()
+  public boolean hasUserAccount()
   {
-    List<Listing> newListings = Collections.unmodifiableList(listings);
-    return newListings;
-  }
-
-  public int numberOfListings()
-  {
-    int number = listings.size();
-    return number;
-  }
-
-  public boolean hasListings()
-  {
-    boolean has = listings.size() > 0;
+    boolean has = userAccount != null;
     return has;
   }
-
-  public int indexOfListing(Listing aListing)
-  {
-    int index = listings.indexOf(aListing);
-    return index;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setUserAccounts(UserAccount aUserAccounts)
+  /* Code from template association_SetUnidirectionalOptionalOne */
+  public boolean setUserAccount(UserAccount aNewUserAccount)
   {
     boolean wasSet = false;
-    if (aUserAccounts == null)
-    {
-      return wasSet;
-    }
-
-    UserAccount existingUserAccounts = userAccounts;
-    userAccounts = aUserAccounts;
-    if (existingUserAccounts != null && !existingUserAccounts.equals(aUserAccounts))
-    {
-      existingUserAccounts.removeCollectionNFT(this);
-    }
-    userAccounts.addCollectionNFT(this);
+    userAccount = aNewUserAccount;
     wasSet = true;
     return wasSet;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfListings()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addListing(Listing aListing)
-  {
-    boolean wasAdded = false;
-    if (listings.contains(aListing)) { return false; }
-    listings.add(aListing);
-    if (aListing.indexOfCollectionNFT(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aListing.addCollectionNFT(this);
-      if (!wasAdded)
-      {
-        listings.remove(aListing);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeListing(Listing aListing)
-  {
-    boolean wasRemoved = false;
-    if (!listings.contains(aListing))
-    {
-      return wasRemoved;
-    }
-
-    int oldIndex = listings.indexOf(aListing);
-    listings.remove(oldIndex);
-    if (aListing.indexOfCollectionNFT(this) == -1)
-    {
-      wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aListing.removeCollectionNFT(this);
-      if (!wasRemoved)
-      {
-        listings.add(oldIndex,aListing);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addListingAt(Listing aListing, int index)
-  {  
-    boolean wasAdded = false;
-    if(addListing(aListing))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfListings()) { index = numberOfListings() - 1; }
-      listings.remove(aListing);
-      listings.add(index, aListing);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveListingAt(Listing aListing, int index)
-  {
-    boolean wasAdded = false;
-    if(listings.contains(aListing))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfListings()) { index = numberOfListings() - 1; }
-      listings.remove(aListing);
-      listings.add(index, aListing);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addListingAt(aListing, index);
-    }
-    return wasAdded;
   }
 
   public void delete()
   {
-    UserAccount placeholderUserAccounts = userAccounts;
-    this.userAccounts = null;
-    if(placeholderUserAccounts != null)
-    {
-      placeholderUserAccounts.removeCollectionNFT(this);
-    }
-    ArrayList<Listing> copyOfListings = new ArrayList<Listing>(listings);
-    listings.clear();
-    for(Listing aListing : copyOfListings)
-    {
-      aListing.removeCollectionNFT(this);
-    }
+    userAccount = null;
   }
 
 
@@ -224,6 +99,6 @@ public class CollectionNFT
     return super.toString() + "["+
             "collectionID" + ":" + getCollectionID()+ "," +
             "title" + ":" + getTitle()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "userAccounts = "+(getUserAccounts()!=null?Integer.toHexString(System.identityHashCode(getUserAccounts())):"null");
+            "  " + "userAccount = "+(getUserAccount()!=null?Integer.toHexString(System.identityHashCode(getUserAccount())):"null");
   }
 }

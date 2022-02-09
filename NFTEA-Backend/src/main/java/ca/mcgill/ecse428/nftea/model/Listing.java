@@ -1,10 +1,14 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.*;
 
-// line 23 "../../../../../nftea.ump"
+// line 22 "../../../../../Hello.ump"
+@Entity
 public class Listing
 {
 
@@ -13,30 +17,29 @@ public class Listing
   //------------------------
 
   //Listing Attributes
+  @Id
   private Long listingID;
   private String title;
   private Long price;
   private String nftLink;
 
   //Listing Associations
-  private UserAccount userAccount;
+  @ManyToMany
   private List<CollectionNFT> collectionNFTs;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Listing(Long aListingID, String aTitle, Long aPrice, String aNftLink, UserAccount aUserAccount)
+  public Listing(){
+
+  }
+  public Listing(Long aListingID, String aTitle, Long aPrice, String aNftLink)
   {
     listingID = aListingID;
     title = aTitle;
     price = aPrice;
     nftLink = aNftLink;
-    boolean didAddUserAccount = setUserAccount(aUserAccount);
-    if (!didAddUserAccount)
-    {
-      throw new RuntimeException("Unable to create listing due to userAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
     collectionNFTs = new ArrayList<CollectionNFT>();
   }
 
@@ -95,11 +98,6 @@ public class Listing
   {
     return nftLink;
   }
-  /* Code from template association_GetOne */
-  public UserAccount getUserAccount()
-  {
-    return userAccount;
-  }
   /* Code from template association_GetMany */
   public CollectionNFT getCollectionNFT(int index)
   {
@@ -130,78 +128,34 @@ public class Listing
     int index = collectionNFTs.indexOf(aCollectionNFT);
     return index;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setUserAccount(UserAccount aUserAccount)
-  {
-    boolean wasSet = false;
-    if (aUserAccount == null)
-    {
-      return wasSet;
-    }
-
-    UserAccount existingUserAccount = userAccount;
-    userAccount = aUserAccount;
-    if (existingUserAccount != null && !existingUserAccount.equals(aUserAccount))
-    {
-      existingUserAccount.removeListing(this);
-    }
-    userAccount.addListing(this);
-    wasSet = true;
-    return wasSet;
-  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfCollectionNFTs()
   {
     return 0;
   }
-  /* Code from template association_AddManyToManyMethod */
+  /* Code from template association_AddUnidirectionalMany */
   public boolean addCollectionNFT(CollectionNFT aCollectionNFT)
   {
     boolean wasAdded = false;
     if (collectionNFTs.contains(aCollectionNFT)) { return false; }
     collectionNFTs.add(aCollectionNFT);
-    if (aCollectionNFT.indexOfListing(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aCollectionNFT.addListing(this);
-      if (!wasAdded)
-      {
-        collectionNFTs.remove(aCollectionNFT);
-      }
-    }
+    wasAdded = true;
     return wasAdded;
   }
-  /* Code from template association_RemoveMany */
+
   public boolean removeCollectionNFT(CollectionNFT aCollectionNFT)
   {
     boolean wasRemoved = false;
-    if (!collectionNFTs.contains(aCollectionNFT))
+    if (collectionNFTs.contains(aCollectionNFT))
     {
-      return wasRemoved;
-    }
-
-    int oldIndex = collectionNFTs.indexOf(aCollectionNFT);
-    collectionNFTs.remove(oldIndex);
-    if (aCollectionNFT.indexOfListing(this) == -1)
-    {
+      collectionNFTs.remove(aCollectionNFT);
       wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aCollectionNFT.removeListing(this);
-      if (!wasRemoved)
-      {
-        collectionNFTs.add(oldIndex,aCollectionNFT);
-      }
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addCollectionNFTAt(CollectionNFT aCollectionNFT, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addCollectionNFT(aCollectionNFT))
     {
@@ -224,8 +178,8 @@ public class Listing
       collectionNFTs.remove(aCollectionNFT);
       collectionNFTs.add(index, aCollectionNFT);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addCollectionNFTAt(aCollectionNFT, index);
     }
@@ -234,18 +188,7 @@ public class Listing
 
   public void delete()
   {
-    UserAccount placeholderUserAccount = userAccount;
-    this.userAccount = null;
-    if(placeholderUserAccount != null)
-    {
-      placeholderUserAccount.removeListing(this);
-    }
-    ArrayList<CollectionNFT> copyOfCollectionNFTs = new ArrayList<CollectionNFT>(collectionNFTs);
     collectionNFTs.clear();
-    for(CollectionNFT aCollectionNFT : copyOfCollectionNFTs)
-    {
-      aCollectionNFT.removeListing(this);
-    }
   }
 
 
@@ -255,7 +198,6 @@ public class Listing
             "listingID" + ":" + getListingID()+ "," +
             "title" + ":" + getTitle()+ "," +
             "price" + ":" + getPrice()+ "," +
-            "nftLink" + ":" + getNftLink()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "userAccount = "+(getUserAccount()!=null?Integer.toHexString(System.identityHashCode(getUserAccount())):"null");
+            "nftLink" + ":" + getNftLink()+ "]";
   }
 }

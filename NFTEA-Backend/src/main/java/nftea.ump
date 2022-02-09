@@ -2,7 +2,6 @@ namespace ca.mcgill.ecse428.nftea.model;
 
 class UserAccount
 {
-  1 -- * Listing listing;
   Long numberID;
   firstName;
   lastName;
@@ -30,8 +29,15 @@ class Listing
 
 class CollectionNFT
 {
-  * -- 1 UserAccount userAccounts;
-  * -- * Listing listings;
   Long collectionID;
   title;
+}
+
+association {
+  0..1 UserAccount -> * CollectionNFT;
+
+}
+
+association {
+* CollectionNFT -> * Listing;
 }
