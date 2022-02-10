@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserAccountRepository extends CrudRepository<UserAccount,Long> {
     UserAccount findUserAccountByNumberID(Long numberID);
+    UserAccount findUserAccountByUserEmail(String email);
 }
