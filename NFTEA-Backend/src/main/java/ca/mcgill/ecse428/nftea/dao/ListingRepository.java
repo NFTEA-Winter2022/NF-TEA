@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ListingRepository extends CrudRepository<Listing,Long> {
     List<Listing> findByCollectionNFTsIn(List<CollectionNFT> collectionNFTS);
+    Listing findListingByListingID(Long listingID);
 }
