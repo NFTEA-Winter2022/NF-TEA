@@ -7,5 +7,5 @@ public interface UserAccountRepository extends CrudRepository<UserAccount,Long> 
 
     UserAccount findUserAccountById(Long id);
     UserAccount findUserAccountByUsername(String username);
-
+    UserAccount findUserAccountByUserEmail(String email);
 }
