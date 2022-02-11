@@ -4,6 +4,7 @@
 package ca.mcgill.ecse428.nftea.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 // line 3 "../../../../../Hello.ump"
@@ -23,6 +24,7 @@ public class UserAccount
 
   //UserAccount Attributes
   @Id
+  @GeneratedValue
   private Long numberID;
   private String firstName;
   private String lastName;
@@ -42,6 +44,16 @@ public class UserAccount
   public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, UserRole aUserRole)
   {
     numberID = aNumberID;
+    firstName = aFirstName;
+    lastName = aLastName;
+    userEmail = aUserEmail;
+    username = aUsername;
+    password = aPassword;
+    isLoggedIn = aIsLoggedIn;
+    userRole = aUserRole;
+  }
+  public UserAccount(String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, UserRole aUserRole)
+  {
     firstName = aFirstName;
     lastName = aLastName;
     userEmail = aUserEmail;
