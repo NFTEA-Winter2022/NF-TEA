@@ -5,9 +5,9 @@
       <v-container>
         <v-row>
           <v-text-field
-            v-model="username"
-            :rules="usernameRules"
-            label="Username"
+            v-model="email"
+            :rules="emailRules"
+            label="Email"
             required
           ></v-text-field>
         </v-row>
