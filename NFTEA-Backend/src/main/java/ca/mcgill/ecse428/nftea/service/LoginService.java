@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class LoginService {
 
@@ -24,13 +26,57 @@ public class LoginService {
             if (userAccount == null){
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "User not found");
             }
+            else if(userAccount.getLoginAttempts() >= 3 &&
+                    LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(15))) {
+                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many failed attempts, try again later");
+            }
             else if (!userAccount.getPassword().equals(password)){
+                updateAttempts(email);
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password");
             }
             else {
+                resetAttempts(email);
                 userAccount.setIsLoggedIn(true);
                 return userAccount;
             }
         }
     }
+
+    /**
+     * Method to update the number of failed login attempts and the last attempt timestamp.
+     * @param email The email associated with an account.
+     * @return True if update was successful, false if account not found.
+     */
+    @Transactional
+    private boolean updateAttempts(String email) {
+        if(userAccountRepository.findUserAccountByUserEmail(email) != null) {
+            UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
+            userAccount.setLoginAttempts(userAccount.getLoginAttempts() + 1);
+            userAccount.setLastAttempt(LocalDateTime.now());
+
+            userAccountRepository.save(userAccount);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method to reset the number of failed attempts.
+     * @param email The email associated with an account.
+     * @return True if reset was successful, false if account not found.
+     */
+    @Transactional
+    private boolean resetAttempts(String email) {
+        if(userAccountRepository.findUserAccountByUserEmail(email) != null) {
+            UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
+            userAccount.setLoginAttempts(0);
+
+            userAccountRepository.save(userAccount);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
 }
