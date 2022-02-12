@@ -70,5 +70,5 @@ public class loginStepDefinitions {
     public void anErrorMessageShallBeRaised(String arg0) {
         assertTrue(error.contains(arg0));
     }
-    
+
 }
