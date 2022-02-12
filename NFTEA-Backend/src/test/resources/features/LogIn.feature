@@ -14,9 +14,9 @@ Feature: Login as customer or admin
   Scenario: Log in with an email that does not exist
     When the registered user tries to log in with email "Email3" and password "apple"
     Then the registered user should not be logged in
-    Then an error message "Email/password not found" shall be raised
+    Then an error message "Incorrect email/password" shall be raised
 
   Scenario: Log in with incorrect password
-    When the registered user tries to log in with username "Email1" and password "grape"
+    When the registered user tries to log in with email "Email1" and password "grape"
     Then the registered user should not be logged in
-    Then an error message "Email/password not found" shall be raisedD
+    Then an error message "Incorrect email/password" shall be raised
