@@ -9,6 +9,7 @@ class UserAccount
   username;
   password;
   Boolean isLoggedIn;
+  int loginAttempts;
   UserRole userRole;
   enum UserRole
   {

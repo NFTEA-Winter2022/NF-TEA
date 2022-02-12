@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
+import CreateAccountFront from '../components/CreateAccountFront';
 
 Vue.use(VueRouter)
 
@@ -9,6 +10,11 @@ const routes = [
     path: '/',
     name: 'HelloWorld',
     component: HelloWorld
+  },
+  {
+    path:'/Create',
+    name: 'CreateAccountFrons',
+    component: CreateAccountFront
   },
   {
     path: '/about',
@@ -26,6 +32,8 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   }
+
+
 ]
 
 const router = new VueRouter({
