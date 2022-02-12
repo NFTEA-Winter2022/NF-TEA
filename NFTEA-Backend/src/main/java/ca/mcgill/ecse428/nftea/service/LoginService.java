@@ -16,6 +16,9 @@ public class LoginService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    private static final int MAX_ATTEMPTS = 3;
+    private static final int ATTEMPTS_COOLDOWN_IN_MINUTES = 15;
+
     @Transactional
     public UserAccount loginUserAccount(String email, String password){
         if (email == null || password == null){
@@ -26,12 +29,15 @@ public class LoginService {
             if (userAccount == null){
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "User not found");
             }
-            else if(userAccount.getLoginAttempts() >= 3 &&
-                    LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(15))) {
+            else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
+                    LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many failed attempts, try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
                 updateAttempts(email);
+                if(userAccount.getLoginAttempts() == MAX_ATTEMPTS) {
+                    throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password, account is locked out");
+                }
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password");
             }
             else {
