@@ -43,17 +43,18 @@ public class TestCollectionNFTPersistence {
         String username = "user123";
         String password = "password123";
         boolean isLoggedIn = false;
+        int loginAttempts = 0;
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
-        UserAccount userAccount = new UserAccount();
-        userAccount.setNumberID(numberID);
-        userAccount.setFirstName(firstName);
-        userAccount.setLastName(lastName);
-        userAccount.setUserEmail(userEmail);
-        userAccount.setUsername(username);
-        userAccount.setPassword(password);
-        userAccount.setIsLoggedIn(isLoggedIn);
-        userAccount.setUserRole(userRole);
+        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
+//        userAccount.setNumberID(numberID);
+//        userAccount.setFirstName(firstName);
+//        userAccount.setLastName(lastName);
+//        userAccount.setUserEmail(userEmail);
+//        userAccount.setUsername(username);
+//        userAccount.setPassword(password);
+//        userAccount.setIsLoggedIn(isLoggedIn);
+//        userAccount.setUserRole(userRole);
 
         //Saving UserAccount to database
         userAccountRepository.save(userAccount);
