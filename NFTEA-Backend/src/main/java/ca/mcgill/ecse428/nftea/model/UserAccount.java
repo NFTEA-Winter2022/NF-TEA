@@ -1,14 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.30.1.5099.60569f335 modeling language!*/
+/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
+import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-// line 3 "../../../../../Hello.ump"
-@Entity
+// line 3 "../../../../../nftea.ump"
 public class UserAccount
 {
 
@@ -23,8 +19,6 @@ public class UserAccount
   //------------------------
 
   //UserAccount Attributes
-  @Id
-  @GeneratedValue
   private Long numberID;
   private String firstName;
   private String lastName;
@@ -32,16 +26,17 @@ public class UserAccount
   private String username;
   private String password;
   private boolean isLoggedIn;
+  private int loginAttempts;
   private UserRole userRole;
+
+  //UserAccount Associations
+  private List<CollectionNFT> collectionNFTs;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public UserAccount(){
-
-  }
-  public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, UserRole aUserRole)
+  public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, UserRole aUserRole)
   {
     numberID = aNumberID;
     firstName = aFirstName;
@@ -50,17 +45,9 @@ public class UserAccount
     username = aUsername;
     password = aPassword;
     isLoggedIn = aIsLoggedIn;
+    loginAttempts = aLoginAttempts;
     userRole = aUserRole;
-  }
-  public UserAccount(String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, UserRole aUserRole)
-  {
-    firstName = aFirstName;
-    lastName = aLastName;
-    userEmail = aUserEmail;
-    username = aUsername;
-    password = aPassword;
-    isLoggedIn = aIsLoggedIn;
-    userRole = aUserRole;
+    collectionNFTs = new ArrayList<CollectionNFT>();
   }
 
   //------------------------
@@ -123,6 +110,14 @@ public class UserAccount
     return wasSet;
   }
 
+  public boolean setLoginAttempts(int aLoginAttempts)
+  {
+    boolean wasSet = false;
+    loginAttempts = aLoginAttempts;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setUserRole(UserRole aUserRole)
   {
     boolean wasSet = false;
@@ -166,6 +161,11 @@ public class UserAccount
     return isLoggedIn;
   }
 
+  public int getLoginAttempts()
+  {
+    return loginAttempts;
+  }
+
   public UserRole getUserRole()
   {
     return userRole;
@@ -175,9 +175,98 @@ public class UserAccount
   {
     return isLoggedIn;
   }
+  /* Code from template association_GetMany */
+  public CollectionNFT getCollectionNFT(int index)
+  {
+    CollectionNFT aCollectionNFT = collectionNFTs.get(index);
+    return aCollectionNFT;
+  }
+
+  public List<CollectionNFT> getCollectionNFTs()
+  {
+    List<CollectionNFT> newCollectionNFTs = Collections.unmodifiableList(collectionNFTs);
+    return newCollectionNFTs;
+  }
+
+  public int numberOfCollectionNFTs()
+  {
+    int number = collectionNFTs.size();
+    return number;
+  }
+
+  public boolean hasCollectionNFTs()
+  {
+    boolean has = collectionNFTs.size() > 0;
+    return has;
+  }
+
+  public int indexOfCollectionNFT(CollectionNFT aCollectionNFT)
+  {
+    int index = collectionNFTs.indexOf(aCollectionNFT);
+    return index;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfCollectionNFTs()
+  {
+    return 0;
+  }
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addCollectionNFT(CollectionNFT aCollectionNFT)
+  {
+    boolean wasAdded = false;
+    if (collectionNFTs.contains(aCollectionNFT)) { return false; }
+    collectionNFTs.add(aCollectionNFT);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeCollectionNFT(CollectionNFT aCollectionNFT)
+  {
+    boolean wasRemoved = false;
+    if (collectionNFTs.contains(aCollectionNFT))
+    {
+      collectionNFTs.remove(aCollectionNFT);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addCollectionNFTAt(CollectionNFT aCollectionNFT, int index)
+  {  
+    boolean wasAdded = false;
+    if(addCollectionNFT(aCollectionNFT))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCollectionNFTs()) { index = numberOfCollectionNFTs() - 1; }
+      collectionNFTs.remove(aCollectionNFT);
+      collectionNFTs.add(index, aCollectionNFT);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveCollectionNFTAt(CollectionNFT aCollectionNFT, int index)
+  {
+    boolean wasAdded = false;
+    if(collectionNFTs.contains(aCollectionNFT))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCollectionNFTs()) { index = numberOfCollectionNFTs() - 1; }
+      collectionNFTs.remove(aCollectionNFT);
+      collectionNFTs.add(index, aCollectionNFT);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addCollectionNFTAt(aCollectionNFT, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
-  {}
+  {
+    collectionNFTs.clear();
+  }
 
 
   public String toString()
@@ -189,7 +278,8 @@ public class UserAccount
             "userEmail" + ":" + getUserEmail()+ "," +
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "," +
-            "isLoggedIn" + ":" + getIsLoggedIn()+ "]" + System.getProperties().getProperty("line.separator") +
+            "isLoggedIn" + ":" + getIsLoggedIn()+ "," +
+            "loginAttempts" + ":" + getLoginAttempts()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "userRole" + "=" + (getUserRole() != null ? !getUserRole().equals(this)  ? getUserRole().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
