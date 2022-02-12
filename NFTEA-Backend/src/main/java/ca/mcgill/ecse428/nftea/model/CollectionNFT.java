@@ -4,7 +4,7 @@
 package ca.mcgill.ecse428.nftea.model;
 import java.util.*;
 
-// line 31 "../../../../../nftea.ump"
+// line 34 "../../../../../nftea.ump"
 public class CollectionNFT
 {
 

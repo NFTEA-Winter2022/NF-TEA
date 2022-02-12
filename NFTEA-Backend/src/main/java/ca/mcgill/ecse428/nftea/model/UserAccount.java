@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
+import java.time.LocalDateTime;
 import java.util.*;
 
 // line 3 "../../../../../nftea.ump"
@@ -27,6 +28,7 @@ public class UserAccount
   private String password;
   private boolean isLoggedIn;
   private int loginAttempts;
+  private LocalDateTime lastAttempt;
   private UserRole userRole;
 
   //UserAccount Associations
@@ -36,7 +38,7 @@ public class UserAccount
   // CONSTRUCTOR
   //------------------------
 
-  public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, UserRole aUserRole)
+  public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, LocalDateTime aLastAttempt, UserRole aUserRole)
   {
     numberID = aNumberID;
     firstName = aFirstName;
@@ -46,6 +48,7 @@ public class UserAccount
     password = aPassword;
     isLoggedIn = aIsLoggedIn;
     loginAttempts = aLoginAttempts;
+    lastAttempt = aLastAttempt;
     userRole = aUserRole;
     collectionNFTs = new ArrayList<CollectionNFT>();
   }
@@ -118,6 +121,14 @@ public class UserAccount
     return wasSet;
   }
 
+  public boolean setLastAttempt(LocalDateTime aLastAttempt)
+  {
+    boolean wasSet = false;
+    lastAttempt = aLastAttempt;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setUserRole(UserRole aUserRole)
   {
     boolean wasSet = false;
@@ -164,6 +175,11 @@ public class UserAccount
   public int getLoginAttempts()
   {
     return loginAttempts;
+  }
+
+  public LocalDateTime getLastAttempt()
+  {
+    return lastAttempt;
   }
 
   public UserRole getUserRole()
@@ -280,6 +296,7 @@ public class UserAccount
             "password" + ":" + getPassword()+ "," +
             "isLoggedIn" + ":" + getIsLoggedIn()+ "," +
             "loginAttempts" + ":" + getLoginAttempts()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "lastAttempt" + "=" + (getLastAttempt() != null ? !getLastAttempt().equals(this)  ? getLastAttempt().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "userRole" + "=" + (getUserRole() != null ? !getUserRole().equals(this)  ? getUserRole().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
