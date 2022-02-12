@@ -2,6 +2,8 @@ namespace ca.mcgill.ecse428.nftea.model;
 
 class UserAccount
 {
+  depend java.time.LocalDateTime;
+
   Long numberID;
   firstName;
   lastName;
@@ -10,6 +12,7 @@ class UserAccount
   password;
   Boolean isLoggedIn;
   int loginAttempts;
+  LocalDateTime lastAttempt;
   UserRole userRole;
   enum UserRole
   {

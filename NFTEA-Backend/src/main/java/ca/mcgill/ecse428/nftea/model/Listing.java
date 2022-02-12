@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse428.nftea.model;
 
-// line 23 "../../../../../nftea.ump"
+// line 26 "../../../../../nftea.ump"
 public class Listing
 {
 
