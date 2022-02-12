@@ -35,6 +35,31 @@ public class TestCollectionNFTPersistence {
         String title = "My first collection";
 
         //Creating a CollectionNFT with 1 listing
+        //Setting up an user account
+        Long numberID = 12345000000L;
+        String firstName = "Joe";
+        String lastName = "Doe";
+        String userEmail = "joe.doe@mcgill.ca";
+        String username = "user123";
+        String password = "password123";
+        boolean isLoggedIn = false;
+        int loginAttempts = 0;
+        UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
+
+        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
+//        userAccount.setNumberID(numberID);
+//        userAccount.setFirstName(firstName);
+//        userAccount.setLastName(lastName);
+//        userAccount.setUserEmail(userEmail);
+//        userAccount.setUsername(username);
+//        userAccount.setPassword(password);
+//        userAccount.setIsLoggedIn(isLoggedIn);
+//        userAccount.setUserRole(userRole);
+
+        //Saving UserAccount to database
+        userAccountRepository.save(userAccount);
+
+        //Creating a CollectionNFT
         CollectionNFT collectionNFT = new CollectionNFT();
         Listing listing = new Listing();
         collectionNFT.setTitle(title);
