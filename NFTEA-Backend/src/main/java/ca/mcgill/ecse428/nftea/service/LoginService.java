@@ -28,6 +28,7 @@ public class LoginService {
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password");
             }
             else {
+                userAccount.setIsLoggedIn(true);
                 return userAccount;
             }
         }
