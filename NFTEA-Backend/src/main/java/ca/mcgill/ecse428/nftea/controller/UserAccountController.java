@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,16 @@ public class UserAccountController {
         }
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
+    
+    @DeleteMapping(value = {"/user-account", "/user-account/"})
+	public ResponseEntity<String> deleteLibrarianByUsername(@RequestParam Long id, @RequestParam String password) {
+		try {
+			userAccountService.deleteUser(id, password);
+		} catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+		}
+		return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
+	}
     
     private UserAccountDto covertDto(UserAccount userAccount){
     	return new UserAccountDto(
