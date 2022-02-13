@@ -5,6 +5,14 @@ import './registerServiceWorker'
 import vuetify from './plugins/vuetify'
 import store from './store'
 import router from './router'
+import Axios from 'axios'
+
+Vue.prototype.$http = Axios.create({
+  baseURL: `https://nftea-backend.herokuapp.com`,
+  headers: {
+    Authorization: '' // Bearer token would go here if we needed to
+  }
+})
 
 Vue.config.productionTip = false
 
