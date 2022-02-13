@@ -21,7 +21,6 @@ dependencies {
 	testImplementation 'io.cucumber:cucumber-junit:7.0.0'
 	testImplementation 'io.cucumber:cucumber-spring:7.0.0'
 	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.0.0'
-
 }
 
 tasks.named('test') {

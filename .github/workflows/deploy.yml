@@ -1,0 +1,31 @@
+name: Deploy Frontend and Backend
+
+on:
+  push:
+    branches: main
+
+# We have to push sequentially to heroku otherwise it will fail
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: push backend
+      uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      with:
+        heroku_api_key: "e560edaf-3a36-466c-8f8f-f7cde407c280"
+        heroku_app_name: "nftea-backend" #Must be unique in Heroku
+        heroku_email: "alexandru.bangala@mail.mcgill.ca"
+        dontuseforce: false
+  frontend:
+    needs: backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: push frontend
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: "e560edaf-3a36-466c-8f8f-f7cde407c280"
+          heroku_app_name: "nftea-frontend" #Must be unique in Heroku
+          heroku_email: "alexandru.bangala@mail.mcgill.ca"
+          dontuseforce: false
