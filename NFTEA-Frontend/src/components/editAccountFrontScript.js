@@ -1,14 +1,10 @@
 import VueMetamask from 'vue-metamask';
 import axios from 'axios'
 
-var config = require('../../config')
-
-var frontendUrl = 'http://' + config.build.host
-var backendUrl = 'http://' + config.build.backendHost
+var baseURL
 
 var AXIOS = axios.create({
-    baseURL: backendUrl,
-    headers: { 'Access-Control-Allow-Origin': frontendUrl }
+    baseURL: `http://192.168.1.4:8080/`
 })
 
 export default {
@@ -32,7 +28,7 @@ export default {
             }
             else {
                 //Probably need to be change
-                AXIOS.put(backendUrl + '/Edit/' + userName + '&password=' + newPassword + '&email=' + email).then(response => {
+                AXIOS.put(baseURL + '/Edit/' + userName + '&password=' + newPassword + '&email=' + email).then(response => {
                     this.response = response.data
                     this.error = ''
                     console.log(response)
@@ -55,7 +51,7 @@ export default {
     beforeMount() {
         let split = document.cookie.split(';')
         let id = split[0].split('=');
-        AXIOS.get(backendUrl + '/customer/' + id[1]).then(response => {
+        AXIOS.get(baseURL + '/customer/' + id[1]).then(response => {
             this.response = response.data;
             this.username = this.response.username;
             this.password = this.response.password;

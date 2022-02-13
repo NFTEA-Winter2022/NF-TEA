@@ -32,6 +32,7 @@ public class changePasswordStepDefinitions {
         pass = "";
         email_l = "";
         userAccountService.clear();
+        userAccount = null;
     }
 
     @Given("the following user accounts exist in the system")

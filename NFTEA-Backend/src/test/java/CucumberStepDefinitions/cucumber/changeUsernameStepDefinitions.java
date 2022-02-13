@@ -27,6 +27,7 @@ public class changeUsernameStepDefinitions {
         errorCounter = 0;
         error = "";
         userAccountService.clear();
+        userAccount = null;
     }
 
     //might need to remove it
