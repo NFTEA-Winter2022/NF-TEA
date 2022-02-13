@@ -160,7 +160,17 @@
     methods: {
       testAxios () {
         try {
-          this.$http.get('/').then( (data) => {console.log(data)}, (e) => console.log(e));
+          this.$http.post('user-account/',
+              null, {
+                  params: {
+                    firstname: "Mircea2",
+                    lastname: "Gosman",
+                    username: "Bob2",
+                    email: "mircea@gmail.com",
+                    password: "123abc782992"
+                  }
+              }
+          ).then( (data) => {console.log(data)}, (e) => console.log(e));
         } catch(e) {
           console.log(e);
         }

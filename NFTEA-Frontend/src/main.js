@@ -8,10 +8,7 @@ import router from './router'
 import Axios from 'axios'
 
 Vue.prototype.$http = Axios.create({
-  baseURL: `https://nftea-backend.herokuapp.com`,
-  headers: {
-    Authorization: '' // Bearer token would go here if we needed to
-  }
+  baseURL: `http://192.168.1.4:8080/`,
 })
 
 Vue.config.productionTip = false

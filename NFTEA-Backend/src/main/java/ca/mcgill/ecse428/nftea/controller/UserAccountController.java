@@ -18,12 +18,17 @@ public class UserAccountController {
     @Autowired
     private UserAccountService userAccountService;
 
-
     @PostMapping(value = {"/user-account","/user-account/"})
-    public ResponseEntity CreateCustomerAccount(@RequestParam String firstname,String lastName, String userName, String userEmail, String password) {
+    public ResponseEntity CreateCustomerAccount(
+    		@RequestParam String firstname,
+    		@RequestParam String lastname, 
+    		@RequestParam String username, 
+    		@RequestParam String email, 
+    		@RequestParam String password) {
         UserAccount user;
+
         try{
-            user=userAccountService.createUser(firstname,lastName,userName,userEmail,password);
+            user=userAccountService.createUser(firstname,lastname,username,email,password);
         } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
         }
