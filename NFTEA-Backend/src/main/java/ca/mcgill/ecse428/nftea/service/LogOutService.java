@@ -21,10 +21,11 @@ public class LogOutService {
             throw new IllegalArgumentException("Please enter a valid ID");
         }
 
-        UserAccount userAccount = userAccountRepository.findUserAccountByNumberID(NumberID);
+        UserAccount userAccount = userAccountRepository.findUserAccountById(NumberID);
         if(userAccount == null || !userAccount.getIsLoggedIn()) throw new NullPointerException("Cannot find User wit this ID");
         if (userAccount.setIsLoggedIn(false)){
             userAccountRepository.save(userAccount);
+            return true;
         }
         return false;
     }
