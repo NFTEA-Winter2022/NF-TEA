@@ -45,7 +45,19 @@ public class UserAccountController {
 		}
 		return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
 	}
-    
+
+
+//    @PutMapping(value = {"/Edit","/Edit/"})
+//    public ResponseEntity editAccount(@RequestParam String userName, String userEmail, String password) {
+//        UserAccount user;
+//        try{
+//            user=userAccountService.
+//        } catch (Exception msg) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+//        }
+//        return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
+//    }
+
     private UserAccountDto covertDto(UserAccount userAccount){
     	return new UserAccountDto(
     			userAccount.getId(),

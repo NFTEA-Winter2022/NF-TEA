@@ -4,5 +4,9 @@ import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserAccountRepository extends CrudRepository<UserAccount,Long> {
+
     UserAccount findUserAccountById(long id);
+    UserAccount findUserAccountByNumberID(Long numberID);
+    UserAccount findUserAccountByUsername(String username);
+
 }

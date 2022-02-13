@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import CreateAccountFront from '../components/CreateAccountFront';
+import EditAccount from "../components/EditAccount";
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     component: CreateAccountFront
   },
   {
+    path:'/Edit',
+    name: 'EditAccountFrontS',
+    component: EditAccount
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -24,8 +30,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
-
-
 ]
 
 const router = new VueRouter({

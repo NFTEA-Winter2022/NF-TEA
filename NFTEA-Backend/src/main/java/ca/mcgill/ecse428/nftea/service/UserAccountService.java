@@ -28,6 +28,39 @@ public class UserAccountService {
         userAccountRepository.save(myUser);
         return myUser;
     }
+
+    @Transactional
+    public UserAccount getAccountByUsername(String username) {
+        return userAccountRepository.findUserAccountByUsername(username);
+    }
+
+    @Transactional
+    public UserAccount setUserOnline(String username) throws Exception {
+        UserAccount user = userAccountRepository.findUserAccountByUsername(username);
+        if (user == null) throw new Exception("Invalid username");
+        user.setIsLoggedIn(true);
+        userAccountRepository.save(user);
+        return user;
+    }
+
+    @Transactional
+    public UserAccount changeUserInfo(String username, String newPassWord, String confirmPassword, String userEmail) throws Exception {
+        if (username.length() == 0) throw new Exception("Invalid username");
+        if (!isValidEmailAddress(userEmail)) throw new Exception("Invalid Email");
+        if (newPassWord.length()<8 || confirmPassword.length() < 8) throw new Exception("Passwords cannot be empty");
+        if (!newPassWord.equals(confirmPassword)) throw new Exception("Passwords do not match");
+        UserAccount user = userAccountRepository.findUserAccountByUsername(username);
+        user.setUsername(username);
+        user.setPassword(newPassWord);
+        user.setUserEmail(userEmail);
+        userAccountRepository.save(user);
+        return user;
+    }
+
+    @Transactional
+    public void clear() {
+        userAccountRepository.deleteAll();
+    }
     
     @Transactional
     public void deleteUser(Long id, String password) throws Exception {
@@ -57,5 +90,4 @@ public class UserAccountService {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
-
 }
