@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 public class UserAccount
 {
 
+
   //------------------------
   // ENUMERATIONS
   //------------------------
