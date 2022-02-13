@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="NFTEA-Backend/src/main/java"/>
+	<classpathentry kind="src" path="NFTEA-Backend/src/test/java"/>
+	<classpathentry kind="src" path="NFTEA-Frontend/node_modules/secp256k1/src/secp256k1/src/java"/>
+	<classpathentry kind="lib" path="gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="NFTEA-Backend/build/libs/NFTEA-Backend-0.0.1-SNAPSHOT-plain.jar"/>
+	<classpathentry kind="lib" path="NFTEA-Backend/build/libs/NFTEA-Backend-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="NFTEA-Backend/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="NFTEA-Backend/bin"/>
+</classpath>
