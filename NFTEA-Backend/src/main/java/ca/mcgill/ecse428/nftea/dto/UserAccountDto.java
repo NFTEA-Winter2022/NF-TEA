@@ -1,6 +1,6 @@
 package ca.mcgill.ecse428.nftea.dto;
 
-
+import java.time.LocalDateTime;
 
 public class UserAccountDto
 {
@@ -24,6 +24,8 @@ public class UserAccountDto
     private String username;
     private String password;
     private boolean isLoggedIn;
+    private int loginAttempts;
+    private LocalDateTime lastAttempt;
     private ca.mcgill.ecse428.nftea.model.UserAccount.UserRole userRole;
 
     //------------------------
@@ -33,7 +35,7 @@ public class UserAccountDto
     public UserAccountDto(){
 
     }
-    public UserAccountDto(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, ca.mcgill.ecse428.nftea.model.UserAccount.UserRole aUserRole)
+    public UserAccountDto(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int loginAttempts, LocalDateTime lastAttempt, ca.mcgill.ecse428.nftea.model.UserAccount.UserRole aUserRole)
     {
         numberID = aNumberID;
         firstName = aFirstName;
@@ -43,85 +45,13 @@ public class UserAccountDto
         password = aPassword;
         isLoggedIn = aIsLoggedIn;
         userRole = aUserRole;
-    }
-    public UserAccountDto(String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, ca.mcgill.ecse428.nftea.model.UserAccount.UserRole aUserRole)
-    {
-        firstName = aFirstName;
-        lastName = aLastName;
-        userEmail = aUserEmail;
-        username = aUsername;
-        password = aPassword;
-        isLoggedIn = aIsLoggedIn;
-        userRole = aUserRole;
+        this.loginAttempts = loginAttempts;
+		this.lastAttempt = lastAttempt;
     }
 
     //------------------------
     // INTERFACE
     //------------------------
-
-    public boolean setNumberID(Long aNumberID)
-    {
-        boolean wasSet = false;
-        numberID = aNumberID;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setFirstName(String aFirstName)
-    {
-        boolean wasSet = false;
-        firstName = aFirstName;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setLastName(String aLastName)
-    {
-        boolean wasSet = false;
-        lastName = aLastName;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setUserEmail(String aUserEmail)
-    {
-        boolean wasSet = false;
-        userEmail = aUserEmail;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setUsername(String aUsername)
-    {
-        boolean wasSet = false;
-        username = aUsername;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPassword(String aPassword)
-    {
-        boolean wasSet = false;
-        password = aPassword;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setIsLoggedIn(boolean aIsLoggedIn)
-    {
-        boolean wasSet = false;
-        isLoggedIn = aIsLoggedIn;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setUserRole(ca.mcgill.ecse428.nftea.model.UserAccount.UserRole aUserRole)
-    {
-        boolean wasSet = false;
-        userRole = aUserRole;
-        wasSet = true;
-        return wasSet;
-    }
 
     public Long getNumberID()
     {
@@ -157,6 +87,16 @@ public class UserAccountDto
     {
         return isLoggedIn;
     }
+    
+    public int getLoginAttempts() 
+    {
+    	return loginAttempts;
+    }
+    
+    public LocalDateTime getLastAttempt() 
+    {
+    	return lastAttempt;
+    }
 
     public ca.mcgill.ecse428.nftea.model.UserAccount.UserRole getUserRole()
     {
@@ -167,9 +107,6 @@ public class UserAccountDto
     {
         return isLoggedIn;
     }
-
-    public void delete()
-    {}
 
 
     public String toString()

@@ -20,35 +20,41 @@ public class TestUserAccountPersistence {
 
     @AfterEach
     public void clearDatabase() {
-        userAccountRepository.deleteAll();;
+        userAccountRepository.deleteAll();
     }
 
     @Test
     public void testPersistAndLoadUserAccountByNumberID() {
-        Long numberID = 12345000000L;
         String firstName = "Joe";
         String lastName = "Doe";
         String userEmail = "joe.doe@mcgill.ca";
         String username = "user123";
         String password = "password123";
         boolean isLoggedIn = false;
-        int loginAttempts = 0;
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
         //Creating an UserAccount
-        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
+        UserAccount userAccount = new UserAccount();
+        userAccount.setFirstName(firstName);
+        userAccount.setLastName(lastName);
+        userAccount.setUserEmail(userEmail);
+        userAccount.setUsername(username);
+        userAccount.setPassword(password);
+        userAccount.setIsLoggedIn(isLoggedIn);
+        userAccount.setUserRole(userRole);
 
         //Save UserAccount to database
         userAccountRepository.save(userAccount);
+        Long numberID = userAccount.getId();
 
         userAccount = null;
 
         //Get UserAccount from the database
-        userAccount = userAccountRepository.findUserAccountByNumberID(numberID);
+        userAccount = userAccountRepository.findUserAccountById(numberID);
 
         //Assertions
         assertNotNull(userAccount);
-        assertEquals(numberID, userAccount.getNumberID());
+        assertEquals(numberID, userAccount.getId());
         assertEquals(firstName, userAccount.getFirstName());
         assertEquals(lastName, userAccount.getLastName());
         assertEquals(userEmail, userAccount.getUserEmail());

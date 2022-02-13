@@ -2,8 +2,13 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 // line 26 "../../../../../nftea.ump"
+@Entity
 public class Listing
 {
 
@@ -12,6 +17,8 @@ public class Listing
   //------------------------
 
   //Listing Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long listingID;
   private String title;
   private Long price;
@@ -20,10 +27,10 @@ public class Listing
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
-  public Listing(Long aListingID, String aTitle, Long aPrice, String aNftLink)
+  public Listing(){}
+  
+  public Listing(String aTitle, Long aPrice, String aNftLink)
   {
-    listingID = aListingID;
     title = aTitle;
     price = aPrice;
     nftLink = aNftLink;

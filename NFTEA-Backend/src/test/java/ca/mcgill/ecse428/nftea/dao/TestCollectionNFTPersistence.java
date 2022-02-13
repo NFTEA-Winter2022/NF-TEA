@@ -1,7 +1,7 @@
 package ca.mcgill.ecse428.nftea.dao;
 
 import ca.mcgill.ecse428.nftea.model.CollectionNFT;
-import ca.mcgill.ecse428.nftea.model.UserAccount;
+import ca.mcgill.ecse428.nftea.model.Listing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,54 +19,31 @@ public class TestCollectionNFTPersistence {
 
     @Autowired
     private CollectionNFTRepository collectionNFTRepository;
-
+    
     @Autowired
-    private UserAccountRepository userAccountRepository;
+    private ListingRepository listingRepository;
 
     @AfterEach
     public void clearDatabase() {
         //Clear database with dependencies first
         collectionNFTRepository.deleteAll();
-        userAccountRepository.deleteAll();
+        listingRepository.deleteAll();
     }
 
     @Test
     public void testPersistAndCollectionNFTByCollectionID() {
-        Long collectionID = 37290000000L;
         String title = "My first collection";
 
-        //Setting up an user account
-        Long numberID = 12345000000L;
-        String firstName = "Joe";
-        String lastName = "Doe";
-        String userEmail = "joe.doe@mcgill.ca";
-        String username = "user123";
-        String password = "password123";
-        boolean isLoggedIn = false;
-        int loginAttempts = 0;
-        UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
-
-        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
-//        userAccount.setNumberID(numberID);
-//        userAccount.setFirstName(firstName);
-//        userAccount.setLastName(lastName);
-//        userAccount.setUserEmail(userEmail);
-//        userAccount.setUsername(username);
-//        userAccount.setPassword(password);
-//        userAccount.setIsLoggedIn(isLoggedIn);
-//        userAccount.setUserRole(userRole);
-
-        //Saving UserAccount to database
-        userAccountRepository.save(userAccount);
-
-        //Creating a CollectionNFT
+        //Creating a CollectionNFT with 1 listing
         CollectionNFT collectionNFT = new CollectionNFT();
-        collectionNFT.setCollectionID(collectionID);
+        Listing listing = new Listing();
         collectionNFT.setTitle(title);
-        collectionNFT.setUserAccount(userAccount);
+        collectionNFT.addListing(listing);
 
         //Saving the CollectionNFT to database
         collectionNFTRepository.save(collectionNFT);
+        Long collectionID = collectionNFT.getCollectionID();
+        
 
         collectionNFT = null;
 
@@ -77,16 +54,8 @@ public class TestCollectionNFTPersistence {
         assertNotNull(collectionNFT);
         assertEquals(collectionID, collectionNFT.getCollectionID());
         assertEquals(title, collectionNFT.getTitle());
-        assertNotNull(collectionNFT.getUserAccount());
-        assertEquals(numberID, collectionNFT.getUserAccount().getNumberID());
-        assertEquals(firstName, collectionNFT.getUserAccount().getFirstName());
-        assertEquals(lastName, collectionNFT.getUserAccount().getLastName());
-        assertEquals(userEmail, collectionNFT.getUserAccount().getUserEmail());
-        assertEquals(username, collectionNFT.getUserAccount().getUsername());
-        assertEquals(password, collectionNFT.getUserAccount().getPassword());
-        assertEquals(isLoggedIn, collectionNFT.getUserAccount().isIsLoggedIn());
-        assertEquals(userRole, collectionNFT.getUserAccount().getUserRole());
-
+        assertNotNull(collectionNFT.getListings());
+        assertEquals(collectionNFT.getListings().size(), 1);
     }
 
 }

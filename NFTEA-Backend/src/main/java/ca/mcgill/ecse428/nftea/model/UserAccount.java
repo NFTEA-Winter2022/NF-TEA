@@ -5,7 +5,16 @@ package ca.mcgill.ecse428.nftea.model;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 // line 3 "../../../../../nftea.ump"
+@Entity
 public class UserAccount
 {
 
@@ -20,7 +29,9 @@ public class UserAccount
   //------------------------
 
   //UserAccount Attributes
-  private Long numberID;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String firstName;
   private String lastName;
   private String userEmail;
@@ -32,15 +43,16 @@ public class UserAccount
   private UserRole userRole;
 
   //UserAccount Associations
+  @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
   private List<CollectionNFT> collectionNFTs;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+  public UserAccount() {}
 
-  public UserAccount(Long aNumberID, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, LocalDateTime aLastAttempt, UserRole aUserRole)
+  public UserAccount(String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, LocalDateTime aLastAttempt, UserRole aUserRole)
   {
-    numberID = aNumberID;
     firstName = aFirstName;
     lastName = aLastName;
     userEmail = aUserEmail;
@@ -60,7 +72,7 @@ public class UserAccount
   public boolean setNumberID(Long aNumberID)
   {
     boolean wasSet = false;
-    numberID = aNumberID;
+    id = aNumberID;
     wasSet = true;
     return wasSet;
   }
@@ -137,9 +149,9 @@ public class UserAccount
     return wasSet;
   }
 
-  public Long getNumberID()
+  public Long getId()
   {
-    return numberID;
+    return id;
   }
 
   public String getFirstName()
@@ -288,7 +300,7 @@ public class UserAccount
   public String toString()
   {
     return super.toString() + "["+
-            "numberID" + ":" + getNumberID()+ "," +
+            "numberID" + ":" + getId()+ "," +
             "firstName" + ":" + getFirstName()+ "," +
             "lastName" + ":" + getLastName()+ "," +
             "userEmail" + ":" + getUserEmail()+ "," +

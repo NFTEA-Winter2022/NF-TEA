@@ -1,7 +1,6 @@
 package ca.mcgill.ecse428.nftea.dao;
 
 import ca.mcgill.ecse428.nftea.model.Listing;
-import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,19 +27,18 @@ public class TestListingPersistence {
     public void testPersistAndLoadListingByListingID(){
 
         // Creating a listing
-        Long listingID = 12345L;
         String title = "Manky";
         Long price = 123L;
         String nftLink = "www.mankey.com/123";
 
-        Listing listing = new Listing(listingID, title, price, nftLink);
-//        listing.setListingID(listingID);
-//        listing.setTitle(title);
-//        listing.setPrice(price);
-//        listing.setNftLink(nftLink);
+        Listing listing = new Listing();
+        listing.setTitle(title);
+        listing.setPrice(price);
+        listing.setNftLink(nftLink);
 
         // Saving listing to repo
         listingRepository.save(listing);
+        Long listingID = listing.getListingID();
 
         // Finding the listing through the ID
         listing = null;

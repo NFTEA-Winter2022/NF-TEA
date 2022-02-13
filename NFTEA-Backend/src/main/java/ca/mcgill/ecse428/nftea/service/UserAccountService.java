@@ -24,11 +24,32 @@ public class UserAccountService {
         if (firstName.equals(null)||lastName.equals(null)||userEmail.equals(null)||password.equals(null)||userName.equals(null)){
             throw new Exception("All textboxes need to be completed");
         }
-        UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, UserAccount.UserRole.Customer);
+        UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, 0, null, UserAccount.UserRole.Customer);
         userAccountRepository.save(myUser);
         return myUser;
-
     }
+    
+    @Transactional
+    public void deleteUser(Long id, String password) throws Exception {
+    	if(id == null) {
+    		throw new Exception("User Id required to delete user.");
+    	}
+    	if(password == null || password.length() < 8) {
+    		throw new Exception("Valid password required to delete user.");
+    	}
+    	
+    	UserAccount user = userAccountRepository.findUserAccountById(id);
+    	
+    	// User is not in the Database, as is requested by the callee
+    	if(user == null) {
+    		return;
+    	} else if (!user.getPassword().equals(password)) {
+    		throw new Exception("Invalid password for user " + id + ".");
+    	} else {
+    		userAccountRepository.delete(user);
+    	}
+    }
+    
 
     public boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
