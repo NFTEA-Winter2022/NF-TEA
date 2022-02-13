@@ -16,6 +16,7 @@
       </v-col>
 
       <v-col class="mb-4">
+        <button @click="testAxios">Click to test axios</button>
         <h1 class="display-2 font-weight-bold mb-3">
           Welcome to Vuetify
         </h1>
@@ -156,5 +157,15 @@
         },
       ],
     }),
+    methods: {
+      testAxios () {
+        try {
+          this.$http.get('/').then( (data) => {console.log(data)}, (e) => console.log(e));
+        } catch(e) {
+          console.log(e);
+        }
+      }
+    }
+
   }
 </script>

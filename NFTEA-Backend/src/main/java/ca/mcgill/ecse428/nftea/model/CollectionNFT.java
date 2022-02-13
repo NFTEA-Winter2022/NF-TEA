@@ -3,8 +3,10 @@
 
 package ca.mcgill.ecse428.nftea.model;
 import java.util.*;
+import javax.persistence.*;
 
 // line 34 "../../../../../nftea.ump"
+@Entity
 public class CollectionNFT
 {
 
@@ -13,19 +15,24 @@ public class CollectionNFT
   //------------------------
 
   //CollectionNFT Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long collectionID;
   private String title;
 
   //CollectionNFT Associations
+  @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
   private List<Listing> listings;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
-
-  public CollectionNFT(Long aCollectionID, String aTitle)
+  public CollectionNFT(){
+	    listings = new ArrayList<Listing>();
+  }
+  
+  public CollectionNFT(String aTitle)
   {
-    collectionID = aCollectionID;
     title = aTitle;
     listings = new ArrayList<Listing>();
   }
