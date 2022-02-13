@@ -19,7 +19,7 @@ public class UserAccountController {
     private UserAccountService userAccountService;
 
 
-    @PostMapping(value = {"/Create","/Create/"})
+    @PostMapping(value = {"/user-account","/user-account/"})
     public ResponseEntity CreateCustomerAccount(@RequestParam String firstname,String lastName, String userName, String userEmail, String password) {
         UserAccount user;
         try{
@@ -29,9 +29,20 @@ public class UserAccountController {
         }
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
-
+    
     private UserAccountDto covertDto(UserAccount userAccount){
-    return new UserAccountDto(userAccount.getNumberID(),userAccount.getFirstName(),userAccount.getLastName(),userAccount.getUserEmail(),userAccount.getUsername(),userAccount.getPassword(),userAccount.getIsLoggedIn(),userAccount.getUserRole());
+    	return new UserAccountDto(
+    			userAccount.getId(),
+    			userAccount.getFirstName(),
+    			userAccount.getLastName(),
+    			userAccount.getUserEmail(),
+    			userAccount.getUsername(),
+    			userAccount.getPassword(),
+    			userAccount.getIsLoggedIn(),
+    			userAccount.getLoginAttempts(),
+    			userAccount.getLastAttempt(),
+    			userAccount.getUserRole()
+			);
     }
 
-    }
+}

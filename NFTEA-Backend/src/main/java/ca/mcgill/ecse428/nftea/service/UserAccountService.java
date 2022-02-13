@@ -24,10 +24,9 @@ public class UserAccountService {
         if (firstName.equals(null)||lastName.equals(null)||userEmail.equals(null)||password.equals(null)||userName.equals(null)){
             throw new Exception("All textboxes need to be completed");
         }
-        UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, UserAccount.UserRole.Customer);
+        UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, 0, null, UserAccount.UserRole.Customer);
         userAccountRepository.save(myUser);
         return myUser;
-
     }
 
     public boolean isValidEmailAddress(String email) {
