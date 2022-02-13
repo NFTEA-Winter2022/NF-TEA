@@ -78,13 +78,14 @@ public class changePasswordStepDefinitions {
         assertEquals(userAccount.getPassword(),arg0);
     }
 
-    @But("the new password {string} and confirm password {string} do not match")
-    public void theNewPasswordAndConfirmPasswordDoNotMatch(String arg0, String arg1) {
-        assertNotEquals(arg0,arg1);
+    @But("the password {string} and confirm password {string} do not match")
+    public void thePasswordAndConfirmPasswordDoNotMatch(String arg0, String arg1) {
     }
 
     @And("an error message {string} shall be raised")
     public void anErrorMessageShallBeRaised(String arg0) {
         assertTrue(error.contains(arg0));
     }
+
+
 }

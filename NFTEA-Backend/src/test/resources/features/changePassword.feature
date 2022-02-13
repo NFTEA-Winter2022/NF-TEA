@@ -17,20 +17,20 @@ Feature: Change Password
 
     Examples:
       | username | password | newPassword | confirmPassword | email           |
-      | User1    | lol12345 | lol67890    | lol67890        | user1@gmail.com |
-      | User2    | lol67890 | Dan12345    | Dan12345        | user2@gmail.com |
-      | CodeX    | Dan12345 | UrGirl123   | UrGirl123       | codex@gmail.com |
+      | User1    | lol12345 | lol67890    | lol12345        | user1@gmail.com |
+      | User2    | lol67890 | Dan12345    | lol67890        | user2@gmail.com |
+      | CodeX    | Dan12345 | UrGirl123   | Dan12345        | codex@gmail.com |
 
 
-  Scenario Outline: Change Password No Match
+  Scenario Outline: Change Password No Match (Error Flow)
     Given the user is logged in to an account with username "<username>" and password "<password>" and email "<email>"
     When the user updates his account with "<newPassword>" and confirms password "<confirmPassword>"
-    But the new password "<newPassword>" and confirm password "<confirmPassword>" do not match
+    But the password "<password>" and confirm password "<confirmPassword>" do not match
     Then the account shall have password "<password>"
     And an error message "<error>" shall be raised
 
     Examples:
-      | username | password | newPassword | confirmPassword | email           | error                     |
-      | User1    | lol12345 | lol67890    |                 | user1@gmail.com | Passwords cannot be empty |
-      | User2    | lol67890 |             | Dan12345        | user2@gmail.com | Passwords cannot be empty |
-      | CodeX    | Dan12345 | UrGirl123   | UrGirl4Ever     | codex@gmail.com | Passwords do not match    |
+      | username | password | newPassword | confirmPassword | email           | error                          |
+      | User1    | lol12345 | lol67890    |                 | user1@gmail.com | More then 8 chars are required |
+      | User2    | lol67890 |             | Dan12345        | user2@gmail.com | More then 8 chars are required |
+      | CodeX    | Dan12345 | UrGirl123   | Dan123456       | codex@gmail.com | Passwords do not match         |
