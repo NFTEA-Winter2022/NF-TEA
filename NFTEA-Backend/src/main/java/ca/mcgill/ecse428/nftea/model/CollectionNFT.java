@@ -37,7 +37,9 @@ public class CollectionNFT
     listings = new ArrayList<Listing>();
   }
 
-  //------------------------
+
+
+    //------------------------
   // INTERFACE
   //------------------------
 
