@@ -30,7 +30,7 @@ Feature: Login as customer or admin
     And an error message shall be raised "Incorrect email/password"
 
   Scenario: Log in with incorrect password
-    Given "Email1" has "1" attempts
+    Given "Email1" has this amount of attempts "1"
     When the registered user tries to log in with email "Email1" and password "grape123"
     Then the registered user should not be logged in
     And an error message shall be raised "Incorrect email/password"
@@ -48,13 +48,6 @@ Feature: Login as customer or admin
   Scenario: Log in with incorrect password after third attempt while account is locked
     Given "Email3" has "3" attempts and the last attempt "2022-02-13 17:46:36"
     When the registered user tries to log in with email "Email3" and password "apple123"
-    Then the registered user should not be logged in
-    And an error message shall be raised "Too many attempts, please try again later"
-    And "Email3" should have "3" attempts
-
-  Scenario: Log in with correct password after third attempt while account is locked
-    Given "Email3" has "3" attempts and the last attempt "2022-02-13 17:46:36"
-    When the registered user tries to log in with email "Email3" and password "grape123"
     Then the registered user should not be logged in
     And an error message shall be raised "Too many attempts, please try again later"
     And "Email3" should have "3" attempts

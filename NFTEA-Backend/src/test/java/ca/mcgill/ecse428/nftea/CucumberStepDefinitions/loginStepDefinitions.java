@@ -80,12 +80,12 @@ public class loginStepDefinitions {
         userAccountService.saveAccount(user);
     }
 
-    @Given("{string} has {int} attempt")
-    public void the_registered_user_is_logged_in_with(String email, int attempts) {
-        UserAccount user = userAccountService.getUserAccountByEmail(email);
-        userAccount.setLoginAttempts(attempts);
-        userAccountService.saveAccount(user);
-    }
+//    @Given("{string} has {int} attempt")
+//    public void the_registered_user_is_logged_in_with(String email, int attempts) {
+//        UserAccount user = userAccountService.getUserAccountByEmail(email);
+//        userAccount.setLoginAttempts(attempts);
+//        userAccountService.saveAccount(user);
+//    }
 
 
     @When("the registered user tries to log in with email {string} and password {string}")
@@ -153,15 +153,6 @@ public class loginStepDefinitions {
         UserAccount user = userAccountService.getUserAccountByEmail(arg0);
         assertEquals(Integer.parseInt(arg1), user.getLoginAttempts());
     }
-//
-//    @And("the last attempt {string}")
-//    public void theLastAttempt(String arg0) {
-//
-//    }
-
-//    @When("the registered user tries to log in with email {string}, password {string} and attempts {string}")
-//    public void theRegisteredUserTriesToLogInWithEmailPasswordAndAttempts(String arg0, String arg1, String arg2) {
-//    }
 
     @Given("{string} has {string} attempts and the last attempt {string}")
     public void hasAttemptsAndTheLastAttempt(String arg0, String arg1, String arg2) {
@@ -178,5 +169,12 @@ public class loginStepDefinitions {
     @And("an error message shall be raised {string}")
     public void anErrorMessageShallBeRaised(String arg0) {
         assertTrue(error.contains(arg0));
+    }
+
+    @Given("{string} has this amount of attempts {string}")
+    public void hasThisAmountOfAttempts(String arg0, String arg1) {
+        UserAccount user = userAccountService.getUserAccountByEmail(arg0);
+        user.setLoginAttempts(Integer.parseInt(arg1));
+        userAccountService.saveAccount(user);
     }
 }
