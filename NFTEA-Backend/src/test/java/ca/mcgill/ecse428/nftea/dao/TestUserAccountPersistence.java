@@ -31,17 +31,11 @@ public class TestUserAccountPersistence {
         String username = "user123";
         String password = "password123";
         boolean isLoggedIn = false;
+        int loginAttempts = 0;
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
         //Creating an UserAccount
-        UserAccount userAccount = new UserAccount();
-        userAccount.setFirstName(firstName);
-        userAccount.setLastName(lastName);
-        userAccount.setUserEmail(userEmail);
-        userAccount.setUsername(username);
-        userAccount.setPassword(password);
-        userAccount.setIsLoggedIn(isLoggedIn);
-        userAccount.setUserRole(userRole);
+        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
 
         //Save UserAccount to database
         userAccountRepository.save(userAccount);

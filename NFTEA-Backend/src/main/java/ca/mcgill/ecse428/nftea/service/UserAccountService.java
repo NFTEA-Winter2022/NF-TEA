@@ -1,8 +1,11 @@
 package ca.mcgill.ecse428.nftea.service;
 
 import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
+import ca.mcgill.ecse428.nftea.exception.WrongInputException;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -79,6 +82,19 @@ public class UserAccountService {
     @Transactional
     public void clear() {
         userAccountRepository.deleteAll();
+	}
+
+	@Transactional
+    public UserAccount getUserAccountByEmail(String email) {
+        String error = "";
+        if(email == null || email.trim() == "") {
+            error += ("Invalid email");
+        }
+        error.trim();
+        if(error.length() > 0) {
+            throw new WrongInputException(HttpStatus.BAD_REQUEST, error);
+        }
+        return userAccountRepository.findUserAccountByUserEmail(email);
     }
     
     @Transactional
@@ -109,5 +125,10 @@ public class UserAccountService {
 //        java.util.regex.Matcher m = p.matcher(email);
 //        return m.matches();
         return true;
+    }
+
+    @Transactional
+    public void saveAccount(UserAccount userAccount) {
+        userAccountRepository.save(userAccount);
     }
 }
