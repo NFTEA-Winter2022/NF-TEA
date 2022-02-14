@@ -31,11 +31,13 @@ public class LoginService {
             }
             else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
                     LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
+                userAccount.setIsLoggedIn(false);
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
                 updateAttempts(email);
-                if(userAccount.getLoginAttempts() == MAX_ATTEMPTS) {
+                userAccount.setIsLoggedIn(false);
+                if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS) {
                     throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password, account is locked out");
                 }
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
@@ -59,7 +61,6 @@ public class LoginService {
             UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
             userAccount.setLoginAttempts(userAccount.getLoginAttempts() + 1);
             userAccount.setLastAttempt(LocalDateTime.now());
-
             userAccountRepository.save(userAccount);
         } else {
             return false;
