@@ -28,6 +28,58 @@ public class UserAccountService {
         userAccountRepository.save(myUser);
         return myUser;
     }
+
+    @Transactional
+    public UserAccount getAccount(Long userid) {
+        return userAccountRepository.findUserAccountById(userid);
+    }
+
+    @Transactional
+    public UserAccount setNewPassword(Long userid,  String confirmPassword, String newPassword) throws Exception {
+        UserAccount user = getAccount(userid);
+        if (!user.getPassword().equals(confirmPassword)) throw new Exception("Passwords do not match");
+        if (newPassword.length()<8)throw new Exception("More then 8 chars are required");
+        user.setPassword(newPassword);
+        userAccountRepository.save(user);
+        return user;
+    }
+
+    @Transactional
+    public UserAccount setNewUsername(Long userid, String newUsername) throws Exception {
+        UserAccount user = getAccount(userid);
+        if (newUsername.length() == 0) throw new Exception("Username Invalid");
+        user.setUsername(newUsername);
+        userAccountRepository.save(user);
+        return user;
+    }
+
+    @Transactional
+    public UserAccount setUserOnline(String username) throws Exception {
+        UserAccount user = userAccountRepository.findUserAccountByUsername(username);
+        if (user == null) throw new Exception("Invalid username");
+        user.setIsLoggedIn(true);
+        userAccountRepository.save(user);
+        return user;
+    }
+
+//    @Transactional
+//    public UserAccount changeUserInfo(String username, String newPassWord, String confirmPassword, String userEmail) throws Exception {
+//        if (username.length() == 0) throw new Exception("Invalid username");
+//        if (!isValidEmailAddress(userEmail)) throw new Exception("Invalid Email");
+//        if (newPassWord.length()<8 || confirmPassword.length() < 8) throw new Exception("Passwords cannot be empty");
+//        if (!newPassWord.equals(confirmPassword)) throw new Exception("Passwords do not match");
+//        UserAccount user = userAccountRepository.findUserAccountByUsername(username);
+//        user.setUsername(username);
+//        user.setPassword(newPassWord);
+//        user.setUserEmail(userEmail);
+//        userAccountRepository.save(user);
+//        return user;
+//    }
+
+    @Transactional
+    public void clear() {
+        userAccountRepository.deleteAll();
+    }
     
     @Transactional
     public void deleteUser(Long id, String password) throws Exception {
@@ -52,10 +104,10 @@ public class UserAccountService {
     
 
     public boolean isValidEmailAddress(String email) {
-        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return m.matches();
+//        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+//        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+//        java.util.regex.Matcher m = p.matcher(email);
+//        return m.matches();
+        return true;
     }
-
 }
