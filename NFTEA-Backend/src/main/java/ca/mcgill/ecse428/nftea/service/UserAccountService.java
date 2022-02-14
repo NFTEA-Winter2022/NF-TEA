@@ -14,15 +14,15 @@ public class UserAccountService {
     UserAccountRepository userAccountRepository;
 
     @Transactional
-    public UserAccount createUser(String firstName,String lastName,String userName,String userEmail,String password) throws Exception {
+    public UserAccount createUser(String firstName,String lastName,String userName,String userEmail,String password) throws IllegalArgumentException {
         if (isValidEmailAddress(userEmail)==false){
-            throw new Exception("Wrong Email");
+            throw new IllegalArgumentException("Wrong Email");
         }
         if (password.length()<8){
-            throw new Exception("More then 8 chars are required");
+            throw new IllegalArgumentException("More then 8 chars are required");
         }
-        if (firstName.equals(null)||lastName.equals(null)||userEmail.equals(null)||password.equals(null)||userName.equals(null)){
-            throw new Exception("All textboxes need to be completed");
+        if (firstName.isEmpty()||lastName.isEmpty()||userEmail.isEmpty()||password.isEmpty()||userName.isEmpty()){
+            throw new IllegalArgumentException("All textboxes need to be completed");
         }
         UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, 0, null, UserAccount.UserRole.Customer);
         userAccountRepository.save(myUser);
