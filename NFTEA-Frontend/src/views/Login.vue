@@ -5,7 +5,7 @@
       <v-container>
         <v-row>
           <v-text-field
-            v-model="email"
+            v-model="userEmail"
             label="Email"
             required
           ></v-text-field>
@@ -13,7 +13,7 @@
         <span v-if="errorEmail" class="errorMessage">{{errorEmail}} </span>
         <v-row>
           <v-text-field
-            v-model="password"
+            v-model="userPassword"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
             :type="showPassword ? 'text' : 'password'"
             label="Password"
@@ -26,7 +26,7 @@
         <v-row>
           <v-col>
             <v-btn
-            @click="login(email, password)"
+            @click="logInClientUser(userEmail, userPassword)"
             > 
               Login
             </v-btn>
@@ -52,29 +52,29 @@
     color: red;
   }
 </style>
-<script>
-export default {
-  data() {
-    return {
-      showPassword: false,
-      errorEmail: '',
-      errorPassword: '',
-      errorStatus: ''
-    }
-  },
-  methods: {
-    login: function(email, password) {
-       if(email != "hello") {
-         this.errorEmail = 'Email is not associated with an account';
-         this.errorPassword = ''
-       } else if(password != "world") {
-         this.errorPassword = "Incorrect password";
-         this.errorEmail = '';
-       } else {
-         this.errorEmail = '';
-         this.errorPassword = '';
-       }
-    }
-  }
-}
+<script src="../js/login.js">
+// export default {
+//   data() {
+//     return {
+//       showPassword: false,
+//       errorEmail: '',
+//       errorPassword: '',
+//       errorStatus: ''
+//     }
+//   },
+//   methods: {
+//     login: function(email, password) {
+//        if(email != "hello") {
+//          this.errorEmail = 'Email is not associated with an account';
+//          this.errorPassword = ''
+//        } else if(password != "world") {
+//          this.errorPassword = "Incorrect password";
+//          this.errorEmail = '';
+//        } else {
+//          this.errorEmail = '';
+//          this.errorPassword = '';
+//        }
+//     }
+//   }
+// }
 </script>
