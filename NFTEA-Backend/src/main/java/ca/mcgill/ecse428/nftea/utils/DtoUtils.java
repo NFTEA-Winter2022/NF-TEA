@@ -15,8 +15,8 @@ public class DtoUtils {
         if (cu == null){
             throw new IllegalArgumentException("User does not exist");
         }
-        UserAccountDto userAccountDto = new UserAccountDto(cu.getNumberID(), cu.getFirstName(),
-                cu.getLastName(), cu.getUserEmail(), cu.getUsername(), cu.getPassword(), cu.getIsLoggedIn(), cu.getUserRole());
+        UserAccountDto userAccountDto = new UserAccountDto(cu.getId(), cu.getFirstName(), cu.getLastName(), cu.getUserEmail(),
+                cu.getUsername(), cu.getPassword(), cu.getIsLoggedIn(), cu.getLoginAttempts(), cu.getLastAttempt(), cu.getUserRole());
         return userAccountDto;
     }
 }
