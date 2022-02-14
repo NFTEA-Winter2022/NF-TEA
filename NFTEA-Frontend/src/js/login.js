@@ -36,13 +36,18 @@ export default {
             userEmail: '',
             userPassword: '',
 
+            showPassword: false,
+            errorEmail: '',
+            errorPassword: '',
+            errorStatus: '',
             errorClientUser: '',
+            errorMessage: '',
             response: [],
         }
     },
     methods: {
         logInClientUser: function (userEmail, userPassword) {
-            let clientUserNumberID
+            let currentUserEmail
             AXIOS.get('/home/login', {
                 params:{
                     email: userEmail,
@@ -50,14 +55,17 @@ export default {
                 }
             })
                 .then(response => {
-                    this.clientUsers = ''
-                    clientUserNumberID = response.data.numberID
+                    this.userAccounts = ''
+                    currentUserEmail = response.data.userEmail
                 })
                 .catch(e => {
                     var errorMsg = e.response.data.message
-                    console.log(errorMsg)
-                    this.errorPerson = errorMsg
-                    alert(e.message)
+
+                    // console.log(errorMsg)
+                    // this.errorPerson = errorMsg
+                    // alert(e.message)
+                    this.errorMessage = errorMsg
+
                 })
 
             window.location.replace("http://127.0.0.1:8087/?#/useraccount")
