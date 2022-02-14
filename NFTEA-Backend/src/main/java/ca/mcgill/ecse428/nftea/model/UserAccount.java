@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 public class UserAccount
 {
 
+
   //------------------------
   // ENUMERATIONS
   //------------------------
@@ -53,6 +54,21 @@ public class UserAccount
 
   public UserAccount(String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, LocalDateTime aLastAttempt, UserRole aUserRole)
   {
+    firstName = aFirstName;
+    lastName = aLastName;
+    userEmail = aUserEmail;
+    username = aUsername;
+    password = aPassword;
+    isLoggedIn = aIsLoggedIn;
+    loginAttempts = aLoginAttempts;
+    lastAttempt = aLastAttempt;
+    userRole = aUserRole;
+    collectionNFTs = new ArrayList<CollectionNFT>();
+  }
+
+  public UserAccount(Long id, String aFirstName, String aLastName, String aUserEmail, String aUsername, String aPassword, boolean aIsLoggedIn, int aLoginAttempts, LocalDateTime aLastAttempt, UserRole aUserRole)
+  {
+    setNumberID(id);
     firstName = aFirstName;
     lastName = aLastName;
     userEmail = aUserEmail;

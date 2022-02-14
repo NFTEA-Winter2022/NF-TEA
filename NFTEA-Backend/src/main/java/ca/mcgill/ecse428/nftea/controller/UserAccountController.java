@@ -6,11 +6,7 @@ import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -45,7 +41,31 @@ public class UserAccountController {
 		}
 		return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
 	}
-    
+
+
+    @PutMapping(value = {"/user-account/editPassword/{id}","/user-account/editPassword/{id}"})
+    public ResponseEntity editAccountPassword(@PathVariable("id") String id, @RequestParam String old_password, @RequestParam String new_password ) {
+        UserAccount user;
+        try{
+            user = userAccountService.setNewPassword((Long.parseLong(id)),old_password,new_password);
+
+        } catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+        }
+        return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
+    }
+
+    @PutMapping(value = {"/user-account/editUsername/{id}","/user-account/editUsername/{id}"})
+    public ResponseEntity editAccountUsername(@PathVariable("id") String id, @RequestParam String new_username) {
+        UserAccount user;
+        try{
+            user = userAccountService.setNewUsername((Long.parseLong(id)),new_username);
+        } catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+        }
+        return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
+    }
+
     private UserAccountDto covertDto(UserAccount userAccount){
     	return new UserAccountDto(
     			userAccount.getId(),
