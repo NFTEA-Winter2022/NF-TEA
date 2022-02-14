@@ -27,18 +27,18 @@ public class LoginService {
         else {
             UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
             if (userAccount == null){
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "User not found");
+                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
             }
             else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
                     LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many failed attempts, try again later");
+                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
                 updateAttempts(email);
                 if(userAccount.getLoginAttempts() == MAX_ATTEMPTS) {
                     throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password, account is locked out");
                 }
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password");
+                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
             }
             else {
                 resetAttempts(email);
