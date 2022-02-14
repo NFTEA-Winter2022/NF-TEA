@@ -4,6 +4,7 @@ import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.LoginService;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@CucumberContextConfiguration
 @SpringBootTest
 public class loginStepDefinitions {
 
@@ -34,7 +34,7 @@ public class loginStepDefinitions {
 
     @After
     public void teardown(){
-//        userAccountService.
+        userAccountService.clear();
         int errorCounter = 0;
         String error = "";
     }
@@ -50,7 +50,7 @@ public class loginStepDefinitions {
             else {
                 String email = columns.get(0);
                 String password = columns.get(1);
-                userAccount =  userAccountService.createUser(null,null, null, email, password);
+                userAccount =  userAccountService.createUser("john","doe", "johnny", email, password);
 
             }
         }
@@ -76,7 +76,7 @@ public class loginStepDefinitions {
         userAccountService.saveAccount(user);
     }
 
-    @Given("{String} has {int} attempt")
+    @Given("{string} has {int} attempt")
     public void the_registered_user_is_logged_in_with(String email, int attempts) {
         UserAccount user = userAccountService.getUserAccountByEmail(email);
         userAccount.setLoginAttempts(attempts);
@@ -105,23 +105,49 @@ public class loginStepDefinitions {
         assertFalse(userAccount.getIsLoggedIn());
     }
 
-    @Then("an error message {string} shall be raised")
-    public void anErrorMessageShallBeRaised(String errorMsg) {
-        assertTrue(error.contains(errorMsg));
-    }
+//    @Then("an error message {string} shall be raised")
+//    public void anErrorMessageShallBeRaised(String errorMsg) {
+//        assertTrue(error.contains(errorMsg));
+//    }
 
-    @Then("{String} should have {int} attempts")
+    @Then("{string} should have {int} attempts")
     public void should_have_attempts(String email, int attempts) {
         UserAccount user = userAccountService.getUserAccountByEmail(email);
         assertEquals(attempts, user.getLoginAttempts());
     }
 
-    @Then("{String}'s most recent attempt should be at {String}")
+    @Then("{string}'s most recent attempt should be at {string}")
     public void most_recent_attempt_should_be_at(String email, String dateTimeStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
 
         UserAccount user = userAccountService.getUserAccountByEmail(email);
         assertEquals(dateTime, user.getLastAttempt());
+    }
+
+    @And("{string} has {string} attempts")
+    public void hasAttempts(String email, String arg1) {
+        UserAccount user = userAccountService.getUserAccountByEmail(email);
+        userAccount.setLoginAttempts(Integer.parseInt(arg1));
+        userAccountService.saveAccount(user);
+    }
+
+    @When("the registered user tries to log in with email {string}, password {string}")
+    public void theRegisteredUserTriesToLogInWithEmailPassword(String arg0, String arg1) {
+
+
+    }
+
+    @And("{string} should have {string} attempts")
+    public void shouldHaveAttempts(String arg0, String arg1) {
+    }
+
+    @And("the last attempt {string}")
+    public void theLastAttempt(String arg0) {
+
+    }
+
+    @When("the registered user tries to log in with email {string}, password {string} and attempts {string}")
+    public void theRegisteredUserTriesToLogInWithEmailPasswordAndAttempts(String arg0, String arg1, String arg2) {
     }
 }

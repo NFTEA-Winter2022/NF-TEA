@@ -3,10 +3,10 @@ Feature: Login as customer or admin
 
   Background:
     Given the following users exist in the system:
-      | email  | password | attempts |
-      | Email1 | apple    | 1        |
-      | Email2 | grape    | 1        |
-      | Email3 | grape    | 2        |
+      | email  | password    | attempts |
+      | Email1 | apple123    | 1        |
+      | Email2 | grape123    | 1        |
+      | Email3 | grape123    | 2        |
     And the current date and time "2022-02-13 18:00:00"
 
 
