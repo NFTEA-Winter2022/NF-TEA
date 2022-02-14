@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -32,10 +35,11 @@ public class TestUserAccountPersistence {
         String password = "password123";
         boolean isLoggedIn = false;
         int loginAttempts = 0;
+        LocalDateTime lastAttepmt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
         //Creating an UserAccount
-        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
+        UserAccount userAccount = new UserAccount(firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, lastAttepmt, userRole);
 
         //Save UserAccount to database
         userAccountRepository.save(userAccount);
@@ -55,6 +59,8 @@ public class TestUserAccountPersistence {
         assertEquals(username, userAccount.getUsername());
         assertEquals(password, userAccount.getPassword());
         assertEquals(isLoggedIn, userAccount.isIsLoggedIn());
+        assertEquals(loginAttempts, userAccount.getLoginAttempts());
+        assertEquals(lastAttepmt, userAccount.getLastAttempt());
         assertEquals(userRole, userAccount.getUserRole());
     }
 

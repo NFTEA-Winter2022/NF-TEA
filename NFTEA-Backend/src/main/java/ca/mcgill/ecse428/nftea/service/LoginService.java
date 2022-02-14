@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class LoginService {
@@ -36,7 +37,7 @@ public class LoginService {
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
-                updateAttempts(email);
+                updateAttempts(userAccount.getId());
                 userAccount.setIsLoggedIn(false);
                 userAccountRepository.save(userAccount);
                 if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS) {
@@ -45,7 +46,7 @@ public class LoginService {
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
             }
             else {
-                resetAttempts(email);
+                resetAttempts(userAccount.getId());
                 userAccount.setIsLoggedIn(true);
                 userAccountRepository.save(userAccount);
                 return userAccount;
@@ -55,15 +56,15 @@ public class LoginService {
 
     /**
      * Method to update the number of failed login attempts and the last attempt timestamp.
-     * @param email The email associated with an account.
+     * @param userID The ID associated with an account.
      * @return True if update was successful, false if account not found.
      */
     @Transactional
-    private boolean updateAttempts(String email) {
-        if(userAccountRepository.findUserAccountByUserEmail(email) != null) {
-            UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
+    private boolean updateAttempts(long userID) {
+        if(userAccountRepository.findUserAccountById(userID) != null) {
+            UserAccount userAccount = userAccountRepository.findUserAccountById(userID);
             userAccount.setLoginAttempts(userAccount.getLoginAttempts() + 1);
-            userAccount.setLastAttempt(LocalDateTime.now());
+            userAccount.setLastAttempt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             userAccountRepository.save(userAccount);
         } else {
             return false;
@@ -73,13 +74,13 @@ public class LoginService {
 
     /**
      * Method to reset the number of failed attempts.
-     * @param email The email associated with an account.
+     * @param userID The email associated with an account.
      * @return True if reset was successful, false if account not found.
      */
     @Transactional
-    private boolean resetAttempts(String email) {
-        if(userAccountRepository.findUserAccountByUserEmail(email) != null) {
-            UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
+    private boolean resetAttempts(long userID) {
+        if(userAccountRepository.findUserAccountById(userID) != null) {
+            UserAccount userAccount = userAccountRepository.findUserAccountById(userID);
             userAccount.setLoginAttempts(0);
 
             userAccountRepository.save(userAccount);
