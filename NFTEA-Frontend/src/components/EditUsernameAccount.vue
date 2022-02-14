@@ -52,6 +52,9 @@
                   </v-tooltip>
                 </v-slide-x-reverse-transition>
                 <v-btn
+                    color="primary"
+                    text
+                    @click="updateUsername(username)"
                 >
                   Edit
                 </v-btn>
@@ -61,6 +64,7 @@
         </v-row>
       </v-app>
     </div>
+    <v-btn>Sign out</v-btn>
   </v-container>
 </template>
 

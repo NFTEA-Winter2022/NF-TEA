@@ -19,12 +19,12 @@ const routes = [
     component: CreateAccountFront
   },
   {
-    path:'/EditPassword',
+    path:'/user-account/editPassword',
     name: 'EditPasswordAccountFrontS',
     component: editPasswordAccount
   },
   {
-    path:'/EditUsername',
+    path:'/user-account/editUsername',
     name: 'EditUsernameAccountFrontS',
     component: editUsernameAccount
   },
