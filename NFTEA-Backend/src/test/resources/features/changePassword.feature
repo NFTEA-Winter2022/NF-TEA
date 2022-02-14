@@ -30,7 +30,6 @@ Feature: Change Password
     And an error message "<error>" shall be raised
 
     Examples:
-      | username | password | newPassword | confirmPassword | email           | error                          |
-      | User1    | lol12345 | lol67890    |                 | user1@gmail.com | More then 8 chars are required |
-      | User2    | lol67890 |             | Dan12345        | user2@gmail.com | More then 8 chars are required |
-      | CodeX    | Dan12345 | UrGirl123   | Dan123456       | codex@gmail.com | Passwords do not match         |
+      | username | password | newPassword | confirmPassword | email           | error                  |
+      | User1    | lol12345 | lol67890    |                 | user1@gmail.com | Passwords do not match |
+      | CodeX    | Dan12345 | UrGirl123   | Dan123456       | codex@gmail.com | Passwords do not match |

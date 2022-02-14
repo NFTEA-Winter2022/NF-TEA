@@ -15,39 +15,13 @@
               lg="6"
           >
             <v-card ref="form">
-              <h1>Edit Account</h1>
+              <h1>Edit Username</h1>
               <v-card-text>
                 <v-text-field
                     ref="username"
                     v-model="username"
                     label="Username"
                     placeholder="johnD22"
-                    required
-                ></v-text-field>
-
-                <v-text-field
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show1 ? 'text' : 'password'"
-                    name="input-10-1"
-                    v-model="password"
-                    label="Password"
-                    counter
-                ></v-text-field>
-
-                <v-text-field
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show1 ? 'text' : 'password'"
-                    name="input-10-1"
-                    v-model="confirm"
-                    label="Confirm Password"
-                    counter
-                ></v-text-field>
-
-                <v-text-field
-                    ref="email"
-                    v-model="email"
-                    label="Email"
-                    placeholder="jon_doe@gmail.com"
                     required
                 ></v-text-field>
 
@@ -78,9 +52,6 @@
                   </v-tooltip>
                 </v-slide-x-reverse-transition>
                 <v-btn
-                    color="primary"
-                    text
-                    @click="updateAccountInfo(username,password,confirm,email)"
                 >
                   Edit
                 </v-btn>
@@ -93,8 +64,8 @@
   </v-container>
 </template>
 
-<script src="../components/editAccountFrontScript.js">
+<script src="../components/editAccountUsernameFrontScript.js">
 export default {
-  name: "editAccountFront"
+  name: "editAccountUsername"
 }
 </script>

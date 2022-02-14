@@ -29,7 +29,7 @@ Feature: ChangeUsernameFeature
     And an error message "<error>" shall be raised
 
     Examples:
-      | username | newUsername | password | email           | error                    |
-      | User1    | CodeX       | lol12345 | user1@gmail.com | Username not available   |
-      | User2    | User1       | lol67890 | user2@gmail.com | Username not available   |
-      | CodeX    |             | Dan12345 | codex@gmail.com | Username cannot be empty |
+      | username | newUsername | password | email           | error            |
+      | User1    |             | lol12345 | user1@gmail.com | Username Invalid |
+      | User2    |             | lol67890 | user2@gmail.com | Username Invalid |
+      | CodeX    |             | Dan12345 | codex@gmail.com | Username Invalid |

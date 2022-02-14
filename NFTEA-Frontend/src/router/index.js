@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import CreateAccountFront from '../components/CreateAccountFront';
-import EditAccount from "../components/EditAccount";
+import editPasswordAccount from "@/components/EditPasswordAccount";
+import editUsernameAccount from "@/components/EditUsernameAccount";
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,14 @@ const routes = [
     component: CreateAccountFront
   },
   {
-    path:'/Edit',
-    name: 'EditAccountFrontS',
-    component: EditAccount
+    path:'/EditPassword',
+    name: 'EditPasswordAccountFrontS',
+    component: editPasswordAccount
+  },
+  {
+    path:'/EditUsername',
+    name: 'EditUsernameAccountFrontS',
+    component: editUsernameAccount
   },
   {
     path: '/about',
