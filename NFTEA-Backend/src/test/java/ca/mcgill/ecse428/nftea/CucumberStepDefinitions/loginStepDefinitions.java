@@ -100,10 +100,10 @@ public class loginStepDefinitions {
         }
     }
 
-//    @Then("the registered user should be successfully logged in")
-//    public void theRegisteredUserShouldBeSuccessfullyLoggedIn() {
-//        assertTrue(userAccount.getIsLoggedIn());
-//    }
+    @Then("the registered user should be successfully logged in")
+    public void theRegisteredUserShouldBeSuccessfullyLoggedIn() {
+        assertTrue(userAccount.getIsLoggedIn());
+    }
 
 //    @Then("the registered user should not be logged in")
 //    public void theRegisteredUserShouldNotBeLoggedIn() {
@@ -183,5 +183,15 @@ public class loginStepDefinitions {
     public void theRegisteredUserShouldNotBeLoggedInWith(String arg0) {
         UserAccount userAccount = userAccountService.getUserAccountByEmail(arg0);
         assertFalse(userAccount.getIsLoggedIn());
+    }
+
+    @Then("the registered user should be successfully logged in {string}")
+    public void theRegisteredUserShouldBeSuccessfullyLoggedIn(String arg0) {
+        UserAccount userAccount = userAccountService.getUserAccountByEmail(arg0);
+        assertTrue(userAccount.getIsLoggedIn());
+    }
+
+    @Then("the registered user should not be logged in")
+    public void theRegisteredUserShouldNotBeLoggedIn() {
     }
 }

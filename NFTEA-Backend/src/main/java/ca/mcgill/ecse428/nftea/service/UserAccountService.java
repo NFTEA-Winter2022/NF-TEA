@@ -44,6 +44,7 @@ public class UserAccountService {
         return userAccountRepository.findUserAccountByUserEmail(email);
     }
 
+    @Transactional
     public UserAccount getAccount(Long userid) {
         return userAccountRepository.findUserAccountById(userid);
     }
