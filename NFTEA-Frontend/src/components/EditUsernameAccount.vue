@@ -64,7 +64,7 @@
         </v-row>
       </v-app>
     </div>
-    <v-btn>Sign out</v-btn>
+    <v-btn text @click="signout"> Sign out</v-btn>
   </v-container>
 </template>
 
