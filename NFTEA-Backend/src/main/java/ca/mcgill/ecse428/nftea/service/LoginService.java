@@ -32,11 +32,13 @@ public class LoginService {
             else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
                     LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
                 userAccount.setIsLoggedIn(false);
+                userAccountRepository.save(userAccount);
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
                 updateAttempts(email);
                 userAccount.setIsLoggedIn(false);
+                userAccountRepository.save(userAccount);
                 if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS) {
                     throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password, account is locked out");
                 }
@@ -45,6 +47,7 @@ public class LoginService {
             else {
                 resetAttempts(email);
                 userAccount.setIsLoggedIn(true);
+                userAccountRepository.save(userAccount);
                 return userAccount;
             }
         }
