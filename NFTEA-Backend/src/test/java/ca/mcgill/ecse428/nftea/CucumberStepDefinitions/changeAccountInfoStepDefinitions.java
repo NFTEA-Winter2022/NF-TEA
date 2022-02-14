@@ -1,14 +1,12 @@
 package ca.mcgill.ecse428.nftea.CucumberStepDefinitions;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.en.*;
 
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,7 +16,7 @@ import static org.junit.Assert.*;
 
 //@CucumberContextConfiguration
 @SpringBootTest
-public class changePasswordStepDefinitions {
+public class changeAccountInfoStepDefinitions {
 
     int errorCounter = 0;
     String error = "";

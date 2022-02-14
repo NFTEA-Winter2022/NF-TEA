@@ -8,6 +8,7 @@
     <div id="app">
       <v-app id="inspire">
         <v-row justify="center">
+
           <v-col
               cols="5"
               sm="10"
@@ -75,6 +76,7 @@
         </v-row>
       </v-app>
     </div>
+    <v-btn>Sign out</v-btn>
   </v-container>
 </template>
 
