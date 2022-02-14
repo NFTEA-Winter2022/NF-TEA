@@ -33,19 +33,6 @@ public class UserAccountService {
     }
 
     @Transactional
-    public UserAccount getUserAccountByEmail(String email) {
-        String error = "";
-        if (email == null || email.trim() == "") {
-            error += ("Invalid email");
-        }
-        error.trim();
-        if (error.length() > 0) {
-            throw new WrongInputException(HttpStatus.BAD_REQUEST, error);
-        }
-        return userAccountRepository.findUserAccountByUserEmail(email);
-    }
-
-    @Transactional
     public UserAccount getAccount(Long userid) {
         return userAccountRepository.findUserAccountById(userid);
     }

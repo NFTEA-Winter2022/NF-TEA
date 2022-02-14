@@ -52,29 +52,48 @@
     color: red;
   }
 </style>
-<script src="../js/login.js">
-// export default {
-//   data() {
-//     return {
-//       showPassword: false,
-//       errorEmail: '',
-//       errorPassword: '',
-//       errorStatus: ''
-//     }
-//   },
-//   methods: {
-//     login: function(email, password) {
-//        if(email != "hello") {
-//          this.errorEmail = 'Email is not associated with an account';
-//          this.errorPassword = ''
-//        } else if(password != "world") {
-//          this.errorPassword = "Incorrect password";
-//          this.errorEmail = '';
-//        } else {
-//          this.errorEmail = '';
-//          this.errorPassword = '';
-//        }
-//     }
-//   }
-// }
+<script>
+    export default {
+    data() {
+      return {
+        userAccounts: [],
+        selectedUser: '',
+        userEmail: '',
+        userPassword: '',
+
+        showPassword: false,
+        errorEmail: '',
+        errorPassword: '',
+        errorStatus: '',
+        errorClientUser: '',
+        errorMessage: '',
+        response: [],
+      }
+    },
+    methods: {
+      logInClientUser(userEmail, userPassword) {
+        //let currentUserEmail
+        this.$http.get('/home/login', {
+          params: {
+            email: userEmail,
+            password: userPassword,
+          }
+        })
+            .then(() => {
+              this.userAccounts = ''
+              //currentUserEmail = response.data.userEmail
+            })
+            .catch(e => {
+              var errorMsg = e.response.data.message
+
+              // console.log(errorMsg)
+              // this.errorPerson = errorMsg
+              // alert(e.message)
+              this.errorMessage = errorMsg
+
+            })
+        window.location.replace("http://127.0.0.1:8087/?#/useraccount")
+      }
+    }
+}
 </script>
