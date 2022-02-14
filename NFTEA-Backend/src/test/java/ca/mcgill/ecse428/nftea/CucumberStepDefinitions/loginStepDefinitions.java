@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -49,9 +50,12 @@ public class loginStepDefinitions {
                 i++;
             }
             else {
-                String email = columns.get(0);
-                String password = columns.get(1);
-                userAccount =  userAccountService.createUser("john","doe", "johnny", email, password);
+                String firstName = columns.get(0);
+                String lastName = columns.get(1);
+                String username = columns.get(2);
+                String email = columns.get(3);
+                String password = columns.get(4);
+                userAccount =  userAccountService.createUser(firstName,lastName, username, email, password);
 
             }
         }
@@ -135,20 +139,45 @@ public class loginStepDefinitions {
 
     @When("the registered user tries to log in with email {string}, password {string}")
     public void theRegisteredUserTriesToLogInWithEmailPassword(String arg0, String arg1) {
-
+        try{
+            userAccount = loginService.loginUserAccount(arg0, arg1);
+        }
+        catch (Exception e){
+            error = e.getMessage();
+            errorCounter++;
+        }
 
     }
 
     @And("{string} should have {string} attempts")
     public void shouldHaveAttempts(String arg0, String arg1) {
+        UserAccount user = userAccountService.getUserAccountByEmail(arg0);
+        assertEquals(Integer.parseInt(arg1), user.getLoginAttempts());
+    }
+//
+//    @And("the last attempt {string}")
+//    public void theLastAttempt(String arg0) {
+//
+//    }
+
+//    @When("the registered user tries to log in with email {string}, password {string} and attempts {string}")
+//    public void theRegisteredUserTriesToLogInWithEmailPasswordAndAttempts(String arg0, String arg1, String arg2) {
+//    }
+
+    @Given("{string} has {string} attempts and the last attempt {string}")
+    public void hasAttemptsAndTheLastAttempt(String arg0, String arg1, String arg2) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(arg2, formatter);
+
+        UserAccount user = userAccountService.getUserAccountByEmail(arg0);
+        user.setLastAttempt(dateTime);
+        user.setLoginAttempts(Integer.parseInt(arg1));
+        userAccountService.saveAccount(user);
+
     }
 
-    @And("the last attempt {string}")
-    public void theLastAttempt(String arg0) {
-
-    }
-
-    @When("the registered user tries to log in with email {string}, password {string} and attempts {string}")
-    public void theRegisteredUserTriesToLogInWithEmailPasswordAndAttempts(String arg0, String arg1, String arg2) {
+    @And("an error message shall be raised {string}")
+    public void anErrorMessageShallBeRaised(String arg0) {
+        assertTrue(error.contains(arg0));
     }
 }
