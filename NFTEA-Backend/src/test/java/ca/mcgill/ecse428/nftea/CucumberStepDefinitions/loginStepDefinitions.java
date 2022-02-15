@@ -4,16 +4,17 @@ import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.LoginService;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import io.cucumber.java.After;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -27,6 +28,7 @@ public class loginStepDefinitions {
     int errorCounter = 0;
     String error = "";
     UserAccount userAccount = null;
+
 
     @Autowired
     UserAccountService userAccountService;
@@ -66,6 +68,9 @@ public class loginStepDefinitions {
     public void the_current_date_and_time(String dateTimeStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         currentDateTime = LocalDateTime.parse(dateTimeStr, formatter);
+
+        Clock clock = Clock.fixed(currentDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        loginService.setClock(clock);
     }
 
     @Given("the registered user is not logged in with {string}")
@@ -114,17 +119,16 @@ public class loginStepDefinitions {
 
     @Then("{string} should have {int} attempts")
     public void should_have_attempts(String email, int attempts) {
-//        UserAccount user = userAccountService.getUserAccountByEmail(email);
-        assertEquals(attempts, userAccount.getLoginAttempts());
+        UserAccount user = userAccountService.getUserAccountByEmail(email);
+        assertEquals(attempts, user.getLoginAttempts());
     }
 
     @Then("{string}'s most recent attempt should be at {string}")
     public void most_recent_attempt_should_be_at(String email, String dateTimeStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
-
-//        UserAccount user = userAccountService.getUserAccountByEmail(email);
-        assertEquals(dateTime, userAccount.getLastAttempt());
+        UserAccount user = userAccountService.getUserAccountByEmail(email);
+        assertEquals(dateTime, user.getLastAttempt());
     }
 
     @Given("{string} has {int} attempts")

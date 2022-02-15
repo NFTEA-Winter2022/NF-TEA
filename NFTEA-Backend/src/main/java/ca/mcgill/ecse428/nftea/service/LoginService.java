@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class LoginService {
@@ -20,24 +23,30 @@ public class LoginService {
     private static final int MAX_ATTEMPTS = 3;
     private static final int ATTEMPTS_COOLDOWN_IN_MINUTES = 15;
 
-    @Transactional
+    private Clock clock = Clock.systemDefaultZone();
+
+    @Transactional(noRollbackFor = WrongInputException.class)
     public UserAccount loginUserAccount(String email, String password){
         if (email == null || password == null){
             throw new WrongInputException(HttpStatus.BAD_REQUEST,"Please enter your email or password");
         }
         else {
             UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
+
             if (userAccount == null){
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
             }
             else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
-                    LocalDateTime.now().isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
+                    LocalDateTime.now(clock).isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
                 userAccount.setIsLoggedIn(false);
                 userAccountRepository.save(userAccount);
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
-                updateAttempts(userAccount.getId());
+                // update attempts
+                userAccount.setLoginAttempts(userAccount.getLoginAttempts() + 1);
+                userAccount.setLastAttempt(LocalDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
+
                 userAccount.setIsLoggedIn(false);
                 userAccountRepository.save(userAccount);
                 if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS) {
@@ -46,7 +55,7 @@ public class LoginService {
                 throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
             }
             else {
-                resetAttempts(userAccount.getId());
+                userAccount.setLoginAttempts(0);
                 userAccount.setIsLoggedIn(true);
                 userAccountRepository.save(userAccount);
                 return userAccount;
@@ -54,40 +63,8 @@ public class LoginService {
         }
     }
 
-    /**
-     * Method to update the number of failed login attempts and the last attempt timestamp.
-     * @param userID The ID associated with an account.
-     * @return True if update was successful, false if account not found.
-     */
-    @Transactional
-    private boolean updateAttempts(long userID) {
-        if(userAccountRepository.findUserAccountById(userID) != null) {
-            UserAccount userAccount = userAccountRepository.findUserAccountById(userID);
-            userAccount.setLoginAttempts(userAccount.getLoginAttempts() + 1);
-            userAccount.setLastAttempt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            userAccountRepository.save(userAccount);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Method to reset the number of failed attempts.
-     * @param userID The email associated with an account.
-     * @return True if reset was successful, false if account not found.
-     */
-    @Transactional
-    private boolean resetAttempts(long userID) {
-        if(userAccountRepository.findUserAccountById(userID) != null) {
-            UserAccount userAccount = userAccountRepository.findUserAccountById(userID);
-            userAccount.setLoginAttempts(0);
-
-            userAccountRepository.save(userAccount);
-        } else {
-            return false;
-        }
-        return true;
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 
 }
