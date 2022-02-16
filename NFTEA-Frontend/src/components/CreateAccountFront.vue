@@ -17,6 +17,7 @@
             <v-card ref="form">
               <v-card-text>
                 <v-text-field
+                    id="myfirstname"
                     ref="name"
                     v-model="name"
                     :rules="[() => !!name || 'This field is required']"
@@ -27,9 +28,10 @@
                 ></v-text-field>
 
                 <v-text-field
-                    ref="name"
-                    v-model="name"
-                    :rules="[() => !!name || 'This field is required']"
+                    id="mylastname"
+                    ref="lastname"
+                    v-model="lastname"
+                    :rules="[() => !!lastname || 'This field is required']"
                     :error-messages="errorMessages"
                     label="LastName"
                     placeholder="Doe"
@@ -37,6 +39,7 @@
                 ></v-text-field>
 
                 <v-text-field
+                    id="myemail"
                     ref="email"
                     v-model="email"
                     :rules="[() => !!email || 'This field is required']"
@@ -46,6 +49,7 @@
                 ></v-text-field>
 
                 <v-text-field
+                    id="myusername"
                     ref="username"
                     v-model="username"
                     :rules="[() => !!username || 'This field is required']"
@@ -56,7 +60,9 @@
 
 
                   <v-text-field
+                      id="mypassword"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      v-model="password"
                       :type="show1 ? 'text' : 'password'"
                       name="input-10-1"
                       label="Password"
@@ -93,11 +99,23 @@
                 <v-btn
                     color="primary"
                     text
-                    @click="submit"
+                    @click=Createaccount(name,lastname,username,email,password)
                 >
                   Create
+
                 </v-btn>
+
               </v-card-actions>
+              <v-alert
+                  :value="alert"
+                  shaped
+                  dense
+                  dark
+                  type="warning"
+                  transition="scale-transition"
+              >
+                {{msg}}
+              </v-alert>
             </v-card>
           </v-col>
         </v-row>
