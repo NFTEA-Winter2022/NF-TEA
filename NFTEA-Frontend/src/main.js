@@ -6,7 +6,6 @@ import vuetify from './plugins/vuetify'
 import store from './store'
 import router from './router'
 import Axios from 'axios'
-import { initFacebookSdk } from "./components/FacebookAPI";
 
 Vue.prototype.$http = Axios.create({
   baseURL: `http://192.168.1.4:8080/`,
@@ -16,13 +15,9 @@ Vue.config.productionTip = false
 
 Vue.use(Vuetify);
 
-initFacebookSdk().then(startApp);
-
-function startApp() {
-  new Vue({
-    router,
-    vuetify,
-    store,
-    render: h => h(App)
-  }).$mount('#app')
-}
+new Vue({
+  router,
+  vuetify,
+  store,
+  render: h => h(App)
+}).$mount('#app')
