@@ -2,6 +2,7 @@ package ca.mcgill.ecse428.nftea.dao;
 
 import ca.mcgill.ecse428.nftea.model.CollectionNFT;
 import ca.mcgill.ecse428.nftea.model.Listing;
+import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,6 +26,9 @@ public class TestCollectionNFTPersistence {
     
     @Autowired
     private ListingRepository listingRepository;
+
+    @Autowired
+    private UserAccountRepository userAccountRepository;
 
     @AfterEach
     public void clearDatabase() {
@@ -44,9 +51,10 @@ public class TestCollectionNFTPersistence {
         String password = "password123";
         boolean isLoggedIn = false;
         int loginAttempts = 0;
+        LocalDateTime lastAttempt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         UserAccount.UserRole userRole = UserAccount.UserRole.Customer;
 
-        UserAccount userAccount = new UserAccount(numberID, firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, userRole);
+        UserAccount userAccount = new UserAccount(firstName, lastName, userEmail, username, password, isLoggedIn, loginAttempts, lastAttempt, userRole);
 //        userAccount.setNumberID(numberID);
 //        userAccount.setFirstName(firstName);
 //        userAccount.setLastName(lastName);

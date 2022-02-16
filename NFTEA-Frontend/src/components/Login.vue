@@ -3,6 +3,7 @@
     <h1>This is the login page</h1>
     <v-form v-model="valid" id="login-form">
       <v-container>
+        <span v-if="errorMessage" class="errorMessage">{{errorMsg}} </span>
         <v-row>
           <v-text-field
             v-model="userEmail"
@@ -10,7 +11,6 @@
             required
           ></v-text-field>
         </v-row>
-        <span v-if="errorEmail" class="errorMessage">{{errorEmail}} </span>
         <v-row>
           <v-text-field
             v-model="userPassword"
@@ -21,8 +21,6 @@
             @click:append="showPassword = !showPassword"
           ></v-text-field>
         </v-row>
-        <span v-if="errorPassword" class="errorMessage">{{errorPassword}} </span>
-        <span v-if="errorStatus" class="errorMessage">{{errorStatus}} </span>
         <v-row>
           <v-col>
             <v-btn
@@ -33,7 +31,7 @@
           </v-col>
           <v-col>
             <div>
-              <router-link :to="{name: 'About'}">
+              <router-link :to="{name: 'CreateAccountFrons'}">
                 <p>Don't have an account?</p>
               </router-link>
             </div>
@@ -82,6 +80,7 @@
             .then(() => {
               this.userAccounts = ''
               //currentUserEmail = response.data.userEmail
+              window.location.replace("http://localhost:8080/?#/useraccount")
             })
             .catch(e => {
               var errorMsg = e.response.data.message
@@ -92,7 +91,6 @@
               this.errorMessage = errorMsg
 
             })
-        window.location.replace("http://127.0.0.1:8087/?#/useraccount")
       }
     }
 }

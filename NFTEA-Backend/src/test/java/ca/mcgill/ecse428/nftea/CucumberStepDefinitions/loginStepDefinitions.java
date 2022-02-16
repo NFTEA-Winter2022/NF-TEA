@@ -4,16 +4,17 @@ import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.LoginService;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import io.cucumber.java.After;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,7 @@ public class loginStepDefinitions {
     String error = "";
     UserAccount userAccount = null;
 
+
     @Autowired
     UserAccountService userAccountService;
 
@@ -39,6 +41,7 @@ public class loginStepDefinitions {
         userAccountService.clear();
         int errorCounter = 0;
         String error = "";
+        userAccount = null;
     }
 
     @Given("the following users exist in the system:")
@@ -56,7 +59,6 @@ public class loginStepDefinitions {
                 String email = columns.get(3);
                 String password = columns.get(4);
                 userAccount =  userAccountService.createUser(firstName,lastName, username, email, password);
-                userAccountService.createUser(firstName,lastName, username, email, password);
 
             }
         }
@@ -66,20 +68,22 @@ public class loginStepDefinitions {
     public void the_current_date_and_time(String dateTimeStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         currentDateTime = LocalDateTime.parse(dateTimeStr, formatter);
+
+        Clock clock = Clock.fixed(currentDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        loginService.setClock(clock);
     }
 
     @Given("the registered user is not logged in with {string}")
     public void the_registered_user_is_not_logged_in_with(String email) {
-        UserAccount user = userAccountService.getUserAccountByEmail(email);
-        user.setIsLoggedIn(false);
-        userAccountService.saveAccount(user);
-    }
+        UserAccount userAccount = userAccountService.getUserAccountByEmail(email);
+        userAccount.setIsLoggedIn(false);
+        userAccountService.saveAccount(userAccount);    }
 
     @Given("the registered user is logged in with {string}")
     public void the_registered_user_is_logged_in_with(String email) {
-        UserAccount user = userAccountService.getUserAccountByEmail(email);
-        user.setIsLoggedIn(true);
-        userAccountService.saveAccount(user);
+        UserAccount userAccount = userAccountService.getUserAccountByEmail(email);
+        userAccount.setIsLoggedIn(true);
+        userAccountService.saveAccount(userAccount);
     }
 
 //    @Given("{string} has {int} attempt")
@@ -93,7 +97,7 @@ public class loginStepDefinitions {
     @When("the registered user tries to log in with email {string} and password {string}")
     public void theRegisteredUserTriesToLogInWithEmailAndPassword(String email, String password) {
         try{
-            loginService.loginUserAccount(email, password);
+            userAccount = loginService.loginUserAccount(email, password);
         }
         catch (Exception e){
             error = e.getMessage();
@@ -126,15 +130,14 @@ public class loginStepDefinitions {
     public void most_recent_attempt_should_be_at(String email, String dateTimeStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
-
         UserAccount user = userAccountService.getUserAccountByEmail(email);
         assertEquals(dateTime, user.getLastAttempt());
     }
 
-    @And("{string} has {string} attempts")
-    public void hasAttempts(String email, String arg1) {
+    @Given("{string} has {int} attempts")
+    public void hasAttempts(String email, int attempts) {
         UserAccount user = userAccountService.getUserAccountByEmail(email);
-        user.setLoginAttempts(Integer.parseInt(arg1));
+        user.setLoginAttempts(attempts);
         userAccountService.saveAccount(user);
     }
 
@@ -150,25 +153,25 @@ public class loginStepDefinitions {
 
     }
 
-    @And("{string} should have {string} attempts")
+    @Then("{string} should have {string} attempts")
     public void shouldHaveAttempts(String arg0, String arg1) {
         UserAccount user = userAccountService.getUserAccountByEmail(arg0);
         assertEquals(Integer.parseInt(arg1), user.getLoginAttempts());
     }
 
-    @Given("{string} has {string} attempts and the last attempt {string}")
-    public void hasAttemptsAndTheLastAttempt(String arg0, String arg1, String arg2) {
+    @Given("{string} has {int} attempts and the last attempt {string}")
+    public void hasAttemptsAndTheLastAttempt(String arg0, int arg1, String arg2) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(arg2, formatter);
 
         UserAccount user = userAccountService.getUserAccountByEmail(arg0);
         user.setLastAttempt(dateTime);
-        user.setLoginAttempts(Integer.parseInt(arg1));
+        user.setLoginAttempts(arg1);
         userAccountService.saveAccount(user);
 
     }
 
-    @And("an error message shall be raised {string}")
+    @Then("an error message shall be raised {string}")
     public void anErrorMessageShallBeRaised(String arg0) {
         assertTrue(error.contains(arg0));
     }
@@ -192,7 +195,8 @@ public class loginStepDefinitions {
         assertTrue(userAccount.getIsLoggedIn());
     }
 
-    @Then("the registered user should not be logged in")
-    public void theRegisteredUserShouldNotBeLoggedIn() {
-    }
+//    @Then("the registered user should not be logged in")
+//    public void theRegisteredUserShouldNotBeLoggedIn() {
+//        assertFalse(userAccountService.getUserAccountByEmail());
+//    }
 }

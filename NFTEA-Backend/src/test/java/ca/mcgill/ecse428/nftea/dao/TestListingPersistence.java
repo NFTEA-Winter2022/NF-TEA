@@ -31,7 +31,7 @@ public class TestListingPersistence {
         Long price = 123L;
         String nftLink = "www.mankey.com/123";
 
-        Listing listing = new Listing(listingID, title, price, nftLink);
+        Listing listing = new Listing(title, price, nftLink);
 //        listing.setListingID(listingID);
 //        listing.setTitle(title);
 //        listing.setPrice(price);
