@@ -8,56 +8,60 @@ export default {
 
     data: () => ({
         value: String,
+        myfirstname:String,
         show1: false,
-        ecosystem: [
-            {
-                text: 'vuetify-loader',
-                href: 'https://github.com/vuetifyjs/vuetify-loader',
-            },
-            {
-                text: 'github',
-                href: 'https://github.com/vuetifyjs/vuetify',
-            },
-            {
-                text: 'awesome-vuetify',
-                href: 'https://github.com/vuetifyjs/awesome-vuetify',
-            },
-        ],
-        importantLinks: [
-            {
-                text: 'Documentation',
-                href: 'https://vuetifyjs.com',
-            },
-            {
-                text: 'Chat',
-                href: 'https://community.vuetifyjs.com',
-            },
-            {
-                text: 'Made with Vuetify',
-                href: 'https://madewithvuejs.com/vuetify',
-            },
-            {
-                text: 'Twitter',
-                href: 'https://twitter.com/vuetifyjs',
-            },
-            {
-                text: 'Articles',
-                href: 'https://medium.com/vuetify',
-            },
-        ],
-        whatsNext: [
-            {
-                text: 'Explore components',
-                href: 'https://vuetifyjs.com/components/api-explorer',
-            },
-            {
-                text: 'Select a layout',
-                href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-            },
-            {
-                text: 'Frequently Asked Questions',
-                href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-            },
-        ],
-    })
+        alert: false,
+        msg: "String"
+    }),
+    methods : {
+         Createaccount(myfirstname,mylastname,myusername,myemail,mypassword){
+
+            try {
+
+                this.$http.post('user-account/',
+                    null, {
+                        params: {
+                            firstname: myfirstname,
+                            lastname: mylastname,
+                            username: myusername,
+                            email: myemail,
+                            password: mypassword
+                        }
+
+                    }
+
+                ).catch((error) => {
+                    if (document.getElementById('myfirstname').value===''){
+                        this.msg='Please enter your first name'
+                    }
+                    else if (document.getElementById('mylastname').value===''){
+                        this.msg='Please enter your last name'
+                    }
+                    else if (document.getElementById('myusername').value===''){
+                        this.msg='Please enter your username'
+                    }
+                    else if (document.getElementById('myemail').value===''){
+                        this.msg='Please enter your email'
+                    }
+                    else if (document.getElementById('mypassword').value==='') {
+                        this.msg = 'Please enter your password'
+                    }else {
+                        this.msg = 'Please enter a valid email'
+                    }
+
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    this.alert=true;
+
+                }).then((data) => {console.log(data)}, (e) => console.log(e))
+            }catch(e) {
+                console.log(e);
+                this.alert=true;
+
+            }
+        },
+
+
+    }
 }
