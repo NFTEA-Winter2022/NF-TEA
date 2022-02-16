@@ -5,6 +5,7 @@ import CreateAccountFront from '../components/CreateAccountFront';
 import DeleteAccountFront from '../components/DeleteAccountFront';
 import editPasswordAccount from "@/components/EditPasswordAccount";
 import editUsernameAccount from "@/components/EditUsernameAccount";
+import APILoginPage from "../components/APILoginPage";
 
 
 Vue.use(VueRouter)
@@ -29,6 +30,11 @@ const routes = [
     path:'/user-account/editUsername',
     name: 'EditUsernameAccountFrontS',
     component: editUsernameAccount
+  },
+  {
+    path:'/api-login',
+    name: 'APILoginPage',
+    component: APILoginPage
   },
   {
     path: '/about',
