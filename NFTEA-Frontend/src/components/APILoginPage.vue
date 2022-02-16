@@ -37,6 +37,11 @@
         mdi-instagram
       </v-icon>Connect with Instagram
     </v-btn>
+
+    <div>
+      <a>Skip for now</a>
+    </div>
+
     <v-alert
         :value="alert"
         shaped
@@ -47,9 +52,6 @@
     >
       {{msg}}
     </v-alert>
-    <div>
-      <a>Skip for now</a>
-    </div>
   </div>
 </template>
 
@@ -71,8 +73,16 @@ export default {
   data: () => ({
     showMask : false,
     msg: "String",
+     alert: false,
   }),
 
+  //data: () => ({
+        //name: "APILoginPage",
+
+        //msg: "String",
+      //  alert: false,
+    //  }
+  //),
   created() {
     // Instagram will redirect back to this page with an auth code or with errors in the url
 
@@ -87,16 +97,16 @@ export default {
 
     if(code) {
       window.opener.close(); // try to close the previous window if allowed to
-      this.msg = "Authorization successful"
       this.alert = true
+      this.msg = "Authorization successful"
 
 
       // Use the single-use auth code to get a short lived token (valid for 1 hr)
       FacebookAPI.getToken(code.replace('#_', ''));
     } else if(error.value) {
       // TODO: US007-T06 create error message near / under the IG button for the user
-      this.msg="You have cancelled the authorization process"
       this.alert = true
+      this.msg="You have cancelled the authorization process"
     }
   },
   methods: {
