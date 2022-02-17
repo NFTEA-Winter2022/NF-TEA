@@ -65,16 +65,16 @@ public class UserAccountService {
         return user;
     }
 
-    @Transactional
-    public UserAccount setUserOnline(String email, boolean isOnline) {
-        UserAccount user = userAccountRepository.findUserAccountByUserEmail(email);
-        if (user == null) {
-            throw new IllegalArgumentException("User does not exist");
-        }
-        user.setIsLoggedIn(true);
-        userAccountRepository.save(user);
-        return user;
-    }
+//    @Transactional
+//    public UserAccount setUserOnline(String email, boolean isOnline) {
+//        UserAccount user = userAccountRepository.findUserAccountByUserEmail(email);
+//        if (user == null) {
+//            throw new IllegalArgumentException("User does not exist");
+//        }
+//        user.setIsLoggedIn(isOnline);
+//        userAccountRepository.save(user);
+//        return user;
+//    }
 
 //    @Transactional
 //    public UserAccount changeUserInfo(String username, String newPassWord, String confirmPassword, String userEmail) throws Exception {

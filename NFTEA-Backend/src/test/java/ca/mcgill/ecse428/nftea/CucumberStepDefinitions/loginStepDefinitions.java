@@ -75,12 +75,15 @@ public class loginStepDefinitions {
 
     @Given("the registered user is not logged in with {string}")
     public void the_registered_user_is_not_logged_in_with(String email) {
-        userAccount = userAccountService.setUserOnline(email, false);
-    }
+        UserAccount userAccount = userAccountService.getUserAccountByEmail(email);
+        userAccount.setIsLoggedIn(false);
+        userAccountService.saveAccount(userAccount);    }
 
     @Given("the registered user is logged in with {string}")
     public void the_registered_user_is_logged_in_with(String email) {
-        userAccount = userAccountService.setUserOnline(email, true);
+        UserAccount userAccount = userAccountService.getUserAccountByEmail(email);
+        userAccount.setIsLoggedIn(true);
+        userAccountService.saveAccount(userAccount);
     }
 
 //    @Given("{string} has {int} attempt")
@@ -192,7 +195,8 @@ public class loginStepDefinitions {
         assertTrue(userAccount.getIsLoggedIn());
     }
 
-    @Then("the registered user should not be logged in")
-    public void theRegisteredUserShouldNotBeLoggedIn() {
-    }
+//    @Then("the registered user should not be logged in")
+//    public void theRegisteredUserShouldNotBeLoggedIn() {
+//        assertFalse(userAccountService.getUserAccountByEmail());
+//    }
 }
