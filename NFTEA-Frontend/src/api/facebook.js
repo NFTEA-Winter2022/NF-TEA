@@ -37,5 +37,112 @@ export default {
         //  use the token from cookies;
         //  reference this page for the data fields: https://developers.facebook.com/docs/instagram-basic-display-api/guides/getting-profiles-and-media
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
+
+        let token = this.getCookie(""); // TODO: add cookie name
+        
+        let tokenInfo = this.getTokenInfo(token);
+
+        if(token.error == "Invalid OAuth access token.") {
+            this.authorize();
+        } else {
+            return this.getUserMedia(token);
+        }
+    },
+    getCookie(cookieName) {
+        let name = cookieName + "=";
+        let decodedCookie = decodedURI(document.cookie);
+        let cookies = decodedCookie.split(';');
+        for(let i = 0; i < cookies.length; i++) {
+            let c = cookies[i];
+            while (c.charAt(0) == 0) {
+                c = c.substring(1);
+            }
+            if(c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    },
+    getTokenInfo(token) {
+        let tokenInfo;
+        try {
+            tokenInfo =  await $.ajax({
+                url: `https://graph.instagram.com/oauth/access_token_info`,
+                type: 'GET',
+                data: {
+                    access_token: token
+                }
+            })
+        } catch(e) {
+            console.log(e);
+        }
+        return tokenInfo;
+    },
+    async getUser(token) {
+        let fields = "account_type,id,media_count,username"
+        try {
+            let user =  await $.ajax({
+                url: `https://graph.instagram.com/me`,
+                type: 'GET',
+                data: {
+                    fields: fields,
+                    access_token: token
+                }
+            })
+        } catch(e) {
+            console.log(e);
+        }
+        return user;
+    },
+    async getUserMedia(token) {
+        let media;
+        let fields = "caption, id, media_type, media_url, permalink, thumbnail_url, timestamp, username"; // Some fields might not be needed 
+        try {
+            media =  await $.ajax({
+                url: `https://graph.instagram.com/me/media`,
+                type: 'GET',
+                data: {
+                    fields: fields,
+                    access_token: token
+                }
+            })
+        } catch(e) {
+            console.log(e);
+        }
+        return media;
+    },
+    async getMediaData(mediaID, token) {
+        let media;
+        let fields = "caption, id, media_type, media_url, permalink, thumbnail_url, timestamp, username"; // Some fields might not be needed 
+        try {
+            media =  await $.ajax({
+                url: `https://graph.instagram.com/${mediaID}`,
+                type: 'GET',
+                data: {
+                    fields: fields,
+                    access_token: token
+                }
+            })
+        } catch(e) {
+            console.log(e);
+        }
+        return media;
+    },
+    async getAlbumContent(mediaID, token) {
+        let albumContent;
+        let fields = "caption, id, media_type, media_url, permalink, thumbnail_url, timestamp, username"; // Some fields might not be needed 
+        try {
+            albumContent =  await $.ajax({
+                url: `https://graph.instagram.com/${mediaID}/children`,
+                type: 'GET',
+                data: {
+                    fields: fields,
+                    access_token: token
+                }
+            })
+        } catch(e) {
+            console.log(e);
+        }
+        return albumContent;
     }
 }
