@@ -1,11 +1,17 @@
 <template>
   <div>
     <h1>Connect your wallet</h1>
+    <vue-metamask
+        userMessage="msg"
+        @onComplete="onComplete"
+        v-if = "showMask"
+    >
+    </vue-metamask>
     <v-btn
         class="ma-2"
         dark
         color="orange"
-        @click="connectMetamask"
+        @click="connectToMetaMask"
     >
       <v-icon
           dark
@@ -36,11 +42,27 @@
 
 <script>
 import FacebookAPI from "../api/facebook"
+import VueMetamask from 'vue-metamask';
+
 
 export default {
+
   name: "APILoginPage",
+
+
+
+  components: {
+    VueMetamask,
+  },
+
+  data: () => ({
+    showMask : false
+  }),
+
   created() {
     // Instagram will redirect back to this page with an auth code or with errors in the url
+
+
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const error = {
@@ -62,8 +84,19 @@ export default {
     connectInstagram() {
       FacebookAPI.authorize();
     },
-    connectMetamask() {
-      //TODO: US006-T03
+    connectToMetaMask() {
+      this.showMask = true
+    },
+    onComplete(data) {
+
+      if (data && data.web3) {
+        //TODO: save data object
+      }
+      else {
+        //TODO: error message
+      }
+      console.log('data:', data);
+      this.showMask = false
     }
   }
 }

@@ -12,6 +12,3 @@ Feature: Create A Customer account
       Given I write my personal information incorrectly
       When I create a bad account
       Then My account should not exist in the system
-
-
-
