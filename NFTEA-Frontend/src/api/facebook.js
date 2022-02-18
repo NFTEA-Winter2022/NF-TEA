@@ -63,7 +63,7 @@ export default {
         }
         return "";
     },
-    getTokenInfo(token) {
+    async getTokenInfo(token) {
         let tokenInfo;
         try {
             tokenInfo =  await $.ajax({
