@@ -8,7 +8,7 @@ import router from './router'
 import Axios from 'axios'
 
 Vue.prototype.$http = Axios.create({
-  baseURL: `http://192.168.1.4:8080/`,
+  baseURL: `http://localhost:8081/`,
 })
 
 Vue.config.productionTip = false

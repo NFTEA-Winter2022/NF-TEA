@@ -77,15 +77,15 @@
             password: userPassword,
           }
         })
-            .then(() => {
-              this.userAccounts = ''
-              //currentUserEmail = response.data.userEmail
-              window.location.replace("http://localhost:8080/?#/useraccount")
+            .then(response => {
+              this.response = response.data;
+              document.cookie = "id=" + this.response.numberID.toString() + "; path=/";
+              window.location.replace("https://localhost:8080/?#/useraccount")
             })
             .catch(e => {
               var errorMsg = e.response.data.message
 
-              // console.log(errorMsg)
+              console.log(errorMsg)
               // this.errorPerson = errorMsg
               // alert(e.message)
               this.errorMessage = errorMsg
