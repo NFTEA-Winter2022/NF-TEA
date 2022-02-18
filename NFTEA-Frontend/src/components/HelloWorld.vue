@@ -99,6 +99,26 @@
 
 <script>
   import VueMetamask from 'vue-metamask';
+  //Use the router import if $router not working
+
+  //import router from "@/router";
+  // this returns the provider, or null if it wasn't detected
+  window.ethereum.on('accountsChanged', async () => {
+    const {ethereum} = window;
+    const accounts = await ethereum.request({method: 'eth_accounts'});
+    if (accounts && accounts.length > 0) {
+      console.log("user is connected");
+    } else {
+      console.log("user not connected");
+
+      //Please use router.replace because router.push seems to not work on an already async function
+      // unless you maker work
+      //router.replace({ path: '/wanted_path' });
+
+      //Todo Upon receving the action of user disconnecting do something
+    }
+  });
+
   export default {
     name: 'HelloWorld',
     components: {
@@ -157,7 +177,9 @@
         },
       ],
     }),
+
     methods: {
+
       testAxios () {
         try {
           this.$http.post('user-account/',
@@ -175,6 +197,7 @@
           console.log(e);
         }
       }
+
     }
 
   }

@@ -13,7 +13,7 @@ export default {
     },
     async getToken(code) {
         try {
-            let shortToken =  await $.ajax({
+            let shortIGToken =  await $.ajax({
                 url: `https://api.instagram.com/oauth/access_token`,
                 type: 'POST',
                 data: {
@@ -26,6 +26,7 @@ export default {
             })
 
             // TODO: Add shortToken to the login user object (cookies)
+            document.cookie = "shortIGToken=" + shortIGToken + "; path=/";
         } catch(e) {
             console.log(e);
         }
@@ -37,5 +38,7 @@ export default {
         //  use the token from cookies;
         //  reference this page for the data fields: https://developers.facebook.com/docs/instagram-basic-display-api/guides/getting-profiles-and-media
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
+        let splits = document.cookie.split(';');
+        let token = splits[1].split('=')[1];
     }
 }
