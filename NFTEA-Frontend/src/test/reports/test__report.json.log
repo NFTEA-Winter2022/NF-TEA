@@ -1,0 +1,53 @@
+{
+  "feature": {
+    "uri": "unlinkInstaAccount.feature",
+    "keyword": "Feature",
+    "name": "Unlinking Instagram Account",
+    "line": 1,
+    "id": "unlinking-instagram-account",
+    "tags": []
+  }
+}{
+  "scenario": {
+    "uri": "unlinkInstaAccount.feature",
+    "id": "unlinking-instagram-account;successfully-unlinking-instagram",
+    "keyword": "Scenario",
+    "line": 2,
+    "name": "Successfully unlinking Instagram",
+    "tags": [],
+    "type": "scenario",
+    "result": {
+      "duration": 0,
+      "status": "undefined"
+    },
+    "steps": [
+      {
+        "arguments": [],
+        "keyword": "Given ",
+        "line": 3,
+        "name": "a NF-Tea's account \"Email1\" with a linked Instagram Account",
+        "result": {
+          "status": "undefined"
+        }
+      },
+      {
+        "arguments": [],
+        "keyword": "When ",
+        "line": 4,
+        "name": "the user unlink their Instagram Account from their NF-Tea's account",
+        "result": {
+          "status": "undefined"
+        }
+      },
+      {
+        "arguments": [],
+        "keyword": "Then ",
+        "line": 5,
+        "name": "their Instagram account is not link to their NF-Tea's Account",
+        "result": {
+          "status": "undefined"
+        }
+      }
+    ]
+  }
+}
