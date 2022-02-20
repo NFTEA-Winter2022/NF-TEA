@@ -35,6 +35,16 @@
         class="mb-5"
         cols="12"
       >
+        <v-alert
+            :value="alert"
+            shaped
+            dense
+            dark
+            type="warning"
+            transition="scale-transition"
+        >
+          {{msg}}
+        </v-alert>
         <h2 class="headline font-weight-bold mb-3">
           What's next?
         </h2>
@@ -108,11 +118,13 @@
     const accounts = await ethereum.request({method: 'eth_accounts'});
     if (accounts && accounts.length > 0) {
       console.log("user is connected");
-      window.location.reload();
+      this.alert1 = true
+      this.msg1 = "Connection successful"
     } else {
       document.cookie = 'metamask=;Max-Age=0';
       console.log("user not connected");
-      window.location.reload();
+      this.alert1 = true
+      this.msg1 = "Connection unsuccessful"
 
       //Please use router.replace because router.push seems to not work on an already async function
       // unless you maker work
@@ -129,6 +141,8 @@
     },
 
     data: () => ({
+      msg: "String",
+      alert: false,
       ecosystem: [
         {
           text: 'vuetify-loader',
