@@ -4,7 +4,7 @@
     <h2>Username: {{ username }}</h2>
     <ul id="images">
     <p v-for="item in insta" :key="item.id" >
-      <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url"/>
+      <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>
     </p>
     </ul>
     
