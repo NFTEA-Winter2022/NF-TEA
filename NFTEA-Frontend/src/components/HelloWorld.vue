@@ -36,14 +36,14 @@
         cols="12"
       >
         <v-alert
-            :value="alert"
+            :value="alert1"
             shaped
             dense
             dark
             type="warning"
             transition="scale-transition"
         >
-          {{msg}}
+          {{msg1}}
         </v-alert>
         <h2 class="headline font-weight-bold mb-3">
           What's next?
