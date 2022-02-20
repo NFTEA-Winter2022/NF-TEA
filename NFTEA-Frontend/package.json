@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "cucumber": "cucumber-js src/tests/features -r src/tests/js_tests"
+    "cucumber": "cucumber-js ./src/tests/features/ -r ./src/tests/js_tests/"
   },
   "dependencies": {
     "@vue/cli-service": "~4.5.0",
