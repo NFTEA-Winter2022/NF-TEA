@@ -141,8 +141,8 @@
     },
 
     data: () => ({
-      msg: "String",
-      alert: false,
+      msg1: "String",
+      alert1: false,
       ecosystem: [
         {
           text: 'vuetify-loader',
