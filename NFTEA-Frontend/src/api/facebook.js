@@ -26,7 +26,7 @@ export default {
             })
 
             // TODO: Add shortToken to the login user object (cookies)
-            document.cookie = "shortIGToken=" + shortIGToken + "; path=/";
+            document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/";
         } catch(e) {
             console.log(e);
         }
@@ -39,14 +39,15 @@ export default {
         //  reference this page for the data fields: https://developers.facebook.com/docs/instagram-basic-display-api/guides/getting-profiles-and-media
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
 
-        let token = this.getCookie("shortIGToken");
-        
+        let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
+
         let tokenInfo = this.getTokenInfo(token);
 
         if(tokenInfo.error == "Invalid OAuth access token.") {
             this.authorize();
         } else {
             try {
+                console.log(JSON.stringify(this.getUserMedia(token)));
                 return this.getUserMedia(token);
             } catch(e) {
                 console.log(e);
@@ -55,7 +56,7 @@ export default {
     },
     getCookie(cookieName) {
         let name = cookieName + "=";
-        let decodedCookie = decodedURI(document.cookie);
+        let decodedCookie = decodeURI(document.cookie);
         let cookies = decodedCookie.split(';');
         for(let i = 0; i < cookies.length; i++) {
             let c = cookies[i];
@@ -111,6 +112,7 @@ export default {
                     access_token: token
                 }
             })
+            console.log(JSON.stringify(media));
         } catch(e) {
             console.log(e);
         }
