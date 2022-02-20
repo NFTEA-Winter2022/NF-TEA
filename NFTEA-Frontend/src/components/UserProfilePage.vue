@@ -3,9 +3,10 @@
     <h1>User Profile Page</h1>
     <h2>Username: {{ username }}</h2>
     <ul id="images">
-    <p v-for="item in insta" :key="item.id" >
+    <div v-for="item in insta" :key="item.id" >
       <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>
-    </p>
+      <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>
+    </div>
     </ul>
     
   </div>
@@ -17,11 +18,6 @@
 import facebook from '../api/facebook.js'
 
 export default ({
-
-    beforeMount(){
-      console.log("cookie" + JSON.stringify(facebook.getCookie("shortIGToken")));
-      // console.log("before mount");
-    },
 
     async created() {
       try {

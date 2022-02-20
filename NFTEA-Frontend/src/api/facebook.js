@@ -4,6 +4,7 @@ import $ from 'jquery'
 const InstagramAppId = 993784884883159 //process.env.VUE_APP_FACEBOOK_APP_ID;
 const InstagramSecret = 'ce77d154d432a11177add2d010469617';
 const redirectUri = window.location.origin + '/api-login/';
+// var redirectUri = window.location.hostname + '/api-login/';
 export default {
     authorize() {
         let url= `https://api.instagram.com/oauth/authorize?client_id=${InstagramAppId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`
