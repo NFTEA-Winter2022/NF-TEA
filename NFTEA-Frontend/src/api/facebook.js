@@ -49,7 +49,6 @@ export default {
             var media = await this.getUserMedia(token);
             return media;
         } catch(e) {
-            console.log("BIG ERROR");
             console.log(e);
             }
         // }            
