@@ -72,7 +72,7 @@ export default {
     }
 
     if(code) {
-      window.opener.close(); // try to close the previous window if allowed to
+      // window.opener.close(); // try to close the previous window if allowed to
 
       // Use the single-use auth code to get a short lived token (valid for 1 hr)
       FacebookAPI.getToken(code.replace('#_', ''));

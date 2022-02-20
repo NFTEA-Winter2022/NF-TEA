@@ -7,8 +7,8 @@ const redirectUri = window.location.origin + '/api-login/';
 export default {
     authorize() {
         let url= `https://api.instagram.com/oauth/authorize?client_id=${InstagramAppId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`
-        window.open(url, "_blank", null);
-        window.close();
+        window.location.replace(url);
+        //window.close();
     },
     async getToken(code) {
         try {
@@ -39,14 +39,19 @@ export default {
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
 
         let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
-        
-            try { 
-                var media = await this.getUserMedia(token);
-                return media;
-            } catch(e) {
-                console.log("BIG ERROR");
-                console.log(e);
+        let tokenInfo = this.getTokenInfo(token);
+
+        // if(tokenInfo.error === "Invalid OAuth access token."){
+        //     this.authorize;
+        // } else {
+        try { 
+            var media = await this.getUserMedia(token);
+            return media;
+        } catch(e) {
+            console.log("BIG ERROR");
+            console.log(e);
             }
+        // }            
     },
     getCookie(cookieName) {
         let name = cookieName + "=";

@@ -18,11 +18,22 @@ import facebook from '../api/facebook.js'
 
 export default ({
 
+    beforeMount(){
+      console.log("cookie" + JSON.stringify(facebook.getCookie("shortIGToken")));
+      // console.log("before mount");
+    },
+
     async created() {
-        var insta = await facebook.getInstagramContent();
-        this.insta = insta.data;
-        console.log("Insta: " + JSON.stringify(insta.data));
-        this.username = insta.data[1].username;
+      try {
+          var insta = await facebook.getInstagramContent();
+          this.insta = insta.data;
+          console.log("Insta: " + JSON.stringify(insta.data));
+          this.username = insta.data[1].username;
+      } catch(e) {
+        console.log(e);
+        this.$router.push('/api-login')
+      }
+        
     },
 
    data: () => ({
