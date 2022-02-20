@@ -30,7 +30,7 @@
         type="warning"
         transition="scale-transition"
     >
-      {{msg}}
+      {{msg1}}
     </v-alert>
     <h1 v-if="checkIG()">Import your data</h1>
     <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
