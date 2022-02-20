@@ -40,7 +40,7 @@ export default {
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
 
         let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
-        let tokenInfo = this.getTokenInfo(token);
+        // let tokenInfo = this.getTokenInfo(token);
 
         // if(tokenInfo.error === "Invalid OAuth access token."){
         //     this.authorize;
