@@ -119,7 +119,7 @@ export default {
     } else if(error.value) {
       // TODO: US007-T06 create error message near / under the IG button for the user
       this.alert = true
-      this.msg="You have cancelled the authorization process"
+      this.msg="You have cancelled the authorization process,Refresh the page for another attempt"
     }
   },
   methods: {
@@ -166,7 +166,7 @@ export default {
         console.log('data:', data);
         document.cookie = "metamask=;Max-Age=0";
         this.alert1 = true
-        this.msg1 = "Connection unsuccessful"
+        this.msg1 = "Connection unsuccessful, Refresh the page for another attempt"
       }
       this.showMask = false
       window.location.reload();

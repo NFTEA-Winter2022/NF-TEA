@@ -109,6 +109,7 @@
 
 <script>
   import VueMetamask from 'vue-metamask';
+  import FacebookAPI from "@/api/facebook";
   //Use the router import if $router not working
 
   //import router from "@/router";
@@ -118,13 +119,11 @@
     const accounts = await ethereum.request({method: 'eth_accounts'});
     if (accounts && accounts.length > 0) {
       console.log("user is connected");
-      this.alert1 = true
-      this.msg1 = "Connection successful"
+
     } else {
       document.cookie = 'metamask=;Max-Age=0';
       console.log("user not connected");
-      this.alert1 = true
-      this.msg1 = "Connection unsuccessful"
+
 
       //Please use router.replace because router.push seems to not work on an already async function
       // unless you maker work
@@ -195,6 +194,7 @@
       ],
     }),
 
+
     methods: {
 
       testAxios () {
@@ -213,6 +213,21 @@
         } catch(e) {
           console.log(e);
         }
+      },
+      onComplete(data) {
+
+        if (data && data.web3) {
+          //TODO: save data object
+          this.alert1 = true
+          this.msg1 = "You are successfully connected to MetaMask."
+        }
+        else {
+          //TODO: error message
+          this.alert1 = true
+          this.msg1 = "You have cancelled the connection to MetaMask.Refresh the page if you want another attempt"
+        }
+        console.log('data:', data);
+        this.showMask = false
       }
 
     }
