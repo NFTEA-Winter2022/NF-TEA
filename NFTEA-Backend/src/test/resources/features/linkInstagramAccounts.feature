@@ -7,17 +7,10 @@ Feature: Link Instagram account(s)
     Given user is registered and logged-in
 
   Scenario: Link Instagram Account to my NF-TEA account (Normal Flow)
-    When the user links his instagram account to his NF-TEA account
-    And the user's instagram account has "<credentials>"
-    Then the instagram account is connected to user's NF-TEA account
-
-  Scenario: Link to Another Instagram Account to my NF-TEA Account (Alternate Flow)
-    When the user links new instagram account to his NF-TEA account
-    And the user already has an instagram account connected to his NF-TEA account
-    And the user's new instagram account has "<credentials>"
-    Then the new instagram account is connected to user's NF-TEA account
+    When the user links his instagram account to his NF-TEA account through the API
+    Then the browser should have a non-null shortIGToken cookie
 
   Scenario: Cannot Link an Invalid Instagram Account (Error Flow)
     When the user links his instagram account to his NF-TEA account
-    And the user's instagram account does not have "<credentials>"
-    Then the instagram account is not connected to user's NF-TEA account
+    And the Instagram credentials are invalid
+    Then the browser should not have a shortIGToken cookie
