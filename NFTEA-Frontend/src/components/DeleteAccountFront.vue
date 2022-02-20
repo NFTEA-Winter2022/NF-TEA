@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <v-container>
     <vue-metamask userMessage="msg" @onComplete="deleteReq()"> </vue-metamask>

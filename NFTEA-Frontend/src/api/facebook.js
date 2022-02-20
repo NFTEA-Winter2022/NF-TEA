@@ -4,7 +4,6 @@ import $ from 'jquery'
 const InstagramAppId = 993784884883159 //process.env.VUE_APP_FACEBOOK_APP_ID;
 const InstagramSecret = 'ce77d154d432a11177add2d010469617';
 const redirectUri = window.location.origin + '/api-login/';
-
 export default {
     authorize() {
         let url= `https://api.instagram.com/oauth/authorize?client_id=${InstagramAppId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`
@@ -31,7 +30,7 @@ export default {
             console.log(e);
         }
     },
-    getInstagramContent() {
+    async getInstagramContent() {
         // TODO: US010-T02
         // Suggestions:
         //  follow the pattern used in getToken();
@@ -40,19 +39,14 @@ export default {
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
 
         let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
-
-        let tokenInfo = this.getTokenInfo(token);
-
-        if(tokenInfo.error == "Invalid OAuth access token.") {
-            this.authorize();
-        } else {
-            try {
-                console.log(JSON.stringify(this.getUserMedia(token)));
-                return this.getUserMedia(token);
+        
+            try { 
+                var media = await this.getUserMedia(token);
+                return media;
             } catch(e) {
+                console.log("BIG ERROR");
                 console.log(e);
-            } 
-        }
+            }
     },
     getCookie(cookieName) {
         let name = cookieName + "=";
@@ -101,7 +95,7 @@ export default {
         return user;
     },
     async getUserMedia(token) {
-        let media;
+        var media;
         let fields = "caption, id, media_type, media_url, permalink, thumbnail_url, timestamp, username"; // Some fields might not be needed 
         try {
             media =  await $.ajax({
@@ -112,11 +106,11 @@ export default {
                     access_token: token
                 }
             })
-            console.log(JSON.stringify(media));
+            return media;
         } catch(e) {
             console.log(e);
         }
-        return media;
+        // return media;
     },
     async getMediaData(mediaID, token) {
         let media;
