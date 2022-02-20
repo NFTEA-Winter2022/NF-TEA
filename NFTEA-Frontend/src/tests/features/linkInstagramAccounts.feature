@@ -11,6 +11,5 @@ Feature: Link Instagram account(s)
     Then the browser should have a non-null shortIGToken cookie
 
   Scenario: Cannot Link an Invalid Instagram Account (Error Flow)
-    When the user links his instagram account to his NF-TEA account
-    And the Instagram credentials are invalid
+    When the user links his instagram account to his NF-TEA account with invalid credentials
     Then the browser should not have a shortIGToken cookie
