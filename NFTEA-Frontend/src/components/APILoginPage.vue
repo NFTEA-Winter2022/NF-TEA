@@ -22,9 +22,20 @@
         mdi-ethereum
       </v-icon>Connect with Metamask
     </v-btn>
+    <v-alert
+        :value="alert1"
+        shaped
+        dense
+        dark
+        type="warning"
+        transition="scale-transition"
+    >
+      {{msg}}
+    </v-alert>
     <h1 v-if="checkIG()">Import your data</h1>
     <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
     <v-btn v-if="checkIG()"
+
         class="ma-2"
         dark
         color="purple"
@@ -73,7 +84,9 @@ export default {
   data: () => ({
     showMask : false,
     msg: "String",
-     alert: false,
+    alert: false,
+    msg1: "String",
+    alert1: false,
   }),
 
   //data: () => ({
@@ -145,11 +158,15 @@ export default {
       if (data && data.web3) {
         console.log('data:', data);
         document.cookie = "metamask=" + data.web3 + "; path=/";
+        this.alert1 = true
+        this.msg1 = "Connection successful"
       }
       else {
         //TODO: error message
         console.log('data:', data);
         document.cookie = "metamask=;Max-Age=0";
+        this.alert1 = true
+        this.msg1 = "Connection unsuccessful"
       }
       this.showMask = false
       window.location.reload();
