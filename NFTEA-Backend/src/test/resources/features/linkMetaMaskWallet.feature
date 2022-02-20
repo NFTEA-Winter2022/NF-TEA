@@ -8,12 +8,8 @@ Feature: Link MetaMask
 
   Scenario: Link to MetaMask Wallet (Normal Flow)
     When the user connects to their metamask account
-    And the user's metamask account has "<credentials>"
-    Then the account is joined
-    And the cookie has "<value>"
+    Then a cookie web3 is not null
 
   Scenario: Cannot Link to MetaMask Wallet due to Invalid Credentials (Error Flow)
-    When the user connects to their metamask account
-    But the user's metamask account does not "<credentials>"
-    Then the account is not joined
-    And the system states that the user has invalid credentials
+    When the user connects to their metamask account with invalid credentials
+    Then there is no web3 cookie that exists
