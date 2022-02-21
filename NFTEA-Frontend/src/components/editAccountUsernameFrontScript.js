@@ -71,7 +71,7 @@ export default {
             })
         },
         disconnectFromIG: function () {
-            document.cookie = "shortIGToken=; expires=Thu, 01 jan 1970 00:00:00 Uint8ClampedArray; path=/;";
+            document.cookie = "shortIGToken=;Max-Age=0";
         }
 
     }
