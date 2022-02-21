@@ -8,7 +8,7 @@ import router from './router'
 import Axios from 'axios'
 
 Vue.prototype.$http = Axios.create({
-  baseURL: `http://localhost:8081/`,
+  baseURL: `https://nftea-backend.herokuapp.com:8081/`
 })
 
 Vue.config.productionTip = false

@@ -4,7 +4,7 @@ import axios from 'axios'
 var baseURL
 
 var AXIOS = axios.create({
-    baseURL: `http://192.168.1.4:8080/`
+    baseURL: `https://nftea-backend.herokuapp.com:8081/`
 })
 
 export default {
