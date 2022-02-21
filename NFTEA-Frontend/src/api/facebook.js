@@ -27,6 +27,7 @@ export default {
 
             // TODO: Add shortToken to the login user object (cookies)
             document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/";
+            window.location.replace("https://localhost:8080/UserProfile");
         } catch(e) {
             console.log(e);
         }
@@ -63,9 +64,11 @@ export default {
                 c = c.substring(1);
             }
             if(c.indexOf(name) == 0) {
+                console.log(c.substring(name.length, c.length));
                 return c.substring(name.length, c.length);
             }
         }
+        console.log("false");
         return "";
     },
     async getTokenInfo(token) {

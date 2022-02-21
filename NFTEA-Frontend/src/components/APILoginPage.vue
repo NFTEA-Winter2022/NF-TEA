@@ -95,7 +95,7 @@ export default {
       let bool = true;
       function checkMeta(element, bool) {
         let name = element.split('=')[0];
-        if (name === 'metamask' || name === ' metamask' || bool) return false;
+        if (name === 'metamask' || name === ' metamask' || !bool) return false;
         return true;
       }
       splits.forEach(element => bool = checkMeta(element, bool));
@@ -118,7 +118,7 @@ export default {
     onComplete(data) {
       if (data && data.web3) {
         console.log('data:', data);
-        document.cookie = "metamask=" + data.web3 + "; path=/";
+        document.cookie = "metamask=" + data.netID + "; path=/";
       }
       else {
         //TODO: error message
