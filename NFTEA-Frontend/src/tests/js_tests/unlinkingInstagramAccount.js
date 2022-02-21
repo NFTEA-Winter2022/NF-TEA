@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then, And } = require('cucumber');
 const assert = require('assert');
 let message = "";
 let cookie = "";
@@ -9,7 +9,7 @@ When("the user unlink their Instagram Account from their NF-Tea's account", func
     return true;
 });
 
-When("the Instagram Account is successfully unlinked from their account", function () {
+And("the Instagram Account is successfully unlinked from their account", function () {
     message = "Successfully unlinked";
     return true;
 });
