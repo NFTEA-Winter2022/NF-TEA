@@ -43,7 +43,6 @@ jobs:
         working-directory: NFTEA-Backend
         
       - name: Frontend tests
-        working-directory: NFTEA-Backend
         run: |
           cd ./NFTEA-Frontend
           npm run cucumber
