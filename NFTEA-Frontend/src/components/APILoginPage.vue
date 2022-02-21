@@ -109,9 +109,9 @@ export default {
     }
 
     if(code) {
-      window.opener.close(); // try to close the previous window if allowed to
+      //window.opener.close(); // try to close the previous window if allowed to
       this.alert = true
-      this.msg = "Authorization successful"
+      this.msg = "Authorization successful, redirecting in 2 seconds"
 
 
       // Use the single-use auth code to get a short lived token (valid for 1 hr)
