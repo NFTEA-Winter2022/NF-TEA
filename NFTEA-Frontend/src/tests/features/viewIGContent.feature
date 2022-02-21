@@ -13,5 +13,4 @@ Feature: View Instagram Content
     Given the account is not linked to an Instagram account
     When the user attempts to view his Instagram content
     Then an error message shall be raised "No Instagram account found"
-    And no Instagram content shall be displayed
 
