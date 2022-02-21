@@ -9,7 +9,7 @@ When("the user unlink their Instagram Account from their NF-Tea's account", func
     return true;
 });
 
-And("the Instagram Account is successfully unlinked from their account", function () {
+When("the Instagram Account is successfully unlinked from their account", function () {
     message = "Successfully unlinked";
     return true;
 });
