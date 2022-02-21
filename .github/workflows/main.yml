@@ -41,3 +41,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         working-directory: NFTEA-Backend
+        
+      - name: Frontend tests
+        working-directory: NFTEA-Backend
+        run: |
+          cd ./NFTEA-Frontend
+          npm run cucumber
+          
+
+          
