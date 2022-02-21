@@ -16,7 +16,8 @@ export default {
     data: () => ({
             error: '',
             value: String,
-            show1: false
+            show1: false,
+            dialog: false
         }
     ),
 
@@ -68,6 +69,9 @@ export default {
                 console.log(msg.status)
                 this.error = msg.response.data;
             })
+        },
+        disconnectFromIG: function () {
+            document.cookie = "shortIGToken=;Max-Age=0";
         }
 
     }
