@@ -23,7 +23,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-btn
+            <v-btn id="loginBtn"
             @click="logInClientUser(userEmail, userPassword)"
             > 
               Login
