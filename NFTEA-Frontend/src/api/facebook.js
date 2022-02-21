@@ -27,7 +27,9 @@ export default {
 
             // TODO: Add shortToken to the login user object (cookies)
             document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/";
-            window.location.replace("https://localhost:8080/UserProfile");
+            setTimeout(function(){
+                window.location.replace("https://localhost:8080/UserProfile");
+            }, 1500);
         } catch(e) {
             console.log(e);
         }
