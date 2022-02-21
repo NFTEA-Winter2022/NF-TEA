@@ -45,6 +45,7 @@ jobs:
       - name: Frontend tests
         run: |
           cd ./NFTEA-Frontend
+          npm install
           npm run cucumber
           
 
