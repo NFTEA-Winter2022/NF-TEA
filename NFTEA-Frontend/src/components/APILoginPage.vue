@@ -169,7 +169,7 @@ export default {
         this.msg1 = "Connection unsuccessful, Refresh the page for another attempt"
       }
       this.showMask = false
-      window.location.reload();
+      //window.location.reload();
     }
   }
 }

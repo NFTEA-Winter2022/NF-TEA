@@ -109,7 +109,7 @@
 
 <script>
   import VueMetamask from 'vue-metamask';
-  import FacebookAPI from "@/api/facebook";
+  //import FacebookAPI from "@/api/facebook";
   //Use the router import if $router not working
 
   //import router from "@/router";
@@ -123,7 +123,7 @@
     } else {
       document.cookie = 'metamask=;Max-Age=0';
       console.log("user not connected");
-
+      window.location.reload();
 
       //Please use router.replace because router.push seems to not work on an already async function
       // unless you maker work
