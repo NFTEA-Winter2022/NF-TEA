@@ -4,12 +4,12 @@ import $ from 'jquery'
 const InstagramAppId = 993784884883159 //process.env.VUE_APP_FACEBOOK_APP_ID;
 const InstagramSecret = 'ce77d154d432a11177add2d010469617';
 const redirectUri = window.location.origin + '/api-login/';
-
+// var redirectUri = window.location.hostname + '/api-login/';
 export default {
     authorize() {
         let url= `https://api.instagram.com/oauth/authorize?client_id=${InstagramAppId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`
-        window.open(url, "_blank", null);
-        window.close();
+        window.location.replace(url);
+        //window.close();
     },
     async getToken(code) {
         try {
@@ -26,12 +26,12 @@ export default {
             })
 
             // TODO: Add shortToken to the login user object (cookies)
-            document.cookie = "shortIGToken=" + shortIGToken + "; path=/";
+            document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/";
         } catch(e) {
             console.log(e);
         }
     },
-    getInstagramContent() {
+    async getInstagramContent() {
         // TODO: US010-T02
         // Suggestions:
         //  follow the pattern used in getToken();
@@ -39,23 +39,23 @@ export default {
         //  reference this page for the data fields: https://developers.facebook.com/docs/instagram-basic-display-api/guides/getting-profiles-and-media
         //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
 
-        let token = this.getCookie("shortIGToken");
-        
-        let tokenInfo = this.getTokenInfo(token);
+        let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
+        // let tokenInfo = this.getTokenInfo(token);
 
-        if(tokenInfo.error == "Invalid OAuth access token.") {
-            this.authorize();
-        } else {
-            try {
-                return this.getUserMedia(token);
-            } catch(e) {
-                console.log(e);
-            } 
-        }
+        // if(tokenInfo.error === "Invalid OAuth access token."){
+        //     this.authorize;
+        // } else {
+        try { 
+            var media = await this.getUserMedia(token);
+            return media;
+        } catch(e) {
+            console.log(e);
+            }
+        // }            
     },
     getCookie(cookieName) {
         let name = cookieName + "=";
-        let decodedCookie = decodedURI(document.cookie);
+        let decodedCookie = decodeURI(document.cookie);
         let cookies = decodedCookie.split(';');
         for(let i = 0; i < cookies.length; i++) {
             let c = cookies[i];
@@ -100,7 +100,7 @@ export default {
         return user;
     },
     async getUserMedia(token) {
-        let media;
+        var media;
         let fields = "caption, id, media_type, media_url, permalink, thumbnail_url, timestamp, username"; // Some fields might not be needed 
         try {
             media =  await $.ajax({
@@ -111,10 +111,11 @@ export default {
                     access_token: token
                 }
             })
+            return media;
         } catch(e) {
             console.log(e);
         }
-        return media;
+        // return media;
     },
     async getMediaData(mediaID, token) {
         let media;

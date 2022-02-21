@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vue/cli-service": "~4.5.0",
+    "@vue/composition-api": "^1.4.6",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "ethers": "^5.5.4",

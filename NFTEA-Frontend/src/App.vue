@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/Delete">Delete Account</router-link>
+      <router-link to="/Delete">Delete Account</router-link> |
+      <router-link to="/UserProfile">User Profile</router-link>
     </div>
     <router-view />
   </v-app>
