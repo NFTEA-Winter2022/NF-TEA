@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h1>Connect your wallet</h1>
+    <h1 v-if="checkM()">Connect your wallet</h1>
+    <h2 v-if="!checkM()">Metamask connected! To disconnect:</h2>
+    <h3 style="padding-bottom: 60px;" v-if="!checkM()">Go through your extension->Connected->three dots->Disconnect this account</h3>
     <vue-metamask
         userMessage="msg"
         @onComplete="onComplete"
         v-if = "showMask"
     >
     </vue-metamask>
-    <v-btn
+    <v-btn v-if="checkM()"
         class="ma-2"
         dark
         color="orange"
@@ -20,8 +22,9 @@
         mdi-ethereum
       </v-icon>Connect with Metamask
     </v-btn>
-    <h1>Import your data</h1>
-    <v-btn
+    <h1 v-if="checkIG()">Import your data</h1>
+    <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
+    <v-btn v-if="checkIG()"
         class="ma-2"
         dark
         color="purple"
@@ -87,16 +90,43 @@ export default {
     connectToMetaMask() {
       this.showMask = true
     },
+    checkM() {
+      let splits = document.cookie.split(';');
+      let bool = true;
+      function checkMeta(element, bool) {
+        let name = element.split('=')[0];
+        if (name === 'metamask' || name === ' metamask' || bool) return false;
+        return true;
+      }
+      splits.forEach(element => bool = checkMeta(element, bool));
+      return bool;
+    },
+    checkIG() {
+      let splitsIG = document.cookie.split(';');
+      let boolIG = true;
+      function checkInsta(element, boolIG) {
+        let nameIG = element.split('=')[0];
+        if (nameIG === 'shortIGToken' || nameIG === ' shortIGToken' || !boolIG){
+          return false;
+        } else {
+          return true;
+        }
+      }
+      splitsIG.forEach(element => boolIG = checkInsta(element, boolIG));
+      return boolIG;
+    },
     onComplete(data) {
-
       if (data && data.web3) {
-        //TODO: save data object
+        console.log('data:', data);
+        document.cookie = "metamask=" + data.web3 + "; path=/";
       }
       else {
         //TODO: error message
+        console.log('data:', data);
+        document.cookie = "metamask=;Max-Age=0";
       }
-      console.log('data:', data);
       this.showMask = false
+      window.location.reload();
     }
   }
 }

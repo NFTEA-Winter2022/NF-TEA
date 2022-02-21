@@ -108,8 +108,11 @@
     const accounts = await ethereum.request({method: 'eth_accounts'});
     if (accounts && accounts.length > 0) {
       console.log("user is connected");
+      window.location.reload();
     } else {
+      document.cookie = 'metamask=;Max-Age=0';
       console.log("user not connected");
+      window.location.reload();
 
       //Please use router.replace because router.push seems to not work on an already async function
       // unless you maker work
