@@ -1,5 +1,6 @@
 // contracts/MyNFT.sol
 // SPDX-License-Identifier: MIT
+pragma experimental ABIEncoderV2;
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -20,6 +21,8 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
         string  caption;
     }
 
+    using Counters for Counters.Counter;
+    Counters.Counter private _contentCount;
     mapping (uint256 => Media) public contents;
 
     constructor() ERC721("NF-TEA", "NFTEA") {}
@@ -37,7 +40,6 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
         string memory  caption
     )
     public
-    returns (uint256)
     {
         require(contents[id].publisherAddress == address(0x0), "An NFT with that content Id has already been minted.");
 
@@ -54,7 +56,17 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
             caption
         );
         _mint(publisherAddress, id);
+        _contentCount.increment();
+    }
 
-        return id;
+    function getMediaByUser () public view returns (Media[] memory) {
+        Media[] memory memoryArray = new Media[](_contentCount.current());
+
+        for(uint i = 0; i < _contentCount.current(); i++) {
+            //if(contents[i+1].publisherAddress == msg.sender) {
+                memoryArray[i] = contents[i+1];
+            //}
+        }
+        return memoryArray;
     }
 }

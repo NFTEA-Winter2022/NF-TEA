@@ -68,14 +68,12 @@
 
 <script>
 import FacebookAPI from "../api/facebook"
+import BlockchainAPI from "../api/blockchain"
 import VueMetamask from 'vue-metamask';
 
 
 export default {
-
   name: "APILoginPage",
-
-
 
   components: {
     VueMetamask,
@@ -89,13 +87,6 @@ export default {
     alert1: false,
   }),
 
-  //data: () => ({
-        //name: "APILoginPage",
-
-        //msg: "String",
-      //  alert: false,
-    //  }
-  //),
   created() {
     // Instagram will redirect back to this page with an auth code or with errors in the url
 
@@ -109,15 +100,12 @@ export default {
     }
 
     if(code) {
-      //window.opener.close(); // try to close the previous window if allowed to
       this.alert = true
       this.msg = "Authorization successful, redirecting in 2 seconds"
-
 
       // Use the single-use auth code to get a short lived token (valid for 1 hr)
       FacebookAPI.getToken(code.replace('#_', ''));
     } else if(error.value) {
-      // TODO: US007-T06 create error message near / under the IG button for the user
       this.alert = true
       this.msg="You have cancelled the authorization process,Refresh the page for another attempt"
     }
@@ -154,15 +142,18 @@ export default {
       splitsIG.forEach(element => boolIG = checkInsta(element, boolIG));
       return boolIG;
     },
-    onComplete(data) {
+    async onComplete(data) {
       if (data && data.web3) {
         console.log('data:', data);
+        // document.cookie = "web3=" + JSON.stringify(data.web3) + "; path=/";
+        document.cookie = "address=" + data.metaMaskAddress + "; path=/";
         document.cookie = "metamask=" + data.netID + "; path=/";
+        await BlockchainAPI.mintNFT();
+        await BlockchainAPI.getNFTs();
         this.alert1 = true
         this.msg1 = "Connection successful"
       }
       else {
-        //TODO: error message
         console.log('data:', data);
         document.cookie = "metamask=;Max-Age=0";
         this.alert1 = true
