@@ -16,7 +16,7 @@ export default {
         let userInstagramId = JSON.parse(FacebookAPI.getCookie("shortIGToken")).user_id;
 
         try {
-            const result = await NFTContract.methods.mintNFTea (
+            await NFTContract.methods.mintNFTea (
                 media.id.toString(),
                 userInstagramId.toString(),
                 media.media_type,
@@ -27,9 +27,6 @@ export default {
                 media.username,
                 media.caption || "None"
             ).send({from: userAddress.toString(), gas: "6721975"})
-            console.log(result);
-            await this.getNFTs();
-            return result;
         } catch (e) {
             console.log(e);
             return e;
