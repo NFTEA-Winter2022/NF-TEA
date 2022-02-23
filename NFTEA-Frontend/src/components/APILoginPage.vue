@@ -145,11 +145,9 @@ export default {
     async onComplete(data) {
       if (data && data.web3) {
         console.log('data:', data);
-        // document.cookie = "web3=" + JSON.stringify(data.web3) + "; path=/";
         document.cookie = "address=" + data.metaMaskAddress + "; path=/";
         document.cookie = "metamask=" + data.netID + "; path=/";
-        await BlockchainAPI.mintNFT();
-        await BlockchainAPI.getNFTs();
+
         this.alert1 = true
         this.msg1 = "Connection successful"
       }

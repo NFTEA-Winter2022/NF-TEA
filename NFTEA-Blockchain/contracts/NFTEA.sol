@@ -1,6 +1,6 @@
 // contracts/MyNFT.sol
 // SPDX-License-Identifier: MIT
-pragma experimental ABIEncoderV2;
+//pragma experimental ABIEncoderV2;
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -23,14 +23,15 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
 
     using Counters for Counters.Counter;
     Counters.Counter private _contentCount;
+    mapping (uint256 => uint256) public nftToMedia;
     mapping (uint256 => Media) public contents;
+    mapping (address => uint256) public contentCountByUser;
 
     constructor() ERC721("NF-TEA", "NFTEA") {}
 
     function mintNFTea (
         uint256 id,
         uint256 publisherId,
-        address publisherAddress,
         string memory  mediaType,
         string memory  URL,
         string memory  permaLink,
@@ -41,12 +42,16 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
     )
     public
     {
-        require(contents[id].publisherAddress == address(0x0), "An NFT with that content Id has already been minted.");
+        require(nftToMedia[id] == 0, "An NFT with that content Id has already been minted.");
 
-        contents[id] = Media(
+        _contentCount.increment();
+        nftToMedia[id] = _contentCount.current();
+        contentCountByUser[msg.sender] = contentCountByUser[msg.sender] + 1;
+
+        contents[_contentCount.current()] = Media(
             id,
             publisherId,
-            publisherAddress,
+            msg.sender,
             mediaType,
             URL,
             permaLink,
@@ -55,18 +60,23 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
             publisherUsername,
             caption
         );
-        _mint(publisherAddress, id);
-        _contentCount.increment();
+
+        _mint(msg.sender, id);
     }
 
     function getMediaByUser () public view returns (Media[] memory) {
-        Media[] memory memoryArray = new Media[](_contentCount.current());
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
 
-        for(uint i = 0; i < _contentCount.current(); i++) {
-            //if(contents[i+1].publisherAddress == msg.sender) {
-                memoryArray[i] = contents[i+1];
-            //}
+        Media[] memory memoryArray = new Media[](contentCountByUser[msg.sender]);
+        uint256 j = 0;
+
+        for(uint256 i = 1; i <= _contentCount.current() && j < contentCountByUser[msg.sender]; i++) {
+            if(contents[i].publisherAddress == msg.sender) {
+                memoryArray[j] = contents[i];
+                j++;
+            }
         }
+
         return memoryArray;
     }
 }

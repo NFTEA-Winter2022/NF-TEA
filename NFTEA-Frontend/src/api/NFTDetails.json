@@ -1,5 +1,5 @@
 {
-  "address": "0x48B99Dc7D96B721942D6022793E55B55B2685d39",
+  "address": "0xbD1c8177844920cEcC81c0eFad89C6c6956c1ac3",
   "abi": [
     {
       "inputs": [],
@@ -108,6 +108,25 @@
         }
       ],
       "name": "balanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "contentCountByUser",
       "outputs": [
         {
           "internalType": "uint256",
@@ -303,11 +322,6 @@
           "type": "uint256"
         },
         {
-          "internalType": "address",
-          "name": "publisherAddress",
-          "type": "address"
-        },
-        {
           "internalType": "string",
           "name": "mediaType",
           "type": "string"
@@ -344,13 +358,7 @@
         }
       ],
       "name": "mintNFTea",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -362,6 +370,25 @@
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "nftToMedia",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
