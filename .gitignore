@@ -2,6 +2,7 @@
 .idea
 /build/
 .DS_Store
+NFTEA-Frontend/package-lock.json
 # Ignore Gradle GUI config
 gradle-app.setting
 

@@ -6,6 +6,7 @@ import DeleteAccountFront from '../components/DeleteAccountFront';
 import editPasswordAccount from "@/components/EditPasswordAccount";
 import editUsernameAccount from "@/components/EditUsernameAccount";
 import APILoginPage from "../components/APILoginPage";
+import UserProfilePage from "@/components/UserProfilePage";
 
 
 Vue.use(VueRouter)
@@ -56,6 +57,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "login" */ '../components/Login.vue')
+  },
+  {
+    path: '/UserProfile',
+    name: 'UserProfile',
+    component: UserProfilePage
+
   }
 ]
 
