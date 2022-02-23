@@ -1,5 +1,8 @@
 const { Given, When, Then, And } = require('cucumber');
 const assert = require('assert');
+const {By,Key,Builder} = require("selenium-webdriver");
+require("chromedriver");
+
 let message = "";
 let cookie = "";
 
@@ -30,6 +33,18 @@ Then("their Instagram account is linked to their NF-Tea's Account", function () 
 });
 
 Given("a NF-Tea's account with a linked Instagram Account", async function () {
+
+    let driver = await new Builder().forBrowser("chrome").build();
+    //Need to write the site
+    await driver.get("g");
+
+    let cookiesOnSite = await driver.manage().getCookies();
+    if (cookiesOnSite == null){
+        //Click the insta link
+    }
+    else{
+        // Nothing
+    }
 
     cookie = "shortIGToken=notNull" + "; path=/";
     return true;
