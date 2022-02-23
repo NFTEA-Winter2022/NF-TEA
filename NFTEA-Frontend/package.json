@@ -11,10 +11,12 @@
   "dependencies": {
     "@vue/cli-service": "~4.5.0",
     "axios": "^0.25.0",
+    "chromedriver": "^98.0.1",
     "core-js": "^3.6.5",
     "ethers": "^5.5.4",
     "jquery": "^3.6.0",
     "register-service-worker": "^1.7.1",
+    "selenium-webdriver": "^4.1.1",
     "vue": "^2.6.11",
     "vue-loader": "^17.0.0",
     "vue-metamask": "^2.1.0",
