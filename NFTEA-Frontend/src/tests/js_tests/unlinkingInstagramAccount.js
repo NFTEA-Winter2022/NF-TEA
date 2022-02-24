@@ -1,11 +1,36 @@
 const { Given, When, Then, And } = require('cucumber');
 const assert = require('assert');
-const {By,Key,Builder} = require("selenium-webdriver");
+const {By,Key,Builder, Capabilities} = require("selenium-webdriver");
 require("chromedriver");
+const {Options} = require("selenium-webdriver/chrome");
 
 let message = "";
 let cookie = "";
 
+Given("a NF-Tea's account with a linked Instagram Account", async function () {
+
+
+    let chrome = require("selenium-webdriver/chrome");
+    let options = new Options().addExtensions("./src/tests/metamaskExtension/metamaskExtension.crx");
+    let chromeCapabilities = Capabilities.chrome();
+    chromeCapabilities.setAcceptInsecureCerts(true);
+    let driver = await new Builder()
+        .withCapabilities(chromeCapabilities)
+        .setChromeOptions(options)
+        .build();
+    try{
+        await driver.get('https://localhost:8080/');
+    }
+    finally {
+    }
+
+
+
+
+
+    cookie = "shortIGToken=notNull" + "; path=/";
+    return true;
+});
 
 When("the user unlink their Instagram Account from their NF-Tea's account", function () {
     cookie = null;
@@ -32,23 +57,7 @@ Then("their Instagram account is linked to their NF-Tea's Account", function () 
     return assert.notEqual(null,cookie);
 });
 
-Given("a NF-Tea's account with a linked Instagram Account", async function () {
 
-    let driver = await new Builder().forBrowser("chrome").build();
-    //Need to write the site
-    await driver.get("g");
-
-    let cookiesOnSite = await driver.manage().getCookies();
-    if (cookiesOnSite == null){
-        //Click the insta link
-    }
-    else{
-        // Nothing
-    }
-
-    cookie = "shortIGToken=notNull" + "; path=/";
-    return true;
-});
 
 When("the user unsuccessfully unlink their Instagram Account from their NF-Tea's account", function () {
 
