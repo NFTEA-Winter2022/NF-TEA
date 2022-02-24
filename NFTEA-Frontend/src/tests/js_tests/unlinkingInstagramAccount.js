@@ -20,6 +20,7 @@ Given("a NF-Tea's account with a linked Instagram Account", async function () {
         .build();
     try{
         await driver.get('https://localhost:8080/');
+        await driver.get('https://localhost:8080/login');
     }
     finally {
     }

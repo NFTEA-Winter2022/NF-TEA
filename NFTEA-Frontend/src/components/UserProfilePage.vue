@@ -27,7 +27,7 @@ export default ({
           this.username = insta.data[1].username;
       } catch(e) {
         console.log(e);
-        this.$router.push('/api-login')
+        await this.$router.push('/api-login')
       }
         
     },
