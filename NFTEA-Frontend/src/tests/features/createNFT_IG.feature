@@ -13,5 +13,5 @@ Feature: Create NFT based on Instagram
 
   Scenario: Cannot create NFTs due to no Instagram content (Error Flow)
     When the user creates an NFT from one of their photos of their Instagram account
-    But there is no content in the Instagram account
+    And there is no content in the Instagram account
     Then a cookie web3 is null
