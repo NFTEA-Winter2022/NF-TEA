@@ -37,7 +37,7 @@ public class loginStepDefinitions {
     LoginService loginService;
 
     @After
-    public void teardown(){
+    public void teardown(){ 
         userAccountService.clear();
         int errorCounter = 0;
         String error = "";
