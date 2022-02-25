@@ -4,6 +4,7 @@ import $ from 'jquery'
 const InstagramAppId = 993784884883159 //process.env.VUE_APP_FACEBOOK_APP_ID;
 const InstagramSecret = 'ce77d154d432a11177add2d010469617';
 const redirectUri = window.location.origin + '/api-login/';
+const userProfile = window.location.origin + '/UserProfile/';
 // var redirectUri = window.location.hostname + '/api-login/';
 export default {
     authorize() {
@@ -28,7 +29,7 @@ export default {
             document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/"; //shortIGtoken: {access_token, user_id}
             console.log(JSON.stringify(shortIGToken) );
             setTimeout(function(){
-                window.location.replace("https://localhost:8080/UserProfile");
+                window.location.replace(userProfile);
             }, 1500);
         } catch(e) {
             console.log(e);

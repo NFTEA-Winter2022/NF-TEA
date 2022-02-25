@@ -28,19 +28,19 @@ public class LoginService {
     @Transactional(noRollbackFor = WrongInputException.class)
     public UserAccount loginUserAccount(String email, String password){
         if (email == null || password == null){
-            throw new WrongInputException(HttpStatus.BAD_REQUEST,"Please enter your email or password");
+            throw new WrongInputException(HttpStatus.EXPECTATION_FAILED,"Please enter your email or password");
         }
         else {
             UserAccount userAccount = userAccountRepository.findUserAccountByUserEmail(email);
 
             if (userAccount == null){
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
+                throw new WrongInputException(HttpStatus.EXPECTATION_FAILED, "Incorrect email/password");
             }
             else if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS &&
                     LocalDateTime.now(clock).isBefore(userAccount.getLastAttempt().plusMinutes(ATTEMPTS_COOLDOWN_IN_MINUTES))) {
                 userAccount.setIsLoggedIn(false);
                 userAccountRepository.save(userAccount);
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Too many attempts, please try again later");
+                throw new WrongInputException(HttpStatus.EXPECTATION_FAILED, "Too many attempts, please try again later");
             }
             else if (!userAccount.getPassword().equals(password)){
                 // update attempts
@@ -50,9 +50,9 @@ public class LoginService {
                 userAccount.setIsLoggedIn(false);
                 userAccountRepository.save(userAccount);
                 if(userAccount.getLoginAttempts() >= MAX_ATTEMPTS) {
-                    throw new WrongInputException(HttpStatus.BAD_REQUEST, "Wrong Password, account is locked out");
+                    throw new WrongInputException(HttpStatus.EXPECTATION_FAILED, "Wrong Password, account is locked out");
                 }
-                throw new WrongInputException(HttpStatus.BAD_REQUEST, "Incorrect email/password");
+                throw new WrongInputException(HttpStatus.EXPECTATION_FAILED, "Incorrect email/password");
             }
             else {
                 userAccount.setLoginAttempts(0);

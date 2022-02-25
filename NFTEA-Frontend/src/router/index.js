@@ -7,6 +7,7 @@ import editPasswordAccount from "@/components/EditPasswordAccount";
 import editUsernameAccount from "@/components/EditUsernameAccount";
 import APILoginPage from "../components/APILoginPage";
 import UserProfilePage from "@/components/UserProfilePage";
+import Login from "@/components/Login";
 
 
 Vue.use(VueRouter)
@@ -14,11 +15,16 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/home',
     name: 'HelloWorld',
     component: HelloWorld
   },
   {
-    path:'/Create',
+    path:'/create',
     name: 'CreateAccountFrons',
     component: CreateAccountFront
   },
@@ -51,15 +57,7 @@ const routes = [
     component: DeleteAccountFront
   },
   {
-    path: '/login',
-    name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "login" */ '../components/Login.vue')
-  },
-  {
-    path: '/UserProfile',
+    path: '/userProfile',
     name: 'UserProfile',
     component: UserProfilePage
 
@@ -71,5 +69,4 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
 export default router

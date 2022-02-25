@@ -3,7 +3,7 @@
     <h1>This is the login page</h1>
     <v-form v-model="valid" id="login-form">
       <v-container>
-        <span v-if="errorMessage" class="errorMessage">{{errorMsg}} </span>
+        <span v-if="errorMessage" class="errorMessage">{{errorMessage}} </span>
         <v-row>
           <v-text-field
             v-model="userEmail"
@@ -51,6 +51,8 @@
   }
 </style>
 <script>
+    import * as vm from "vm";
+
     export default {
     data() {
       return {
@@ -80,10 +82,11 @@
             .then(response => {
               this.response = response.data;
               document.cookie = "id=" + this.response.numberID.toString() + "; path=/";
-              window.location.replace("https://localhost:8080/?#/useraccount")
+              window.location.replace("/userProfile");
+              vm.$forceUpdate();
             })
             .catch(e => {
-              var errorMsg = e.response.data.message
+              let errorMsg = e.response.data;
 
               console.log(errorMsg)
               // this.errorPerson = errorMsg
@@ -92,6 +95,18 @@
 
             })
       }
-    }
+    },
+      beforeMount() {
+        let cookies = document.cookie;
+        let split = cookies.split(';');
+        let log = false;
+        for (const element of split) {
+          let name = element.split('=')[0];
+          if (name === 'id') {
+            log = true;
+          }
+        }
+        if (log) window.location.replace('/home');
+      }
 }
 </script>

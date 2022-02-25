@@ -27,7 +27,9 @@ public class UserAccountService {
         if (firstName.isEmpty()||lastName.isEmpty()||userEmail.isEmpty()||password.isEmpty()||userName.isEmpty()){
             throw new IllegalArgumentException("All textboxes need to be completed");
         }
-        UserAccount myUser= new UserAccount(firstName,lastName,userEmail,userName,password,false, 0, null, UserAccount.UserRole.Customer);
+        UserAccount myUser;
+        if (userAccountRepository.findUserAccountByUsername(userName) == null && userAccountRepository.findUserAccountByUserEmail(userEmail) == null) myUser = new UserAccount(firstName,lastName,userEmail,userName,password,false, 0, null, UserAccount.UserRole.Customer);
+        else throw new IllegalArgumentException("Username/email in use, please choose another!");
         userAccountRepository.save(myUser);
         return myUser;
     }
