@@ -3,14 +3,12 @@ const assert = require('assert');
 const {By,Key,Builder, Capabilities} = require("selenium-webdriver");
 require("chromedriver");
 const {Options} = require("selenium-webdriver/chrome");
+const web = require("selenium-webdriver");
 
 let message = "";
 let cookie = "";
 
-Given("a NF-Tea's account with a linked Instagram Account", async function () {
-
-
-    let chrome = require("selenium-webdriver/chrome");
+Given("a NF-Tea's account with a linked Instagram Account",{timeout: 2 * 5000} , async function () {
     let options = new Options().addExtensions("./src/tests/metamaskExtension/metamaskExtension.crx");
     let chromeCapabilities = Capabilities.chrome();
     chromeCapabilities.setAcceptInsecureCerts(true);
@@ -19,8 +17,12 @@ Given("a NF-Tea's account with a linked Instagram Account", async function () {
         .setChromeOptions(options)
         .build();
     try{
-        await driver.get('https://localhost:8080/');
-        await driver.get('https://localhost:8080/login');
+        await driver.get('https://192.168.86.42:8080/');
+        // await driver.findElement(web.By.xpath('//button[text()="Get Started"]')).click();
+        // await driver.findElement(web.By.xpath('//button[text()="Import wallet"]')).click();
+        // await driver.findElement(web.By.xpath('//button[text()="No Thanks"]')).click();
+
+
     }
     finally {
     }
