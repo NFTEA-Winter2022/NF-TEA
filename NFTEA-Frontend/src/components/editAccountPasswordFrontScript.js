@@ -4,11 +4,7 @@ import axios from 'axios'
 var baseURL
 
 var AXIOS = axios.create({
-<<<<<<< Updated upstream
-    baseURL: `https://nftea-backend.herokuapp.com:8081/`
-=======
     baseURL: `http://localhost:8080/`
->>>>>>> Stashed changes
 })
 
 export default {
