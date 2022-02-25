@@ -2,10 +2,10 @@
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse428.nftea.model;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import org.springframework.data.repository.cdi.Eager;
+
+import javax.persistence.*;
 
 // line 26 "../../../../../nftea.ump"
 @Entity
@@ -23,17 +23,20 @@ public class Listing
   private String title;
   private Long price;
   private String nftLink;
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
+  private UserAccount owner;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
   public Listing(){}
   
-  public Listing(String aTitle, Long aPrice, String aNftLink)
+  public Listing(String aTitle, Long aPrice, String aNftLink, UserAccount userAccount)
   {
     title = aTitle;
     price = aPrice;
     nftLink = aNftLink;
+    this.owner = userAccount;
   }
 
   //------------------------
@@ -72,6 +75,14 @@ public class Listing
     return wasSet;
   }
 
+  public boolean setOwner(UserAccount userAccount)
+  {
+    boolean wasSet = false;
+    this.owner = userAccount;
+    wasSet = true;
+    return wasSet;
+  }
+
   public Long getListingID()
   {
     return listingID;
@@ -92,6 +103,10 @@ public class Listing
     return nftLink;
   }
 
+  public UserAccount getOwner() {
+    return owner;
+  }
+
   public void delete()
   {}
 
@@ -101,6 +116,7 @@ public class Listing
     return super.toString() + "["+
             "listingID" + ":" + getListingID()+ "," +
             "title" + ":" + getTitle()+ "," +
+            "owner" + ":" + getOwner().getUsername() + "," +
             "price" + ":" + getPrice()+ "," +
             "nftLink" + ":" + getNftLink()+ "]";
   }
