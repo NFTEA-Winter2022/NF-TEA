@@ -39,6 +39,14 @@ export default {
     goDelete() {
       window.location.replace('/delete');
     }
+  },
+  beforeMount() {
+    let cookies = document.cookie;
+    let split = cookies.split(';');
+    for (const element of split) {
+      let name = element.split('=')[0];
+      if (name === 'id') this.logged = true;
+    }
   }
 }
 </script>
