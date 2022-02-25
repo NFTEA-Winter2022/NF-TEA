@@ -25,8 +25,8 @@ export default {
                 }
             })
 
-            // TODO: Add shortToken to the login user object (cookies)
-            document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/";
+            document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/"; //shortIGtoken: {access_token, user_id}
+            console.log(JSON.stringify(shortIGToken) );
             setTimeout(function(){
                 window.location.replace("https://localhost:8080/UserProfile");
             }, 1500);
@@ -35,13 +35,6 @@ export default {
         }
     },
     async getInstagramContent() {
-        // TODO: US010-T02
-        // Suggestions:
-        //  follow the pattern used in getToken();
-        //  use the token from cookies;
-        //  reference this page for the data fields: https://developers.facebook.com/docs/instagram-basic-display-api/guides/getting-profiles-and-media
-        //  Also, tokens expire every hour, so you may want to check if they are valid, and call authorize otherwise
-
         let token = JSON.parse(this.getCookie("shortIGToken")).access_token;
         // let tokenInfo = this.getTokenInfo(token);
 
@@ -66,11 +59,10 @@ export default {
                 c = c.substring(1);
             }
             if(c.indexOf(name) == 0) {
-                console.log(c.substring(name.length, c.length));
                 return c.substring(name.length, c.length);
             }
         }
-        console.log("false");
+
         return "";
     },
     async getTokenInfo(token) {
