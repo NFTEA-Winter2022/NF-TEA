@@ -94,7 +94,8 @@
               this.errorMessage = errorMsg
 
             })
-      },
+      }
+    },
       beforeMount() {
         let cookies = document.cookie;
         let split = cookies.split(';');
@@ -102,12 +103,10 @@
         for (const element of split) {
           let name = element.split('=')[0];
           if (name === 'id') {
-            console.log(name);
             log = true;
           }
         }
         if (log) window.location.replace('/home');
       }
-    }
 }
 </script>
