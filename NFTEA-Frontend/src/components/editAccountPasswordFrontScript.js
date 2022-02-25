@@ -4,7 +4,11 @@ import axios from 'axios'
 var baseURL
 
 var AXIOS = axios.create({
+<<<<<<< Updated upstream
     baseURL: `https://nftea-backend.herokuapp.com:8081/`
+=======
+    baseURL: `http://localhost:8080/`
+>>>>>>> Stashed changes
 })
 
 export default {
@@ -68,6 +72,16 @@ export default {
                 console.log(msg.status)
                 this.error = msg.response.data;
             })
+        },
+        beforeMount() {
+            let cookies = document.cookie;
+            let split = cookies.split(';');
+            let log = false;
+            for (const element of split) {
+                let name = element.split('=')[0];
+                if (name === 'id') log = true;
+            }
+            if (!log) window.location.replace('/');
         }
 
 

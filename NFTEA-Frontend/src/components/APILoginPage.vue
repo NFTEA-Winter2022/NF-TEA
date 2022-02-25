@@ -1,75 +1,76 @@
 <template>
   <div>
-    <h1 v-if="checkM()">Connect your wallet</h1>
-    <h2 v-if="!checkM()">Metamask connected! To disconnect:</h2>
-    <h3 style="padding-bottom: 60px;" v-if="!checkM()">Go through your extension->Connected->three dots->Disconnect this account</h3>
-    <vue-metamask
-        userMessage="msg"
-        @onComplete="onComplete"
-        v-if = "showMask"
-    >
-    </vue-metamask>
-    <v-btn v-if="checkM()"
-        class="ma-2"
-        dark
-        color="orange"
-        @click="connectToMetaMask"
-    >
-      <v-icon
-          dark
-          left
-      >
-        mdi-ethereum
-      </v-icon>Connect with Metamask
-    </v-btn>
-    <v-alert
-        :value="alert1"
-        shaped
-        dense
-        dark
-        type="warning"
-        transition="scale-transition"
-    >
-      {{msg1}}
-    </v-alert>
-    <h1 v-if="checkIG()">Import your data</h1>
-    <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
-    <v-btn v-if="checkIG()"
-
-        class="ma-2"
-        dark
-        color="purple"
-        @click="connectInstagram"
-    >
-      <v-icon
-          dark
-          left
-      >
-        mdi-instagram
-      </v-icon>Connect with Instagram
-    </v-btn>
-
     <div>
-      <a>Skip for now</a>
-    </div>
+      <h1 v-if="checkM()">Connect your wallet</h1>
+      <h2 v-if="!checkM()">Metamask connected! To disconnect:</h2>
+      <h3 style="padding-bottom: 60px;" v-if="!checkM()">Go through your extension->Connected->three dots->Disconnect this account</h3>
+      <vue-metamask
+          userMessage="msg"
+          @onComplete="onComplete"
+          v-if = "showMask"
+      >
+      </vue-metamask>
+      <v-btn v-if="checkM()"
+          class="ma-2"
+          dark
+          color="orange"
+          @click="connectToMetaMask"
+      >
+        <v-icon
+            dark
+            left
+        >
+          mdi-ethereum
+        </v-icon>Connect with Metamask
+      </v-btn>
+      <v-alert
+          :value="alert1"
+          shaped
+          dense
+          dark
+          type="warning"
+          transition="scale-transition"
+      >
+        {{msg1}}
+      </v-alert>
+      <h1 v-if="checkIG()">Import your data</h1>
+      <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
+      <v-btn v-if="checkIG()"
 
-    <v-alert
-        :value="alert"
-        shaped
-        dense
-        dark
-        type="warning"
-        transition="scale-transition"
-    >
-      {{msg}}
-    </v-alert>
+          class="ma-2"
+          dark
+          color="purple"
+          @click="connectInstagram"
+      >
+        <v-icon
+            dark
+            left
+        >
+          mdi-instagram
+        </v-icon>Connect with Instagram
+      </v-btn>
+
+      <div>
+        <a>Skip for now</a>
+      </div>
+
+      <v-alert
+          :value="alert"
+          shaped
+          dense
+          dark
+          type="warning"
+          transition="scale-transition"
+      >
+        {{msg}}
+      </v-alert>
+    </div>
   </div>
 </template>
 
 <script>
 import FacebookAPI from "../api/facebook"
 import VueMetamask from 'vue-metamask';
-
 
 export default {
   name: "APILoginPage",
@@ -159,6 +160,16 @@ export default {
       this.showMask = false
       //window.location.reload();
     }
+  },
+  beforeMount() {
+    let cookies = document.cookie;
+    let split = cookies.split(';');
+    let log = false;
+    for (const element of split) {
+      let name = element.split('=')[0];
+      if (name === 'id') log = true;
+    }
+    if (!log) window.location.replace('/');
   }
 }
 </script>

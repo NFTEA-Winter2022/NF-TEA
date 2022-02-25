@@ -1,14 +1,47 @@
 <template>
   <v-app id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/Delete">Delete Account</router-link> |
-      <router-link to="/UserProfile">User Profile</router-link>
+      <v-btn @click="goHome()" v-if="this.logged">Home</v-btn>
+      <v-btn @click="goAbout()" v-if="this.logged">About</v-btn>
+      <v-btn @click="goProfile()" v-if="this.logged">User Profile</v-btn>
+      <v-btn @click="goUsername()" v-if="this.logged">Edit Username</v-btn>
+      <v-btn @click="goPassword()" v-if="this.logged">Edit Password</v-btn>
+      <v-btn @click="goDelete()" v-if="this.logged">Delete Account</v-btn>
+      <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
   </v-app>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      logged: false
+    }
+  },
+  methods: {
+    goHome() {
+      window.location.replace('/home');
+    },
+    goAbout() {
+      window.location.replace('/about');
+    },
+    goProfile() {
+      window.location.replace('/userProfile');
+    },
+    goUsername() {
+      window.location.replace('/user-account/editUsername');
+    },
+    goPassword() {
+      window.location.replace('/user-account/editPassword');
+    },
+    goDelete() {
+      window.location.replace('/delete');
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
