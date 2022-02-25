@@ -68,7 +68,6 @@
 
 <script>
 import FacebookAPI from "../api/facebook"
-import BlockchainAPI from "../api/blockchain"
 import VueMetamask from 'vue-metamask';
 
 
