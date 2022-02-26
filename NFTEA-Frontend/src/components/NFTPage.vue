@@ -1,22 +1,15 @@
 <template>
-  <v-btn
-      color="primary"
-      text
-      @click=PutIgPic()
-  >
-    Create
     <ul id="images">
-      <div v-for="item in nft" :key="item.id" >
-        <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>
-        <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>
+      <div v-for="item in nft" :key="item[0]" >
+        <img v-if="item[3] === 'IMAGE'" v-bind:src="item[4]" width="700" height="682"/>
+        <p v-if="item[3] === 'IMAGE'"> {{ "NFT ID:"+item[0] }} </p>
       </div>
     </ul>
-  </v-btn>
+
 
 </template>
 
 <script>
-import facebook from '../api/facebook.js'
 import blockchain from '../api/blockchain.js'
 export default ({
   data: () => ({
@@ -29,11 +22,11 @@ export default ({
   methods: {
     async PutIgPic(){
       try {
-        var insta = await facebook.getInstagramContent();
-        this.insta = insta.data;
-        console.log("Insta: " + JSON.stringify(insta.data));
-        this.username = insta.data[1].username;
-        await blockchain.mintNFT(insta.data[1]);
+        var image = await blockchain.getNFTs();
+        // console.log(this.nft);
+        console.log("Insta: " + JSON.stringify(image));
+        this.nft = image;
+        // console.log(this.nft);
       } catch(e) {
         console.log(e);
         // this.$router.push('/api-login')

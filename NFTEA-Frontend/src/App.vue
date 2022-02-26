@@ -8,6 +8,7 @@
       <v-btn @click="goPassword()" v-if="this.logged">Edit Password</v-btn>
       <v-btn @click="goDelete()" v-if="this.logged">Delete Account</v-btn>
       <v-btn @click="goNFT()" v-if="this.logged">NFT Page</v-btn>
+      <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -60,6 +61,9 @@ export default {
     },
     goNFT() {
       window.location.replace('/NFTPage');
+    },
+    goCollection() {
+      window.location.replace('/NFTCollection');
     }
   },
   beforeMount() {
