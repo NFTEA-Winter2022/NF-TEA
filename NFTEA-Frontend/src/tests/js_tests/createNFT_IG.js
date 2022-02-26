@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Axios = require("axios");
 const { Given, When, Then } = require('@cucumber/cucumber');
-const { abi, bytecode } = require('../../build/contracts/NFTEA.json')
+const { abi, bytecode } = require('../../../../NFTEA-Blockchain/build/contracts/NFTEA.json')
 const ganache = require('ganache-cli'); // Mockup of eth network
 const web3 = new (require('web3'))(ganache.provider());
 
@@ -44,11 +44,8 @@ Given('user is registered and logged-in', async function () {
     }
 });
 
-Given('user has an Instagram account linked to his NFT account', function () {
-    cookie = "shortIGToken=notNull" + "; path=/";
-});
 
-Given('the user has a post on their Instragram account', async function () {
+Given('the user has a post on their Instagram account', async function () {
 
     media = {
         id: "10923847",
@@ -85,7 +82,8 @@ Given("user account is registered on the blockchain", async function () {
 
 When('the user creates an NFT from one of their photos of their Instagram account', async function () {
 
-    await contract.methods.mintNFTea(...media)
+    await contract.methods.mintNFTea(media.id, media.publisherId, media.media_type, media.media_url, media.permalink,
+        media.thumbnail_url, media.timestamp, media.username, media.caption)
         .send({from: userAccounts[0].toString(), gas: "6721975"})
 
     return true;

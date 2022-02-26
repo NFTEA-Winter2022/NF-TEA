@@ -5,7 +5,8 @@ Feature: Create NFT based on Instagram
 
   Background:
     Given user is registered and logged-in
-    Given user has an Instagram account linked to his NFT account
+    Given the account is linked to an Instagram account
+    Given the user has a post on their Instagram account
     Given user account is registered on the blockchain
     Given A NFT contract has been deployed
 
