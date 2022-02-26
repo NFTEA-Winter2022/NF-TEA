@@ -47,7 +47,7 @@ public class CollectionNFTController {
     public ResponseEntity getUnclassified(@RequestParam("collectionID") long collectionID) {
         try {
             List<Listing> listings = listingService.getUnclassifiedListingsFromCollection(collectionID);
-            return new ResponseEntity<> (DtoUtils.convertToDto(listings), HttpStatus.OK);
+            return new ResponseEntity<> (listings.stream().map(l -> DtoUtils.convertToDto(l)).collect(Collectors.toList()), HttpStatus.OK);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
