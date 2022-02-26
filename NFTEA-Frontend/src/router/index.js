@@ -7,6 +7,7 @@ import editPasswordAccount from "@/components/EditPasswordAccount";
 import editUsernameAccount from "@/components/EditUsernameAccount";
 import APILoginPage from "../components/APILoginPage";
 import UserProfilePage from "@/components/UserProfilePage";
+import CollectionNFT from "@/components/CollectionNFT";
 
 
 Vue.use(VueRouter)
@@ -62,6 +63,12 @@ const routes = [
     path: '/UserProfile',
     name: 'UserProfile',
     component: UserProfilePage
+
+  },
+  {
+    path: '/UserProfile/CollectionNFT',
+    name: 'CollectionNFT',
+    component: CollectionNFT
 
   }
 ]
