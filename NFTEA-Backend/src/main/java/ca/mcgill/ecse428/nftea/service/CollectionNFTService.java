@@ -34,6 +34,14 @@ public class CollectionNFTService {
     }
 
     @Transactional
+    public CollectionNFT getCollectionByID(long collectionID) throws IllegalArgumentException{
+        if(collectionNFTRepository.findByCollectionID(collectionID) == null) {
+            throw new IllegalArgumentException("Collection not found");
+        }
+        return collectionNFTRepository.findByCollectionID(collectionID);
+    }
+
+    @Transactional
     public CollectionNFT updateCollectionTitle(long collectionID, String title) {
         if(collectionNFTRepository.findByCollectionID(collectionID) == null) {
             throw new IllegalArgumentException("Collection not found");

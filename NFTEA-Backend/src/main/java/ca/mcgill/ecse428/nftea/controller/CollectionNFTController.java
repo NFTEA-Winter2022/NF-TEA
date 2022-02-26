@@ -1,9 +1,9 @@
 package ca.mcgill.ecse428.nftea.controller;
 
-import ca.mcgill.ecse428.nftea.dto.CollectionNFTDto;
 import ca.mcgill.ecse428.nftea.model.CollectionNFT;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.service.CollectionNFTService;
+import ca.mcgill.ecse428.nftea.service.ListingService;
 import ca.mcgill.ecse428.nftea.utils.DtoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,34 @@ public class CollectionNFTController {
     @Autowired
     private CollectionNFTService collectionNFTService;
 
+    @Autowired
+    private ListingService listingService;
+
     @GetMapping(value = {"/userProfile/collections", "/userProfile/collections"})
     public ResponseEntity getUserCollections(@RequestParam("userID") long userID){
         try {
             List<CollectionNFT> collections = collectionNFTService.getCollectionNFTByUser(userID);
             return new ResponseEntity<> (collections.stream().map(c -> DtoUtils.convertToDto(c)).collect(Collectors.toList()), HttpStatus.OK);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping(value = {"/userProfile/collections/collection", "/userProfile/collections/collection/"})
+    public ResponseEntity getCollection(@RequestParam("collectionID") long collectionID) {
+        try {
+            CollectionNFT collectionNFT = collectionNFTService.getCollectionByID(collectionID);
+            return new ResponseEntity<> (DtoUtils.convertToDto(collectionNFT), HttpStatus.OK);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping(value = {"/userProfile/collections/getUnclassified", "/userProfile/collections/getUnclassified/"})
+    public ResponseEntity getUnclassified(@RequestParam("collectionID") long collectionID) {
+        try {
+            List<Listing> listings = listingService.getUnclassifiedListingsFromCollection(collectionID);
+            return new ResponseEntity<> (DtoUtils.convertToDto(listings), HttpStatus.OK);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
