@@ -2,10 +2,10 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
 let cookie = "";
 
-Given('user is registered and logged-in', function() {
-    cookie = "id=1" + "; path=/";
-    return true;
-});
+// Given('user is registered and logged-in', function() {
+//     cookie = "id=1" + "; path=/";
+//     return true;
+// });
 
 When('the user connects to their metamask account', function() {
     cookie.concat("web3=notNull" + "; path=/");
