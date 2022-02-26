@@ -46,7 +46,7 @@ export default {
                     else if (document.getElementById('mypassword').value==='') {
                         this.msg = 'Please enter your password'
                     }else {
-                        this.msg = 'Please enter a valid email'
+                        this.msg = error.response.data;
                     }
 
                     console.log(error.response.data);
@@ -54,14 +54,19 @@ export default {
                     console.log(error.response.headers);
                     this.alert=true;
 
-                }).then((data) => {console.log(data)}, (e) => console.log(e))
+                }).then((data) => {
+                    console.log(data);
+                    if (data.status == 200) window.location.replace('/login');
+                }, (e) => console.log(e))
             }catch(e) {
                 console.log(e);
                 this.alert=true;
 
             }
         },
-
+        cancel() {
+             window.location.replace('/');
+        }
 
     }
 }

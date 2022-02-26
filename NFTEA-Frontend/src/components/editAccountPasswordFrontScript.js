@@ -4,7 +4,7 @@ import axios from 'axios'
 var baseURL
 
 var AXIOS = axios.create({
-    baseURL: `http://192.168.1.4:8080/`
+    baseURL: `http://localhost:8081/`
 })
 
 export default {
@@ -68,6 +68,16 @@ export default {
                 console.log(msg.status)
                 this.error = msg.response.data;
             })
+        },
+        beforeMount() {
+            let cookies = document.cookie;
+            let split = cookies.split(';');
+            let log = false;
+            for (const element of split) {
+                let name = element.split('=')[0];
+                if (name === 'id') log = true;
+            }
+            if (!log) window.location.replace('/');
         }
 
 

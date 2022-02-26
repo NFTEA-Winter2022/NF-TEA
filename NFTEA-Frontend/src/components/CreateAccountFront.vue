@@ -73,7 +73,7 @@
               </v-card-text>
               <v-divider class="mt-12"></v-divider>
               <v-card-actions>
-                <v-btn text>
+                <v-btn text @click="cancel()">
                   Cancel
                 </v-btn>
                 <v-spacer></v-spacer>
