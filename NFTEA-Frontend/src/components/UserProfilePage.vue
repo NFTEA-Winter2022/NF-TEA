@@ -7,6 +7,9 @@
     <div v-for="item in insta" :key="item.id" >
       <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>
       <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>
+      <v-btn id="createNFTBtn" @click="NFT(item)">
+        NFTEAFY!
+      </v-btn>
     </div>
     </ul>
   </div>
@@ -17,6 +20,7 @@
 <script>
 // import { defineComponent } from '@vue/composition-api'
 import facebook from '../api/facebook.js'
+import blockchain from '../api/blockchain.js'
 
 export default ({
   data: () => ({
@@ -37,6 +41,15 @@ export default ({
         console.log(e);
         this.$router.push('/api-login')
       }
+    },
+
+    NFT(media) {
+      try {
+        blockchain.mintNFT(media);
+      } catch(e) {
+        console.log(e);
+      }
+
     }
   },
   beforeMount() {
@@ -54,3 +67,12 @@ export default ({
 
 })
 </script>
+
+
+<style>
+
+#images {
+
+}
+
+</style>
