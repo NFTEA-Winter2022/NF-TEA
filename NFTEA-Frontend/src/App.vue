@@ -7,6 +7,7 @@
       <v-btn @click="goUsername()" v-if="this.logged">Edit Username</v-btn>
       <v-btn @click="goPassword()" v-if="this.logged">Edit Password</v-btn>
       <v-btn @click="goDelete()" v-if="this.logged">Delete Account</v-btn>
+      <v-btn @click="goNFT()" v-if="this.logged">NFT Page</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -38,6 +39,9 @@ export default {
     },
     goDelete() {
       window.location.replace('/delete');
+    },
+    goNFT() {
+      window.location.replace('/NFTPage');
     }
   },
   beforeMount() {
