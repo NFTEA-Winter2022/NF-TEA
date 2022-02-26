@@ -153,7 +153,7 @@ export default {
       }
       else {
         console.log('data:', data);
-        document.cookie = "metamask=;Max-Age=0";
+        document.cookie = 'metamask=;Max-Age=0;address=;';
         this.alert1 = true
         this.msg1 = "Connection unsuccessful, Refresh the page for another attempt"
       }

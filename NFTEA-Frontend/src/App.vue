@@ -14,6 +14,24 @@
 </template>
 
 <script>
+
+window.ethereum.on('accountsChanged', async () => {
+  const {ethereum} = window;
+  const accounts = await ethereum.request({method: 'eth_accounts'});
+  if (accounts && accounts.length > 0) {
+    console.log("user is connected");
+    document.cookie = "address=" + accounts[0] + "; path=/";
+  } else {
+    document.cookie = 'metamask=;Max-Age=0;address=';
+    console.log("user not connected");
+    window.location.reload();
+    //Please use router.replace because router.push seems to not work on an already async function
+    // unless you maker work
+    //router.replace({ path: '/wanted_path' });
+    //Todo Upon receving the action of user disconnecting do something
+  }
+});
+
 export default {
   data() {
     return {
