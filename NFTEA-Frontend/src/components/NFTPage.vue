@@ -5,14 +5,9 @@
       <div v-for="item in nft" :key="item[0]" >
         <img v-if="item[3] === 'IMAGE'" v-bind:src="item[4]" width="700" height="682"/>
         <p v-if="item[3] === 'IMAGE'"> {{ "NFT ID:"+item[0] }} </p>
-        <v-card ref="form">
-          <v-card-text>
-            <v-text-field v-if="item[3] === 'IMAGE'">
-              label="Collection Name">
-            </v-text-field>
-          </v-card-text>
-        </v-card>
-        <v-btn v-if="item[3] === 'IMAGE'" id="category" @click="addToCollection()">
+
+        <input id="collectionInput" type="text" v-model="collection" v-if="item[3] === 'IMAGE'" placeholder="Collection Name" required>
+        <v-btn v-if="item[3] === 'IMAGE'" id="category" @click="addToCollection(item[0])">
           <b>Add to the collection </b>
         </v-btn>
       </div>
@@ -32,7 +27,7 @@ export default ({
     media_type: '',
     username: '',
     media_url: '',
-  //
+    collection: '',
   }),
   methods: {
     async PutIgPic(){
@@ -49,16 +44,17 @@ export default ({
     },
 
 
-    showCreateCollection() {
-      var div = document.getElementById("collectionCheckBox");
-      var divFlag = div.expandedFlag == true
-      div.style.display = divFlag ? 'none' : 'block';
-      div.expandedFlag = !divFlag;
+    async addToCollection(NFTid) {
+      try {
+        let collectionName = document.getElementById("collectionInput").value;
+        console.log(collectionName);
+        await blockchain.changeCollection(NFTid, collectionName);
+      }catch(e) {
+        console.log(e);
+      }
     }
 
   },
-
-
 
   beforeMount() {
     let cookies = document.cookie;
