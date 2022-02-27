@@ -1,5 +1,5 @@
 {
-  "address": "0xdEf8f0bCdeBe8787442165aE2935e253aD80cEc3",
+  "address": "0x7D72264ea5a52De379E0812d1b4EdEAe09A8487a",
   "abi": [
     {
       "inputs": [],
@@ -673,6 +673,37 @@
       "stateMutability": "view",
       "type": "function",
       "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_nftId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_newCollectionName",
+          "type": "string"
+        }
+      ],
+      "name": "changeCollection",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        }
+      ],
+      "name": "deleteCollection",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ]
 }

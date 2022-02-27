@@ -189,6 +189,13 @@ export default ({
       }
     },
 
+    async DeleteCollection() {
+      this.loading = true
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      await blockchain.deleteCollection(this.selectedCollection);
+      this.loading = false
+    },
+
     async getNFTByCollection(collection)  {
       try {
         this.listOfNFTS = await blockchain.getNFTsByCollection(collection);
@@ -217,15 +224,6 @@ export default ({
       // this.collections = this.collections.splice(this.collections.indexOf('None') -1, 1)
       console.log(JSON.stringify(this.collections));
     }
-  },
-  async DeleteCollection() {
-    this.loading = true
-
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    await blockchain.deleteCollection(this.selectedCollection);
-
-
-    this.loading = false
   }
 })
 
