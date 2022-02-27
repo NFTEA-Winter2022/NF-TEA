@@ -70,6 +70,7 @@ public class TestCollectionNFTPersistence {
         //Creating a CollectionNFT
         CollectionNFT collectionNFT = new CollectionNFT();
         Listing listing = new Listing();
+        listing.setOwner(userAccount);
         collectionNFT.setTitle(title);
         collectionNFT.addListing(listing);
 

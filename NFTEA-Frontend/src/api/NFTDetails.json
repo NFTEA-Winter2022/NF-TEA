@@ -1,5 +1,5 @@
 {
-  "address": "0xbD1c8177844920cEcC81c0eFad89C6c6956c1ac3",
+  "address": "0x3F0fF7ac568026456799CB79386E9d894af08165",
   "abi": [
     {
       "inputs": [],
@@ -116,7 +116,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -135,7 +136,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -196,10 +198,16 @@
           "internalType": "string",
           "name": "caption",
           "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "CollectionName",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -218,72 +226,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getMediaByUser",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "publisherId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "publisherAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "mediaType",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "URL",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "permaLink",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "thumbnailURL",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "timestamp",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "publisherUsername",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "caption",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct NFTea.Media[]",
-          "name": "",
-          "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -307,60 +251,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "id",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "publisherId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "mediaType",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "URL",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "permaLink",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "thumbnailURL",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "timestamp",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "publisherUsername",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "caption",
-          "type": "string"
-        }
-      ],
-      "name": "mintNFTea",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -373,7 +265,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -392,7 +285,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -411,7 +305,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -499,7 +394,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -512,7 +408,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -531,7 +428,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -552,6 +450,257 @@
         }
       ],
       "name": "transferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "publisherId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "mediaType",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "URL",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "permaLink",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "thumbnailURL",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "timestamp",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "publisherUsername",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "caption",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "CollectionName",
+          "type": "string"
+        }
+      ],
+      "name": "mintNFTea",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getMediaByUser",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "publisherId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "publisherAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "mediaType",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "URL",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "permaLink",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "thumbnailURL",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "timestamp",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "publisherUsername",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "caption",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "CollectionName",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct NFTea.Media[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "CollectionName",
+          "type": "string"
+        }
+      ],
+      "name": "getMediaByCollection",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "publisherId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "publisherAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "mediaType",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "URL",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "permaLink",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "thumbnailURL",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "timestamp",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "publisherUsername",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "caption",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "CollectionName",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct NFTea.Media[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getCollectionByUser",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_nftId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_newCollectionName",
+          "type": "string"
+        }
+      ],
+      "name": "changeCollection",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_collectionName",
+          "type": "string"
+        }
+      ],
+      "name": "deleteCollection",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -19,6 +19,7 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
         string  timestamp;
         string  publisherUsername;
         string  caption;
+        string  CollectionName;
     }
 
     using Counters for Counters.Counter;
@@ -38,7 +39,8 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
         string memory  thumbnailURL,
         string memory  timestamp,
         string memory  publisherUsername,
-        string memory  caption
+        string memory  caption,
+        string memory  CollectionName
     )
     public
     {
@@ -58,7 +60,8 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
             thumbnailURL,
             timestamp,
             publisherUsername,
-            caption
+            caption,
+            CollectionName
         );
 
         _mint(msg.sender, id);
@@ -78,5 +81,58 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
         }
 
         return memoryArray;
+    }
+
+    function getMediaByCollection (string memory CollectionName) public view returns (Media[] memory) {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        Media[] memory memoryArray = new Media[](contentCountByUser[msg.sender]);
+        uint256 j = 0;
+
+        for(uint256 i = 1; i <= _contentCount.current() && j < contentCountByUser[msg.sender]; i++) {
+            if(contents[i].publisherAddress == msg.sender &&
+                keccak256(abi.encodePacked((contents[i].CollectionName))) == keccak256(abi.encodePacked((CollectionName)))) {
+                memoryArray[j] = contents[i];
+                j++;
+            }
+        }
+
+        return memoryArray;
+    }
+
+    function getCollectionByUser () public view returns (string[] memory) {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        string[] memory memoryArray = new string[](contentCountByUser[msg.sender]);
+        uint256 j = 0;
+
+        for(uint256 i = 1; i <= _contentCount.current() && j < contentCountByUser[msg.sender]; i++) {
+            if(contents[i].publisherAddress == msg.sender) {
+                memoryArray[j] = contents[i].CollectionName;
+                j++;
+            }
+        }
+
+        return memoryArray;
+    }
+
+    function changeCollection (uint256 _nftId, string memory _newCollectionName) public {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        contents[nftToMedia[_nftId]].CollectionName = _newCollectionName;
+    }
+
+    function deleteCollection (string memory _collectionName) public {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        uint256 j = 0;
+
+        for(uint256 i = 1; i <= _contentCount.current() && j < contentCountByUser[msg.sender]; i++) {
+            if(contents[i].publisherAddress == msg.sender
+                && keccak256(abi.encodePacked((contents[i].CollectionName))) == keccak256(abi.encodePacked((_collectionName)))) {
+                contents[i].CollectionName = "";
+                j++;
+            }
+        }
     }
 }
