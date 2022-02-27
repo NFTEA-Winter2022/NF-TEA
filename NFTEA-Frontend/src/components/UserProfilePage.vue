@@ -64,6 +64,7 @@
           <div v-for="item in this.listOfNFTS" :key="item[0]" >
             <img v-if="item[3] === 'IMAGE'" v-bind:src="item[4]" width="700" height="682"/>
             <p v-if="item[3] === 'IMAGE'"> {{ "NFT ID:"+item[0] }} </p>
+            <v-btn @Click="removeNFTFromCollection(item[0])">Remove From Collection</v-btn>
           </div>
         </ul>
       </v-card>
