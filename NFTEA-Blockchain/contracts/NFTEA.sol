@@ -115,4 +115,24 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
 
         return memoryArray;
     }
+
+    function changeCollection (uint256 _nftId, string memory _newCollectionName) public view {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        contents[_nftId].CollectionName = _newCollectionName;
+    }
+
+    function deleteCollection (string memory _collectionName) public view {
+        require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
+
+        uint256 j = 0;
+
+        for(uint256 i = 1; i <= _contentCount.current() && j < contentCountByUser[msg.sender]; i++) {
+            if(contents[i].publisherAddress == msg.sender
+                && keccak256(abi.encodePacked((contents[i].CollectionName))) == keccak256(abi.encodePacked((_collectionName)))) {
+                contents[i].CollectionName = "";
+                j++;
+            }
+        }
+    }
 }
