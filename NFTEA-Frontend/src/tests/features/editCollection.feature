@@ -7,9 +7,9 @@ Feature: Create NFT based on Instagram
     Given user is registered and logged-in
     Given the account is linked to an Instagram account
     Given the user has two posts on their Instagram account
-    Given user account is registered on the blockchain
-    Given A NFT contract has been deployed
-    Given two nfts with the same collection belong to the user
+    Given an user account is registered on the blockchain
+    Given A NFT contract has been deployedd
+    Given two new nfts with the same collection belong to the user
 
   Scenario: NFT collection change attempt (Normal Flow)
     When the user changes the collection of one of its NFTs
