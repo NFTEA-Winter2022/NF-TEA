@@ -74,7 +74,7 @@ export default {
         let userAddress = FacebookAPI.getCookie("address");
 
         try {
-            return await NFTContract.methods.deleteCollection(collectionName).call({from: userAddress.toString()});
+            return await NFTContract.methods.deleteCollection(collectionName).send({from: userAddress.toString(), gas: "6721975"})
         } catch (e) {
             console.log(e);
         }
@@ -83,7 +83,7 @@ export default {
         let userAddress = FacebookAPI.getCookie("address");
 
         try {
-            return await NFTContract.methods.changeCollection(nftId, collectionName).call({from: userAddress.toString()});
+            return await NFTContract.methods.changeCollection(nftId, collectionName).send({from: userAddress.toString(), gas: "6721975"})
         } catch (e) {
             console.log(e);
         }
