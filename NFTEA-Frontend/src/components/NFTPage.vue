@@ -5,17 +5,18 @@
       <div v-for="item in nft" :key="item[0]" >
         <img v-if="item[3] === 'IMAGE'" v-bind:src="item[4]" width="700" height="682"/>
         <p v-if="item[3] === 'IMAGE'"> {{ "NFT ID:"+item[0] }} </p>
-        <v-btn v-if="item[3] === 'IMAGE'" id="category" @click="showCreateCollection()">
-          <b>Add to a collection </b>
+        <v-card ref="form">
+          <v-card-text>
+            <v-text-field v-if="item[3] === 'IMAGE'">
+              label="Collection Name">
+            </v-text-field>
+          </v-card-text>
+        </v-card>
+        <v-btn v-if="item[3] === 'IMAGE'" id="category" @click="addToCollection()">
+          <b>Add to the collection </b>
         </v-btn>
       </div>
     </ul>
-
-    <div id="collectionCheckBox">
-      <h1>
-        HELLO I AM HIDDEN
-      </h1>
-    </div>
   </div>
 
 
@@ -31,6 +32,7 @@ export default ({
     media_type: '',
     username: '',
     media_url: '',
+  //
   }),
   methods: {
     async PutIgPic(){
