@@ -83,8 +83,10 @@ When('the user deletes its collection', async function () {
 });
 
 Then('the user keeps his two nfts', async function() {
-    const firstNFT = await contract.methods.contents("10923847");
-    const secondNFT = await contract.methods.contents("10923848");
+    const firstId = await contract.methods.nftToMedia(media[0].id).call({from: userAccounts[0].toString()});
+    const secondId = await contract.methods.nftToMedia(media[1].id).call({from: userAccounts[0].toString()});
+    const firstNFT = await contract.methods.contents(firstId).call({from: userAccounts[0].toString()});
+    const secondNFT = await contract.methods.contents(secondId).call({from: userAccounts[0].toString()});
 
     assert.equal(userAccounts[0].toString(), firstNFT.publisherAddress);
     assert.equal(userAccounts[0].toString(), secondNFT.publisherAddress);
