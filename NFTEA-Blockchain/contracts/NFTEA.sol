@@ -119,7 +119,7 @@ contract NFTea is ERC721 { // ERC721Royalty to be added in US036
     function changeCollection (uint256 _nftId, string memory _newCollectionName) public {
         require(contentCountByUser[msg.sender] != 0, "The user owns no NFTs.");
 
-        contents[_nftId].CollectionName = _newCollectionName;
+        contents[nftToMedia[_nftId]].CollectionName = _newCollectionName;
     }
 
     function deleteCollection (string memory _collectionName) public {
