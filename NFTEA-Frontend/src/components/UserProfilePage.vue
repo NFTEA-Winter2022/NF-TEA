@@ -95,9 +95,21 @@
             color="error"
             plain
             @click="DeleteCollection()"
+
         >
           Delete
         </v-btn>
+        <v-alert
+            :value="alert1"
+            shaped
+            dense
+            dark
+            prominent
+            type="success"
+            transition="scale-transition"
+        >
+          {{msg1}}
+        </v-alert>
       </v-sheet>
 
     </v-tab-item>
@@ -124,7 +136,9 @@ export default ({
     error: '',
     selectedCollection: '',
     listOfNFTS: [],
-    loading : false
+    loading : false,
+    msg1: "String",
+    alert1: false
   }),
 
   methods: {
@@ -133,7 +147,7 @@ export default ({
         var insta = await facebook.getInstagramContent();
         this.insta = insta.data;
         console.log("Insta: " + JSON.stringify(insta.data));
-        this.username = insta.data[1].username;
+        this.username = insta.data[0].username;
       } catch(e) {
         console.log(e);
         this.$router.push('/api-login')
@@ -183,7 +197,7 @@ export default ({
 
     NFT(item) {
       try {
-        return blockchain.mintNFT({...item, CollectionName: "Winter"});
+        return blockchain.mintNFT(item);
       } catch(e) {
         console.log(e)
       }
@@ -192,6 +206,8 @@ export default ({
     async DeleteCollection() {
       this.loading = true
       await new Promise(resolve => setTimeout(resolve, 3000))
+      this.alert1 = true
+      this.msg1="You deleted the collection,Refresh to see the result"
       await blockchain.deleteCollection(this.selectedCollection);
       this.loading = false
     },
