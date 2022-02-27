@@ -62,7 +62,7 @@ Given('the user has a post on their Instagram account', async function () {
 
 });
 
-Given("A NFT contract has been deployed", async function () {
+Given("a NFT contract has been deployed", async function () {
     const deployable = new web3.eth.Contract(abi)
         .deploy({
             data: bytecode,
@@ -75,7 +75,7 @@ Given("A NFT contract has been deployed", async function () {
     })
 });
 
-Given("user account is registered on the blockchain", async function () {
+Given("a user account is registered on the blockchain", async function () {
     userAccounts = await web3.eth.getAccounts();
 });
 

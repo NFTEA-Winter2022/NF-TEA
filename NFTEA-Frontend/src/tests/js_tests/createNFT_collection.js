@@ -15,13 +15,13 @@ Given("that the user has no collection with the name 'Spring' exists", async fun
                 exists = true;
             }
         })
-        assert(exists, false);
+        assert.equals(exists, false);
     } catch(e) {
         console.log(e);
     }
 });
 
-When("the user categorizes an NFT as 'Spring' and clicks add to collection", async function () {
+When("the user categorizes the NFT as 'Spring' and clicks add to collection", async function () {
     await contract.methods.changeCollection("10923847", "Spring");
 });
 
@@ -36,8 +36,8 @@ Then("the NFT shall be linked to the created collection", async function () {
             exists = true;
         }
     })
-    assert(exists, true);
-    assert(nft[0], "10923847");
+    assert.equals(exists, true);
+    assert.equals(nft[0], "10923847");
 });
 
 

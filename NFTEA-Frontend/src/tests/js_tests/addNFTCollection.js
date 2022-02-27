@@ -3,7 +3,6 @@ const Axios = require("axios");
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { abi, bytecode } = require('../../../../NFTEA-Blockchain/build/contracts/NFTEA.json')
 const ganache = require('ganache-cli');
-const blockchain = require("@/api/blockchain"); // Mockup of eth network
 const web3 = new (require('web3'))(ganache.provider());
 
 let axios = Axios.create({
@@ -28,7 +27,7 @@ Given('the user has two post on their Instagram account', async function () {
         username: "Tornade99",
         caption: "We all need sleep, running on caffeine rn",
 
-    }
+    },
     media2 = {
         id: "10923848",
         publisherId: "1109238471",
@@ -62,10 +61,10 @@ When('the user categorizes an NFT as \'Spring\' and clicks add to collection', a
 
 Then('the NFT shall be linked to the collection', async function () {
     var NFT = await contract.methods.getNFT("10923848")
-    assert(NFT[10], "Spring")
+    assert.equals(NFT[10], "Spring")
 });
 
 Then('the collection shall have two NFTs linked', async function () {
     var array = await contract.methods.getNFTsByCollection("Spring");
-    assert(array.length, 2);
+    assert.equals(array.length, 2);
 });
