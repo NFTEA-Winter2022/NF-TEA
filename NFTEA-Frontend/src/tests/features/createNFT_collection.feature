@@ -8,10 +8,11 @@ Feature: Create NFT collection
     Given the account is linked to an Instagram account
     Given the user has a post on their Instagram account
     Given user account is registered on the blockchain
-    Given A NFT contract has been deployed
+    Given Said NFT contract has been deployed
+    Given that the user has one NFT linked to their account
     Given that the user has no collection with the name 'Spring' exists
 
   Scenario: Create NFT collection (Normal Flow)
-    When the user categorizes an NFT as 'Spring' and clicks add to collection
+    When said user categorizes an NFT as 'Spring' and clicks add to collection
     Then the NFT shall be linked to the created collection
 

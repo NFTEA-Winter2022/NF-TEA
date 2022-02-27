@@ -81,15 +81,18 @@ Given("a user account is registered on the blockchain", async function () {
 
 
 When('the user creates an NFT from one of their photos of their Instagram account', async function () {
+    let userAccounts = await web3.eth.getAccounts();
 
     await contract.methods.mintNFTea(media.id, media.publisherId, media.media_type, media.media_url, media.permalink,
-        media.thumbnail_url, media.timestamp, media.username, media.caption)
+        media.thumbnail_url, media.timestamp, media.username, media.caption, "Winter")
         .send({from: userAccounts[0].toString(), gas: "6721975"})
-
-    return true;
 });
 
 Then('The NFT\'s publisher is the user', async function() {
-    const singleNFT = await contract.methods.contents(1);
-    assert(userAccounts[0].toString(), singleNFT.publisherAddress);
+    let userAccounts = await web3.eth.getAccounts();
+
+    const nftID = await contract.methods.nftToMedia(media.id).call({from: userAccounts[0].toString()});
+    const nft = await contract.methods.contents(nftID).call({from: userAccounts[0].toString()});
+
+    assert.equal(media.publisherId, nft.publisherId);
 });

@@ -5,16 +5,11 @@ const { abi, bytecode } = require('../../../../NFTEA-Blockchain/build/contracts/
 const ganache = require('ganache-cli');
 const web3 = new (require('web3'))(ganache.provider());
 
-let axios = Axios.create({
-    baseURL: `http://localhost:8081/`
-})
-
 let contract;
-let userAccounts;
 let media1;
 let media2;
 
-Given('the user has two post on their Instagram account', async function () {
+Given('said user has two posts on their Instagram account', async function () {
 
     media1 = {
         id: "10923847",
@@ -41,7 +36,23 @@ Given('the user has two post on their Instagram account', async function () {
     }
 });
 
+
+Given("The NFT contract has been deployed", async function () {
+    const deployable = new web3.eth.Contract(abi)
+        .deploy({
+            data: bytecode,
+            arguments: []
+        })
+
+    contract = await deployable.send({
+        from: (await web3.eth.getAccounts())[0],
+        gas: await deployable.estimateGas()
+    })
+});
+
 Given('that the user has two NFTS linked to their account', async function () {
+    let userAccounts =  await web3.eth.getAccounts();
+
     await contract.methods.mintNFTea(media1.id, media1.publisherId, media1.media_type, media1.media_url, media1.permalink,
         media1.thumbnail_url, media1.timestamp, media1.username, media1.caption, "None")
         .send({from: userAccounts[0].toString(), gas: "6721975"})
@@ -52,19 +63,27 @@ Given('that the user has two NFTS linked to their account', async function () {
 });
 
 Given('that the user has a Spring collection with one NFT inside', async function () {
-    await contract.methods.changeCollection("10923847", "Spring");
+    let userAccounts =  await web3.eth.getAccounts();
+    await contract.methods.changeCollection("10923847", "Spring").send({from: userAccounts[0].toString()});
 });
 
 When('the user categorizes an NFT as \'Spring\' and clicks add to collection', async function() {
-    await contract.methods.changeCollection("10923848", "Spring");
+    let userAccounts =  await web3.eth.getAccounts();
+    await contract.methods.changeCollection("10923848", "Spring").send({from: userAccounts[0].toString()});
 });
 
 Then('the NFT shall be linked to the collection', async function () {
-    var NFT = await contract.methods.getNFT("10923848")
-    assert.equals(NFT[10], "Spring")
+    let userAccounts =  await web3.eth.getAccounts();
+
+    const nftID = await contract.methods.nftToMedia(media2.id).call({from: userAccounts[0].toString()});
+    const nft = await contract.methods.contents(nftID).call({from: userAccounts[0].toString()});
+
+    assert.equal(nft.CollectionName, "Spring")
 });
 
 Then('the collection shall have two NFTs linked', async function () {
-    var array = await contract.methods.getNFTsByCollection("Spring");
-    assert.equals(array.length, 2);
+    let userAccounts =  await web3.eth.getAccounts();
+
+    let array = await contract.methods.getMediaByCollection("Spring").call({from: userAccounts[0].toString()});
+    assert.equal(array.length, 2);
 });

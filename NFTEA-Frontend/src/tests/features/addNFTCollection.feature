@@ -7,9 +7,9 @@ Feature: Add NFT to a collection
   Background:
     Given user is registered and logged-in
     Given the account is linked to an Instagram account
-    Given the user has two posts on their Instagram account
+    Given said user has two posts on their Instagram account
     Given user account is registered on the blockchain
-    Given A NFT contract has been deployed
+    Given The NFT contract has been deployed
     Given that the user has two NFTS linked to their account
     Given that the user has a Spring collection with one NFT inside
 
