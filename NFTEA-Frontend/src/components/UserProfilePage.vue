@@ -1,22 +1,23 @@
 <template>
   <div>
-  <div class="UserProfile">
-    <h1>User Profile Page</h1>
-    <h2>Username: {{ username }}</h2>
-    <ul id="images">
-    <div v-for="item in insta" :key="item.id" >
-      <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>
-      <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>
-      <v-btn id="createNFTBtn" @click="NFT(item)">
-        NFTEAFY!
-      </v-btn>
-    </div>
-    </ul>
-  </div>
+<!--  <div class="UserProfile">-->
+<!--    <h1>User Profile Page</h1>-->
+<!--    <h2>Username: {{ username }}</h2>-->
+<!--    <ul id="images">-->
+<!--    <div v-for="item in insta" :key="item.id" >-->
+<!--      <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>-->
+<!--      <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>-->
+<!--      <v-btn id="createNFTBtn" @click="NFT(item)">-->
+<!--        NFTEAFY!-->
+<!--      </v-btn>-->
+<!--    </div>-->
+<!--    </ul>-->
+<!--  </div>-->
 
   <v-tabs v-model="tab" background-color="transparent" grow>
       <v-tab href="#tab-1"> Instagram Content </v-tab>
       <v-tab href="#tab-2"> NFT Collections </v-tab>
+      <v-tab href="#tab-3" v-if = "selectedCollection"> {{selectedCollection}} </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item :key="1" value="tab-1">
@@ -30,6 +31,9 @@
                 height="682"
               />
               <p v-if="item.media_type === 'IMAGE'">{{ item.caption }}</p>
+              <v-btn v-if="item.media_type === 'IMAGE'" id="createNFTBtn" @click="NFT(item)">
+                <b>NFTEAFY!</b>
+              </v-btn>
             </div>
           </ul>
         </v-card>
@@ -43,17 +47,30 @@
               :key="collection.collectionID"
             >
               <v-list-item-content>
-                <v-list-item-title
-                  v-text="collection.title"
-                ></v-list-item-title>
-                <v-list-item-subtitle
-                  v-text="collection.collectionID"
-                ></v-list-item-subtitle>
+                <v-btn @click="getNFTByCollection(collection)">
+                  <v-list-item-title
+                      v-text="collection"
+                  ></v-list-item-title>
+                </v-btn>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card>
       </v-tab-item>
+
+    <v-tab-item :key="3" value="tab-3">
+      <v-card flat>
+        <ul id="image">
+          <div v-for="item in this.listOfNFTS" :key="item[0]" >
+            <img v-if="item[3] === 'IMAGE'" v-bind:src="item[4]" width="700" height="682"/>
+            <p v-if="item[3] === 'IMAGE'"> {{ "NFT ID:"+item[0] }} </p>
+          </div>
+        </ul>
+      </v-card>
+<!--      <div>-->
+<!--        Hello-->
+<!--      </div>-->
+    </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -73,6 +90,10 @@ export default ({
     media_url: '',
     collections: [],
     tab: null,
+    listing: [],
+    error: '',
+    selectedCollection: '',
+    listOfNFTS: [],
   }),
 
   methods: {
@@ -103,27 +124,51 @@ export default ({
           console.log(e);
         });
     },
-  
+
+
+    // CreateNFTandListing(item) {
+    //     var nft = this.NFT(item);
+    //     let title = "Summer vibes~";
+    //     let nftLink = "17845582262609336";
+    //     let userid = "17841404551416684";
+    //     console.log(nft.data);
+    //     try {
+    //       this.createInitialNFTListing(title, nftLink, userid);
+    //     } catch(e) {
+    //       console.log(e);
+    //     }
+    // },
+    //
+    // createInitialNFTListing(title, nftLink, userid) {
+    //     this.$http.post("/UserProfilePage/createListing?userid=" + userid + "&title=" + title + "&nftlink=" + nftLink)
+    //     .then(response => {
+    //       this.listing = response.data;
+    //     }).catch(e => {
+    //       this.error = e.response;
+    //       console.log(e);
+    //     })
+    //
+    // },
+
     NFT(item) {
       try {
-        // let media = {
-        //   id: "17845582262609336",
-        //   publisherId: "1234567",
-        //   media_type: "IMAGE",
-        //   media_url: "https://scontent.cdninstagram.com/v/t51.29350-15/206753475_4211925482186688_8667004301827108956_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=8ae9d6&_nc_ohc=xamL0zvoP3MAX-ocUXw&_nc_ht=scontent.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AT8o-dgBxirB2GkzrEP1geiKf6Uea1Q2R5v08rLYdAmrBQ&oe=621F4BB9",
-        //   permalink: "https://www.instagram.com/p/CQjIASNgkVCPW1uejAnRiazoT40P43UsQYzUzQ0/",
-        //   thumbnail_url: "none",
-        //   timestamp: "2021-06-25T15:51:08+0000",
-        //   username: "Danurbae",
-        //   caption: "Summer vibes~",
-        // }
-        blockchain.mintNFT(item);
+        return blockchain.mintNFT({...item, CollectionName: "Winter"});
       } catch(e) {
         console.log(e)
       }
+    },
+
+    async getNFTByCollection(collection)  {
+      try {
+        this.listOfNFTS = await blockchain.getNFTsByCollection(collection);
+        this.selectedCollection = collection;
+        console.log(JSON.stringify(this.listOfNFTS));
+      } catch(e) {
+        console.log(e);
+      }
     }
   },
-  beforeMount() {
+  async beforeMount() {
     let cookies = document.cookie;
     let split = cookies.split(';');
     let log = false;
@@ -133,9 +178,15 @@ export default ({
     }
     if (!log) window.location.replace('/');
 
-    else this.verifyIGContent();
-  }
+    else {
+      await this.verifyIGContent();
 
+      // Display collection names
+      this.collections = [...new Set(await blockchain.getCollectionNamesForUser())];
+      // this.collections = this.collections.splice(this.collections.indexOf('None') -1, 1)
+      console.log(JSON.stringify(this.collections));
+    }
+  }
 })
 
 </script>

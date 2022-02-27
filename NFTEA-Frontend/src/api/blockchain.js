@@ -25,7 +25,8 @@ export default {
                 media.thumbnail_url || "None",
                 media.timestamp,
                 media.username,
-                media.caption || "None"
+                media.caption || "None",
+                media.CollectionName || "None"
             ).send({from: userAddress.toString(), gas: "6721975"})
         } catch (e) {
             console.log(e);
@@ -50,5 +51,25 @@ export default {
         } catch (e) {
             console.log(e);
         }
-    }
+    },
+
+    async getNFTsByCollection(CollectionName) {
+        let userAddress = FacebookAPI.getCookie("address");
+        console.log(CollectionName);
+        try {
+            return await NFTContract.methods.getMediaByCollection(CollectionName).call({from: userAddress.toString()});
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    async getCollectionNamesForUser() {
+        let userAddress = FacebookAPI.getCookie("address");
+
+        try {
+            return await NFTContract.methods.getCollectionByUser().call({from: userAddress.toString()});
+        } catch (e) {
+            console.log(e);
+        }
+    },
 }
