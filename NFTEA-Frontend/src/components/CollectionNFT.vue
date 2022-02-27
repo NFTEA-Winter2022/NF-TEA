@@ -56,12 +56,17 @@
 <script>
 export default {
   name: "CollectionNFT",
+  props: {
+      collectionID: {
+          type: Number,
+          required: true,
+      }
+  },
   async created() {
     this.getCollection(this.collectionID);
   },
   data() {
     return {
-      collectionID: "",
       collectionTitle: "",
       headers: [
         {

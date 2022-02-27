@@ -29,7 +29,8 @@
           <v-list subheader two-line>
             <v-list-item
               v-for="collection in collections"
-              :key="collection.collectionID"
+              v-bind:key="collection.collectionID"
+              :to="{name: 'CollectionNFT', params: {collectionID: key}}"
             >
               <v-list-item-content>
                 <v-list-item-title
