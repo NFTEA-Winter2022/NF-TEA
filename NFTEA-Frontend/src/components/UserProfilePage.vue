@@ -70,6 +70,36 @@
 <!--      <div>-->
 <!--        Hello-->
 <!--      </div>-->
+
+      <v-sheet
+          class="px-7 pt-7 pb-4 mx-auto text-center d-inline-block"
+          color="blue-grey darken-3"
+          dark
+      >
+        <div class="grey--text text--lighten-1 text-body-2 mb-4">
+          Are you sure you want to delete this collection?
+        </div>
+
+        <v-btn
+            :disabled="loading"
+            class="ma-1"
+            color="grey"
+            plain
+        >
+          Cancel
+        </v-btn>
+
+        <v-btn
+            :loading="loading"
+            class="ma-1"
+            color="error"
+            plain
+            @click="DeleteCollection()"
+        >
+          Delete
+        </v-btn>
+      </v-sheet>
+
     </v-tab-item>
     </v-tabs-items>
   </div>
@@ -94,6 +124,7 @@ export default ({
     error: '',
     selectedCollection: '',
     listOfNFTS: [],
+    loading : false
   }),
 
   methods: {
@@ -186,6 +217,15 @@ export default ({
       // this.collections = this.collections.splice(this.collections.indexOf('None') -1, 1)
       console.log(JSON.stringify(this.collections));
     }
+  },
+  async DeleteCollection() {
+    this.loading = true
+
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    await blockchain.deleteCollection(this.selectedCollection);
+
+
+    this.loading = false
   }
 })
 

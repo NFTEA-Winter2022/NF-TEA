@@ -52,7 +52,6 @@ export default {
             console.log(e);
         }
     },
-
     async getNFTsByCollection(CollectionName) {
         let userAddress = FacebookAPI.getCookie("address");
         console.log(CollectionName);
@@ -62,7 +61,6 @@ export default {
             console.log(e);
         }
     },
-
     async getCollectionNamesForUser() {
         let userAddress = FacebookAPI.getCookie("address");
 
@@ -72,4 +70,23 @@ export default {
             console.log(e);
         }
     },
+    async deleteCollection(collectionName) {
+        let userAddress = FacebookAPI.getCookie("address");
+
+        try {
+            return await NFTContract.methods.deleteCollection(collectionName).call({from: userAddress.toString()});
+        } catch (e) {
+            console.log(e);
+        }
+    },
+    async changeCollection(nftId, collectionName) {
+        let userAddress = FacebookAPI.getCookie("address");
+
+        try {
+            return await NFTContract.methods.changeCollection(nftId, collectionName).call({from: userAddress.toString()});
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
 }
