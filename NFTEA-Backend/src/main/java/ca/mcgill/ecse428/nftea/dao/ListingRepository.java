@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ListingRepository extends CrudRepository<Listing,Long> {
     Listing findListingByListingID(Long listingID);
+    Listing findListingBynftLink(String nftLink);
+    Boolean existsBynftLink(String nftLink);
 }
