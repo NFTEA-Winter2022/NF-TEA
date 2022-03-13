@@ -1,11 +1,9 @@
 package ca.mcgill.ecse428.nftea.service;
 
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
-import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +23,23 @@ public class ListingService {
         return aListing;
     }
 
+    @Transactional
+    public Listing editTitle(Long ID, String title) throws IllegalArgumentException {
+        listingRepository.findListingByListingID(ID).setTitle(title);
+        return listingRepository.findListingByListingID(ID);
+    }
+
+    @Transactional
+    public Listing editPrice(Long ID, Long price) throws IllegalArgumentException {
+        listingRepository.findListingByListingID(ID).setPrice(price);
+        return listingRepository.findListingByListingID(ID);
+    }
+
+    @Transactional
+    public Listing editNftLink(Long ID, String nftLink) throws IllegalArgumentException {
+        listingRepository.findListingByListingID(ID).setNftLink(nftLink);
+        return listingRepository.findListingByListingID(ID);
+    }
 
 
 }
