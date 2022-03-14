@@ -3,8 +3,16 @@ package ca.mcgill.ecse428.nftea.dao;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ListingRepository extends CrudRepository<Listing,Long> {
+import java.util.ArrayList;
+
+public interface ListingRepository extends CrudRepository<Listing, Long> {
     Listing findListingByListingID(Long listingID);
-    Listing findListingBynftLink(String nftLink);
+
+    ArrayList<Listing> findListingBytitle(String title);
+
+    ArrayList<Listing> findListingByprice(Long price);
+
+    ArrayList<Listing> findListingBynftLink(String nftLink);
+
     Boolean existsBynftLink(String nftLink);
 }
