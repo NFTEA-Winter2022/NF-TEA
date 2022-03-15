@@ -71,7 +71,6 @@ export default {
   name: "MarketPage",
   components: { Search },
   data: () => ({
-    columnCount: 4,
     listings: [],
     filter: {
       currentFilter: "",
