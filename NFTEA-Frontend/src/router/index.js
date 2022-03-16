@@ -10,7 +10,7 @@ import UserProfilePage from "@/components/UserProfilePage";
 import Login from "@/components/Login";
 import NFTPage from "@/components/NFTPage";
 import NFTCollectionPage from "@/components/NFTCollectionPage";
-
+import MarketPage from "@/components/Market/MarketPage";
 
 Vue.use(VueRouter)
 
@@ -74,6 +74,12 @@ const routes = [
     path: '/NFTCollection',
     name: 'NFTCollection',
     component: NFTCollectionPage
+
+  },
+  {
+    path: '/Market',
+    name: 'Market',
+    component: MarketPage
 
   }
 ]
