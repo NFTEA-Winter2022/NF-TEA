@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class ListingController {
@@ -36,6 +39,45 @@ public class ListingController {
         }
         return new ResponseEntity<>(DtoUtils.convertToDto(listing), HttpStatus.OK);
     }
+
+    @GetMapping(value = {"/SearchListingPage/ListingID", "/SearchListingPage/ListingID/"})
+    public ResponseEntity getListingWithID(@RequestParam("listingID") Long listingID){
+        try{
+            return new ResponseEntity<>(DtoUtils.convertToDto(listingService.getListingWithId(listingID)), HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = {"/SearchListingPage/Title", "/SearchListingPage/Title/"})
+    public ResponseEntity getListingWithTitle(@RequestParam("title") String title ){
+        try{
+            List<Listing> listings = listingService.getListingsWithTitle(title);
+            return new ResponseEntity<>(listings.stream().map(l -> DtoUtils.convertToDto(l)).collect(Collectors.toList()), HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = {"/SearchListingPage/NFTLink", "/SearchListingPage/NFTLink"})
+    public ResponseEntity getListingWithNFTLink(@RequestParam("NFTLink") String NFTLink ){
+        try{
+            return new ResponseEntity<>(DtoUtils.convertToDto(listingService.getListingWithNFTLink(NFTLink)), HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = {"/SearchListingPage/Owner", "/SearchListingPage/Owner/"})
+    public ResponseEntity getListingWithOwner(@RequestParam("Owner") UserAccount Owner ){
+        try{
+            List<Listing> listings = listingService.getListingsWithOwner(Owner);
+            return new ResponseEntity<>(listings.stream().map(l -> DtoUtils.convertToDto(l)).collect(Collectors.toList()), HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 
 
 }
