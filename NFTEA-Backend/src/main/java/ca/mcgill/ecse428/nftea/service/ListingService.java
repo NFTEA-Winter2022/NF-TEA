@@ -34,11 +34,15 @@ public class ListingService {
         if(listingID < 0){
             error += "Listing ID must be positive";
         }
+        Listing listing = listingRepository.findListingByListingID(listingID);
+        if (listing == null){
+            error += "Listing not found";
+        }
         error = error.trim();
         if (error.length() > 0){
             throw new IllegalArgumentException(error);
         }
-        return listingRepository.findListingByListingID(listingID);
+        return listing;
     }
 
     @Transactional
@@ -47,11 +51,17 @@ public class ListingService {
         if(title == null){
             error += "Please enter a title";
         }
+
+        List<Listing> listings = listingRepository.findListingByTitle(title);
+        if (listings.size() == 0){
+            error += "Listings not found";
+        }
         error = error.trim();
         if (error.length() > 0){
             throw new IllegalArgumentException(error);
         }
-        return listingRepository.findListingByTitle(title);
+
+        return listings;
     }
 
     @Transactional
@@ -60,11 +70,16 @@ public class ListingService {
         if(NFTLink == null){
             error += "Please enter a NFT link";
         }
+        Listing listing = listingRepository.findListingBynftLink(NFTLink);
+        if (listing == null){
+            error += "Listing not found";
+        }
         error = error.trim();
         if (error.length() > 0){
             throw new IllegalArgumentException(error);
         }
-        return listingRepository.findListingBynftLink(NFTLink);
+
+        return listing;
     }
 
     @Transactional
@@ -73,11 +88,15 @@ public class ListingService {
         if(userAccount == null){
             error += "Please enter a valid user account";
         }
+        List<Listing> listings = listingRepository.findListingByOwner(userAccount);
+        if (listings.size() == 0){
+            error += "Listings not found";
+        }
         error = error.trim();
         if (error.length() > 0){
             throw new IllegalArgumentException(error);
         }
-        return listingRepository.findListingByOwner(userAccount);
+        return listings;
     }
 
     @Transactional
@@ -86,11 +105,20 @@ public class ListingService {
         if(title == null){
             error += "Please enter a title";
         }
+        List<Listing> listings = listingRepository.findListingByTitleContains(title);
+        if (listings.size() == 0){
+            error += "Listings not found";
+        }
         error = error.trim();
         if (error.length() > 0){
             throw new IllegalArgumentException(error);
         }
-        return listingRepository.findListingByTitleContains(title);
+        return listings;
+    }
+
+    @Transactional
+    public void clear() {
+        listingRepository.deleteAll();
     }
 
 
