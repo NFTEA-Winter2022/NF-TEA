@@ -26,100 +26,86 @@ public class ListingService {
         return aListing;
     }
 
-
     @Transactional
-    public Listing getListingWithId(Long listingID){
-        String error = "";
-        if(listingID < 0){
-            error += "Listing ID must be positive";
+    public Listing editTitle(Long ID, String title) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
         }
-        Listing listing = listingRepository.findListingByListingID(listingID);
-        if (listing == null){
-            error += "Listing not found";
+        if(title == null || title == "") {
+            throw new IllegalArgumentException("title cannot be empty");
         }
-        error = error.trim();
-        if (error.length() > 0){
-            throw new IllegalArgumentException(error);
-        }
-        return listing;
+
+        listing.setTitle(title);
+        return listingRepository.save(listing);
     }
 
     @Transactional
-    public List<Listing> getListingsWithTitle(String title){
-        String error = "";
-        if(title == null){
-            error += "Please enter a title";
+    public Listing editPrice(Long ID, Long price) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(price < 0) {
+            throw new IllegalArgumentException("price cannot be negative");
         }
 
-        List<Listing> listings = listingRepository.findListingBytitle(title);
-        if (listings.size() == 0){
-            error += "Listings not found";
-        }
-        error = error.trim();
-        if (error.length() > 0){
-            throw new IllegalArgumentException(error);
-        }
-
-        return listings;
+        listing.setPrice(price);
+        return listingRepository.save(listing);
     }
 
     @Transactional
-    public ArrayList<Listing> getListingWithNFTLink (String NFTLink){
-        String error = "";
-        if(NFTLink == null){
-            error += "Please enter a NFT link";
+    public Listing editNftLink(Long ID, String nftLink) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
         }
-        ArrayList<Listing> listing = listingRepository.findListingBynftLink(NFTLink);
-        if (listing == null){
-            error += "Listing not found";
-        }
-        error = error.trim();
-        if (error.length() > 0){
-            throw new IllegalArgumentException(error);
+        if(nftLink == null || nftLink == "") {
+            throw new IllegalArgumentException("NFT link cannot be empty");
         }
 
-        return listing;
+        listing.setNftLink(nftLink);
+        return listingRepository.save(listing);
     }
 
     @Transactional
-    public List<Listing> getListingsWithOwner (UserAccount userAccount){
-        String error = "";
-        if(userAccount == null){
-            error += "Please enter a valid user account";
-        }
-        List<Listing> listings = listingRepository.findListingByOwner(userAccount);
-        if (listings.size() == 0){
-            error += "Listings not found";
-        }
-        error = error.trim();
-        if (error.length() > 0){
-            throw new IllegalArgumentException(error);
+    public ArrayList<Listing> getListings() {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findAll()) {
+            listings.add(mylisting);
         }
         return listings;
     }
 
-    @Transactional
-    public List<Listing> getListingsContainingTitle (String title){
-        String error = "";
-        if(title == null){
-            error += "Please enter a title";
-        }
-        List<Listing> listings = listingRepository.findListingByTitleContains(title);
-        if (listings.size() == 0){
-            error += "Listings not found";
-        }
-        error = error.trim();
-        if (error.length() > 0){
-            throw new IllegalArgumentException(error);
+    public ArrayList<Listing> getListingsByTitle(String title) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingBytitle(title)) {
+            listings.add(mylisting);
         }
         return listings;
     }
+
+    public ArrayList<Listing> getListingsByPrice(long price) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingByprice(price)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+    public ArrayList<Listing> getListingsByNFTLink(String nftLink) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingBynftLink(nftLink)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+
 
     @Transactional
     public void clear() {
         listingRepository.deleteAll();
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse428.nftea.service;
 
+import ca.mcgill.ecse428.nftea.dao.ListingRepository;
 import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
 import ca.mcgill.ecse428.nftea.exception.WrongInputException;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
@@ -15,6 +16,9 @@ public class UserAccountService {
 
     @Autowired
     UserAccountRepository userAccountRepository;
+
+    @Autowired
+    ListingRepository listingRepository;
 
     @Transactional
     public UserAccount createUser(String firstName,String lastName,String userName,String userEmail,String password) throws IllegalArgumentException {
@@ -94,6 +98,7 @@ public class UserAccountService {
 
     @Transactional
     public void clear() {
+        listingRepository.deleteAll();
         userAccountRepository.deleteAll();
 	}
 

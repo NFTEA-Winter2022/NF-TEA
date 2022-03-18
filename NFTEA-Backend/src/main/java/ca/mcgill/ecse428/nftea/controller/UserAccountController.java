@@ -15,39 +15,39 @@ public class UserAccountController {
     @Autowired
     private UserAccountService userAccountService;
 
-    @PostMapping(value = {"/user-account","/user-account/"})
+    @PostMapping(value = {"/user-account", "/user-account/"})
     public ResponseEntity CreateCustomerAccount(
-    		@RequestParam String firstname,
-    		@RequestParam String lastname, 
-    		@RequestParam String username, 
-    		@RequestParam String email, 
-    		@RequestParam String password) {
+            @RequestParam String firstname,
+            @RequestParam String lastname,
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String password) {
         UserAccount user;
 
-        try{
-            user=userAccountService.createUser(firstname,lastname,username,email,password);
+        try {
+            user = userAccountService.createUser(firstname, lastname, username, email, password);
         } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
         }
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
-    
+
     @DeleteMapping(value = {"/user-account", "/user-account/"})
-	public ResponseEntity<String> deleteLibrarianByUsername(@RequestParam Long id, @RequestParam String password) {
-		try {
-			userAccountService.deleteUser(id, password);
-		} catch (Exception msg) {
+    public ResponseEntity<String> deleteLibrarianByUsername(@RequestParam Long id, @RequestParam String password) {
+        try {
+            userAccountService.deleteUser(id, password);
+        } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
-		}
-		return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
-	}
+        }
+        return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
+    }
 
 
-    @PutMapping(value = {"/user-account/editPassword/{id}","/user-account/editPassword/{id}"})
-    public ResponseEntity editAccountPassword(@PathVariable("id") String id, @RequestParam String old_password, @RequestParam String new_password ) {
+    @PutMapping(value = {"/user-account/editPassword/{id}", "/user-account/editPassword/{id}"})
+    public ResponseEntity editAccountPassword(@PathVariable("id") String id, @RequestParam String old_password, @RequestParam String new_password) {
         UserAccount user;
-        try{
-            user = userAccountService.setNewPassword((Long.parseLong(id)),old_password,new_password);
+        try {
+            user = userAccountService.setNewPassword((Long.parseLong(id)), old_password, new_password);
 
         } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
@@ -55,30 +55,30 @@ public class UserAccountController {
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/user-account/editUsername/{id}","/user-account/editUsername/{id}"})
+    @PutMapping(value = {"/user-account/editUsername/{id}", "/user-account/editUsername/{id}"})
     public ResponseEntity editAccountUsername(@PathVariable("id") String id, @RequestParam String new_username) {
         UserAccount user;
-        try{
-            user = userAccountService.setNewUsername((Long.parseLong(id)),new_username);
+        try {
+            user = userAccountService.setNewUsername((Long.parseLong(id)), new_username);
         } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
         }
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
 
-    private UserAccountDto covertDto(UserAccount userAccount){
-    	return new UserAccountDto(
-    			userAccount.getId(),
-    			userAccount.getFirstName(),
-    			userAccount.getLastName(),
-    			userAccount.getUserEmail(),
-    			userAccount.getUsername(),
-    			userAccount.getPassword(),
-    			userAccount.getIsLoggedIn(),
-    			userAccount.getLoginAttempts(),
-    			userAccount.getLastAttempt(),
-    			userAccount.getUserRole()
-			);
+    private UserAccountDto covertDto(UserAccount userAccount) {
+        return new UserAccountDto(
+                userAccount.getId(),
+                userAccount.getFirstName(),
+                userAccount.getLastName(),
+                userAccount.getUserEmail(),
+                userAccount.getUsername(),
+                userAccount.getPassword(),
+                userAccount.getIsLoggedIn(),
+                userAccount.getLoginAttempts(),
+                userAccount.getLastAttempt(),
+                userAccount.getUserRole()
+        );
     }
 
 }
