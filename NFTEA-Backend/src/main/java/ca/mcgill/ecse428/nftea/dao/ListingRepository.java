@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public interface ListingRepository extends CrudRepository<Listing,Long> {
     Listing findListingByListingID(Long listingID);
     Boolean existsBynftLink(String nftLink);
-    ArrayList<Listing> findListingByTitle(String title);
+    ArrayList<Listing> findListingBytitle(String title);
     ArrayList<Listing> findListingByTitleContains(String title);
     ArrayList<Listing> findListingByOwner(UserAccount userAccount);
-    ArrayList<Listing> findListingByPrice(Long price);
+    ArrayList<Listing> findListingByprice(Long price);
     ArrayList<Listing> findListingBynftLink(String nftLink);
 }
+

@@ -1,11 +1,9 @@
 package ca.mcgill.ecse428.nftea.service;
 
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
-import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +51,7 @@ public class ListingService {
             error += "Please enter a title";
         }
 
-        List<Listing> listings = listingRepository.findListingByTitle(title);
+        List<Listing> listings = listingRepository.findListingBytitle(title);
         if (listings.size() == 0){
             error += "Listings not found";
         }
