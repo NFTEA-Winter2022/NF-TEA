@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -65,12 +66,12 @@ public class ListingService {
     }
 
     @Transactional
-    public Listing getListingWithNFTLink (String NFTLink){
+    public ArrayList<Listing> getListingWithNFTLink (String NFTLink){
         String error = "";
         if(NFTLink == null){
             error += "Please enter a NFT link";
         }
-        Listing listing = listingRepository.findListingBynftLink(NFTLink);
+        ArrayList<Listing> listing = listingRepository.findListingBynftLink(NFTLink);
         if (listing == null){
             error += "Listing not found";
         }

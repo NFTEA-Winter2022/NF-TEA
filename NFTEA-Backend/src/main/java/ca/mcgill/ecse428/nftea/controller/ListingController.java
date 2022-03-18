@@ -62,7 +62,8 @@ public class ListingController {
     @GetMapping(value = {"/SearchListingPage/NFTLink", "/SearchListingPage/NFTLink"})
     public ResponseEntity getListingWithNFTLink(@RequestParam("NFTLink") String NFTLink ){
         try{
-            return new ResponseEntity<>(DtoUtils.convertToDto(listingService.getListingWithNFTLink(NFTLink)), HttpStatus.OK);
+            List<Listing> listings = listingService.getListingWithNFTLink(NFTLink);
+            return new ResponseEntity<>(listings.stream().map(l -> DtoUtils.convertToDto(l)).collect(Collectors.toList()), HttpStatus.OK);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

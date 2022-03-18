@@ -137,7 +137,7 @@ public class SearchListingsStepDefinitions {
     @When("the user searches a listing with NFT link {string}")
     public void the_user_searches_a_listing_with_NFT_link(String link){
         try{
-            listing = listingService.getListingWithNFTLink(link);
+            listings = listingService.getListingWithNFTLink(link);
         }
         catch (Exception e){
             error = e.getMessage();
@@ -147,7 +147,7 @@ public class SearchListingsStepDefinitions {
 
     @Then("a listing should be return with NFT link {string}")
     public void a_listing_should_be_return(String link){
-        assertEquals(listing.getNftLink(), link);
+        assertEquals(listings.get(0).getNftLink(), link);
     }
 
 
