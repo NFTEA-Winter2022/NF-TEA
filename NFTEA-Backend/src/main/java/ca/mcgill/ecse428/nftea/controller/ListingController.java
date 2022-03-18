@@ -88,9 +88,7 @@ public class ListingController {
         ArrayList<Listing> listings = new ArrayList<>();
         ArrayList<ListingDto> listingDto = new ArrayList<>();
         try {
-            for (Listing mylisting : listingRepository.findAll()) {
-                listings.add(mylisting);
-            }
+            listings = listingService.getListings();
             for (Listing listing : listings) {
                 listingDto.add(DtoUtils.convertToDto(listing));
             }
@@ -105,9 +103,7 @@ public class ListingController {
         ArrayList<Listing> listings = new ArrayList<>();
         ArrayList<ListingDto> listingDto = new ArrayList<>();
         try {
-            for (Listing mylisting : listingRepository.findListingBytitle(title)) {
-                listings.add(mylisting);
-            }
+            listings = listingService.getListingsByTitle(title);
             for (Listing listing : listings) {
                 listingDto.add(DtoUtils.convertToDto(listing));
             }
@@ -122,9 +118,7 @@ public class ListingController {
         ArrayList<Listing> listings = new ArrayList<>();
         ArrayList<ListingDto> listingDto = new ArrayList<>();
         try {
-            for (Listing mylisting : listingRepository.findListingByprice(price)) {
-                listings.add(mylisting);
-            }
+            listings = listingService.getListingsByPrice(price);
             for (Listing listing : listings) {
                 listingDto.add(DtoUtils.convertToDto(listing));
             }
@@ -139,9 +133,7 @@ public class ListingController {
         ArrayList<Listing> listings = new ArrayList<>();
         ArrayList<ListingDto> listingDto = new ArrayList<>();
         try {
-            for (Listing mylisting : listingRepository.findListingBynftLink(NftLink)) {
-                listings.add(mylisting);
-            }
+            listings = listingService.getListingsByNFTLink(NftLink);
             for (Listing listing : listings) {
                 listingDto.add(DtoUtils.convertToDto(listing));
             }

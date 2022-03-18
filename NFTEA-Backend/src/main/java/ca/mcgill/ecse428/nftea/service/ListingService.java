@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ListingService {
 
@@ -25,21 +28,84 @@ public class ListingService {
 
     @Transactional
     public Listing editTitle(Long ID, String title) throws IllegalArgumentException {
-        listingRepository.findListingByListingID(ID).setTitle(title);
-        return listingRepository.findListingByListingID(ID);
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(title == null || title == "") {
+            throw new IllegalArgumentException("title cannot be empty");
+        }
+
+        listing.setTitle(title);
+        return listingRepository.save(listing);
     }
 
     @Transactional
     public Listing editPrice(Long ID, Long price) throws IllegalArgumentException {
-        listingRepository.findListingByListingID(ID).setPrice(price);
-        return listingRepository.findListingByListingID(ID);
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(price < 0) {
+            throw new IllegalArgumentException("price cannot be negative");
+        }
+
+        listing.setPrice(price);
+        return listingRepository.save(listing);
     }
 
     @Transactional
     public Listing editNftLink(Long ID, String nftLink) throws IllegalArgumentException {
-        listingRepository.findListingByListingID(ID).setNftLink(nftLink);
-        return listingRepository.findListingByListingID(ID);
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(nftLink == null || nftLink == "") {
+            throw new IllegalArgumentException("NFT link cannot be empty");
+        }
+
+        listing.setNftLink(nftLink);
+        return listingRepository.save(listing);
     }
 
+    @Transactional
+    public ArrayList<Listing> getListings() {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findAll()) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+    public ArrayList<Listing> getListingsByTitle(String title) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingBytitle(title)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+    public ArrayList<Listing> getListingsByPrice(long price) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingByprice(price)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+    public ArrayList<Listing> getListingsByNFTLink(String nftLink) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingBynftLink(nftLink)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+
+
+    @Transactional
+    public void clear() {
+        listingRepository.deleteAll();
+    }
 
 }
