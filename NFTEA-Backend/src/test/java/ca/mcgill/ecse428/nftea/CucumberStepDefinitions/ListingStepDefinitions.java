@@ -74,13 +74,17 @@ public class ListingStepDefinitions {
 
     @When("the user tries to delete the listing {string}")
     public void the_user_tries_to_delete_the_listing(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        try {
+            //TODO : call service method
+        } catch (Exception e) {
+            errorCounter++;
+            error += e.getMessage();
+        }
     }
     @Then("the listing shall be deleted successfully")
     public void the_listing_shall_be_deleted_successfully() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //TODO: uncomment line
+//        assertNull(listingService.getListingByID(listing.getListingID()));
     }
     @Then("no error message shall be raised for listings")
     public void no_error_message_shall_be_raised_for_listings() {

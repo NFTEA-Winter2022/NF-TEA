@@ -101,6 +101,9 @@ public class ListingService {
         return listings;
     }
 
+    public Listing getListingByID(long id) {
+        return listingRepository.findListingByListingID(id);
+    }
 
 
     @Transactional

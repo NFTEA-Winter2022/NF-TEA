@@ -18,8 +18,8 @@ Feature: Delete Listing
     When the user tries to delete the listing "nft1"
     Then the listing shall be deleted successfully
     Then no error message shall be raised for listings
-
-  Scenario: Delete listing unsuccessfully - listing does not exist
-    Given the user is logged in to an account with username "User1111" and password "lol12345" and email "user1@gmail.com" to delete listing
-    When the user tries to delete the listing "nft4"
-    Then an error message "listing not found" shall be raised for listings
+#
+#  Scenario: Delete listing unsuccessfully - listing does not exist
+#    Given the user is logged in to an account with username "User1111" and password "lol12345" and email "user1@gmail.com" to delete listing
+#    When the user tries to delete the listing "nft4"
+#    Then an error message "listing not found" shall be raised for listings
