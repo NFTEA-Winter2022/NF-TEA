@@ -82,7 +82,7 @@ public class SearchListingsStepDefinitions {
     @When("the user searches a listing with title {string}")
     public void the_user_searches_a_listing_with_title(String title){
         try{
-            listings = listingService.getListingsWithTitle(title);
+            listings = listingService.getListingsByTitle(title);
             System.out.println();
         }
         catch (Exception e){
@@ -137,7 +137,7 @@ public class SearchListingsStepDefinitions {
     @When("the user searches a listing with NFT link {string}")
     public void the_user_searches_a_listing_with_NFT_link(String link){
         try{
-            listings = listingService.getListingWithNFTLink(link);
+            listings = listingService.getListingsByNFTLink(link);
         }
         catch (Exception e){
             error = e.getMessage();

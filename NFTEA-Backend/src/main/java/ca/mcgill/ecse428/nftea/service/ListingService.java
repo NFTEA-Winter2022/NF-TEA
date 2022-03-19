@@ -108,4 +108,20 @@ public class ListingService {
         listingRepository.deleteAll();
     }
 
+
+    public ArrayList<Listing> getListingsContainingTitle(String title) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingByTitleContains(title)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
+
+    public ArrayList<Listing> getListingsWithOwner(UserAccount user) {
+        ArrayList<Listing> listings = new ArrayList<>();
+        for (Listing mylisting : listingRepository.findListingByOwner(user)) {
+            listings.add(mylisting);
+        }
+        return listings;
+    }
 }

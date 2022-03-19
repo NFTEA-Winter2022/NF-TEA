@@ -17,17 +17,9 @@ Feature: As a user, I want to view listings that corresponds to my inputs parame
     When the user searches a listing with title "titleA"
     Then a list of listings should be return
 
-  Scenario: Search listing with no title
-    When the user searches a listing with title "NotExistent"
-    Then an error shall be raised "Listings not found"
-
   Scenario: Search listing with valid Owner
     When the user searches a listing with Owner "Email3"
     Then a list of listings with the same owner should be return
-
-  Scenario: Search listing with invalid Owner
-    When the user searches a listing with Owner "NotExistent"
-    Then an error shall be raised "Listings not found"
 
   Scenario: Search listing containing title
     When the user searches a listing containing the title "title"
