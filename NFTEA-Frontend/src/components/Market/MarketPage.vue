@@ -5,7 +5,15 @@
           cols="12"
           md="8"
       >
-        <Search listings="listings" class="pa-2"></Search>
+        <!-- <Search listings="listings" class="pa-2"></Search> -->
+        <input
+        type="text"
+        name="text"
+        placeholder="Search NFT"
+        autocomplete="on"
+        class="pa-2"
+        v-model="search"
+      />
       </v-col>
       <v-col
           cols="12"
@@ -24,12 +32,12 @@
     <v-row>
     </v-row>
     <v-layout row wrap>
-      <v-flex xs12 md4 lg3 v-bind:key="listing.id" v-for="listing in listings">
+      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
           <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
-              <h1 class="card-id" v-else>#{{listing.id}}</h1>
+              <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
             </div>
             <div class="card-id" :class="{ 'on-hover': hover }">
               <v-icon
@@ -65,31 +73,40 @@
 </template>
 
 <script>
-import Search from "./Search";
 
 export default {
   name: "MarketPage",
-  components: { Search },
   data: () => ({
     listings: [],
+    search: '',
     filter: {
       currentFilter: "",
       availableFilters: ["Price Up", "Price Down"]
     }
   }),
   async created() {
-    this.listings = await this.getListings();
+    await this.getListings();
+  },
+  computed: {
+    filteredData: function() {
+      return this.listings.filter((listing)=>{
+        return listing.title.toLowerCase().match(this.search.toLowerCase());
+      })
+    }
   },
   methods: {
     async getListings() {
       try {
         // Call API
-        this.listings = await this.$http.get('UserProfilePage/getListing/');
+        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;    
+        console.log(JSON.stringify(this.listings));
+
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
     },
     sortPrice() {
+      // console.log(JSON.stringify(this.listings));
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
       } else if(this.filter.currentFilter === this.filter.availableFilters[1]) {
@@ -106,7 +123,7 @@ export default {
       if (name === 'id') log = true;
     }
     if (!log) window.location.replace('/');
-  }
+  },
 }
 </script>
 
@@ -138,5 +155,15 @@ div.card-id.on-hover {
 .buy-button {
   width:50%;
   margin-top: 60%;
+}
+input[type="text"] {
+  width: 130px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input[type="text"]:focus {
+  width: 100%;
 }
 </style>
