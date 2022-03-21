@@ -42,6 +42,18 @@ public class ListingController {
         return new ResponseEntity<>(DtoUtils.convertToDto(listing), HttpStatus.OK);
     }
 
+    @DeleteMapping(value = {"/UserProfilePage/deleteListing", "/UserProfilePage/deleteListing/"})
+    public ResponseEntity deleteListing(@RequestParam Long listingId) {
+        boolean result;
+        try {
+            result = listingService.deleteListing(listingId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        if (result) return ResponseEntity.status(HttpStatus.OK).body("Listing successfully deleted!");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not delete listing!");
+    }
+
     @PutMapping(value = {"/UserProfilePage/editListingTitle", "/UserProfilePage/editListingTitle/"})
     public ResponseEntity editListingTitle(
             @RequestParam Long listingId,
