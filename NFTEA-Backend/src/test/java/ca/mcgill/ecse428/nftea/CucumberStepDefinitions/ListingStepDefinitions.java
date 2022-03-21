@@ -73,9 +73,18 @@ public class ListingStepDefinitions {
     }
 
     @When("the user tries to delete the listing {string}")
-    public void the_user_tries_to_delete_the_listing(String string) {
+    public void the_user_tries_to_delete_the_listing(String title) {
         try {
-            //TODO : call service method
+            for(Listing l : listings) {
+                if(l.getTitle().equals(title)) {
+                    listing = l;
+                }
+            }
+            if(listing == null) {
+                listingService.deleteListing(NON_EXISTING_LISTING);
+            } else {
+                listingService.deleteListing(listing.getListingID());
+            }
         } catch (Exception e) {
             errorCounter++;
             error += e.getMessage();
@@ -83,8 +92,7 @@ public class ListingStepDefinitions {
     }
     @Then("the listing shall be deleted successfully")
     public void the_listing_shall_be_deleted_successfully() {
-        //TODO: uncomment line
-//        assertNull(listingService.getListingByID(listing.getListingID()));
+        assertNull(listingService.getListingByID(listing.getListingID()));
     }
     @Then("no error message shall be raised for listings")
     public void no_error_message_shall_be_raised_for_listings() {
