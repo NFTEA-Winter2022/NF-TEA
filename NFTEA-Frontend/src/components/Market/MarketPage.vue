@@ -1,11 +1,7 @@
 <template>
   <v-container grid-list-md>
     <v-row no-gutters>
-      <v-col
-          cols="12"
-          md="8"
-      >
-        <!-- <Search listings="listings" class="pa-2"></Search> -->
+      <v-col>
         <input
         type="text"
         name="text"
@@ -98,15 +94,12 @@ export default {
     async getListings() {
       try {
         // Call API
-        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;    
-        console.log(JSON.stringify(this.listings));
-
+        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
     },
     sortPrice() {
-      // console.log(JSON.stringify(this.listings));
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
       } else if(this.filter.currentFilter === this.filter.availableFilters[1]) {
