@@ -29,6 +29,16 @@ public class ListingService {
     }
 
     @Transactional
+    public boolean deleteListing(Long ID) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        listingRepository.delete(listing);
+        return !listingRepository.existsById(ID);
+    }
+
+    @Transactional
     public Listing editTitle(Long ID, String title) throws IllegalArgumentException {
         Listing listing = listingRepository.findListingByListingID(ID);
         if(listing == null) {
