@@ -56,7 +56,7 @@ export default {
 
                 }).then((data) => {
                     console.log(data);
-                    if (data.status == 200) window.location.replace('/login');
+                    if (data.status == 200) window.location.replace('/');
                 }, (e) => console.log(e))
             }catch(e) {
                 console.log(e);
