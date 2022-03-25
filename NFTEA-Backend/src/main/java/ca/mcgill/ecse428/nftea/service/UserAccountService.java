@@ -149,4 +149,20 @@ public class UserAccountService {
     public void saveAccount(UserAccount userAccount) {
         userAccountRepository.save(userAccount);
     }
+
+    @Transactional
+    public UserAccount searchAccountByUsername(String username) throws Exception {
+        if (username == null || username.length() == 0) throw new Exception("Invalid username");
+        UserAccount user = userAccountRepository.findUserAccountByUsername(username);
+        if (user == null) throw new Exception("User does not exist");
+        return user;
+    }
+
+    @Transactional
+    public UserAccount searchAccountByUserId(Long id) throws Exception {
+        if(id == null) throw new Exception("User Id required to search user.");
+        UserAccount user = userAccountRepository.findUserAccountById(id);
+        if (user == null) throw new Exception("User does not exist");
+        return user;
+    }
 }
