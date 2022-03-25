@@ -66,6 +66,30 @@ public class UserAccountController {
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
 
+
+    @GetMapping(value = {"/user-account/searchAccountByUsername", "/user-account/searchAccountByUsername/"})
+    public ResponseEntity searchAccountByUsername(@RequestParam String username) {
+        UserAccount user;
+        try {
+            user = userAccountService.searchAccountByUsername(username);
+        } catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+        }
+        return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/user-account/searchAccountByUserId", "/user-account/searchAccountByUserId/"})
+    public ResponseEntity searchAccountByUserId(@RequestParam Long id) {
+        UserAccount user;
+        try {
+            user = userAccountService.searchAccountByUserId(id);
+        } catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+        }
+        return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
+    }
+
+
     private UserAccountDto covertDto(UserAccount userAccount) {
         return new UserAccountDto(
                 userAccount.getId(),
