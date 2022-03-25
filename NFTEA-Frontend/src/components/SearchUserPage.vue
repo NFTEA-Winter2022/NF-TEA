@@ -27,9 +27,10 @@
             <v-list subheader two-line>
                 <template v-for="(userAccount, index) in userAccounts">
 <!--                    TODO: change the router to display the user profile instead-->
+<!--
+                            @click="$router.push({name: 'Market', params: {}})"-->
                     <v-list-item
                             :key="userAccount.numberID"
-                            @click="$router.push({name: 'Market', params: {}})"
                     >
                         <v-list-item-content>
                             <v-list-item-title v-text="userAccount.username"></v-list-item-title>
@@ -52,20 +53,20 @@
         name: "SearchUserPage",
         data: () => ({
             userAccounts: [
-                {
-                    numberID: 1,
-                    firstName: "Joe",
-                    lastName: "Doe",
-                    userEmail: "jdoe@mail.com",
-                    username: "jd12345",
-                },
-                {
-                    numberID: 3,
-                    firstName: "Jane",
-                    lastName: "Smith",
-                    userEmail: "jsmith@mail.com",
-                    username: "jane3421",
-                },
+                // {
+                //     numberID: 1,
+                //     firstName: "Joe",
+                //     lastName: "Doe",
+                //     userEmail: "jdoe@mail.com",
+                //     username: "jd12345",
+                // },
+                // {
+                //     numberID: 3,
+                //     firstName: "Jane",
+                //     lastName: "Smith",
+                //     userEmail: "jsmith@mail.com",
+                //     username: "jane3421",
+                // },
             ],
             searchString: '',
             errorMessage: '',
@@ -81,36 +82,44 @@
         },
         methods: {
             async findUserByUserID(userID) {
-                await this.$http.get('/user-account/searchAccount/searchAccountByUserId', {
+                await this.$http.get('/user-account/searchAccountByUserId', {
                     params: {
                         id: userID
                     }
                 })
                     .then(response => {
+                        console.log(response);
                         this.response = response.data;
                         this.userAccounts.push(response.data);
+                        this.errorMessage = "";
                     })
                     .catch(e => {
                         let errorMsg = e.response.data;
                         console.log(errorMsg);
-                        this.errorMessage = errorMsg;
+                        if(this.userAccounts.length === 0) {
+                            this.errorMessage = errorMsg;
+                        }
                     })
 
             },
             async findUserByUsername(username) {
-                this.$http.get('/user-account/searchAccount/searchAccountByUsername', {
+                this.$http.get('/user-account/searchAccountByUsername', {
                     params: {
                         username: username
                     }
                 })
                     .then(response => {
+                        console.log(response);
                         this.response = response.data;
                         this.userAccounts.push(response.data);
+                        this.errorMessage = "";
                     })
                     .catch(e => {
                         let errorMsg = e.response.data;
                         console.log(errorMsg);
-                        this.errorMessage = errorMsg;
+                        if(this.userAccounts.length === 0) {
+                            this.errorMessage = errorMsg;
+                        }
                     })
             },
             async searchUsers() {
