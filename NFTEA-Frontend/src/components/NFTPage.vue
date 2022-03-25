@@ -41,7 +41,7 @@
               <v-btn
                   color="blue darken-1"
                   text
-                  @click="createListing()"
+                  @click="createListing(listingPrice)"
               >
                 List Your NFT
               </v-btn>
