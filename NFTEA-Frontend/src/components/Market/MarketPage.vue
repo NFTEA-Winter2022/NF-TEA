@@ -94,7 +94,7 @@
                   <v-btn
                       color="blue darken-1"
                       text
-                      @click="dialog = false"
+                      @click="sendTrade(tradePrice)"
                   >
                     Send Trade
                   </v-btn>
@@ -110,6 +110,8 @@
 
 <script>
 
+import facebook from "@/api/facebook";
+
 export default {
   name: "MarketPage",
   data: () => ({
@@ -117,7 +119,7 @@ export default {
     search: '',
     filter: {
       currentFilter: "",
-      availableFilters: ["Price Up", "Price Down"]
+      availableFilters: ["Price Up", "Price Down", "Mine"]
     },
     tradePrice: '',
   }),
@@ -140,13 +142,31 @@ export default {
         console.error(e, "Failure to Load Listings.")
       }
     },
+
+    async getMyListings() {
+      let id = facebook.getCookie("id");
+      try {
+        this.listings = (await this.$http.get('UserProfilePage/getMyListings/', {
+          params: {
+            id: id,
+          },
+        })).data;
+      } catch (e) {
+        console.error(e, "Failure to Load My Listings.");
+      }
+    },
+
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
       } else if(this.filter.currentFilter === this.filter.availableFilters[1]) {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
+      else if (this.filter.currentFilter === this.filter.availableFilters[2]) {
+        this.getMyListings()
+      }
     },
+
     sendTrade() {
       // TODO
       try {
