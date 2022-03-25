@@ -10,12 +10,47 @@
         <v-btn v-if="item[3] === 'IMAGE'" id="category" @click="addToCollection(item[0])">
           <b>Add to the collection </b>
         </v-btn>
+
+        <v-dialog max-width="300px">
+          <template v-slot:activator="{ on, attrs }" >
+            <v-btn
+                class="listing-button"
+                v-bind="attrs"
+                v-on="on"
+            >
+              <b>Sell</b>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="Title">Listing Price: </span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-text-field
+                      v-model="listingPrice"
+                      label="Listing Price"
+                      required
+                  ></v-text-field>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="createListing()"
+              >
+                List Your NFT
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
     </ul>
   </div>
-
-
-
 </template>
 
 <script>
@@ -28,6 +63,7 @@ export default ({
     username: '',
     media_url: '',
     collection: '',
+    listingPrice: '',
   }),
   methods: {
     async PutIgPic(){
@@ -52,6 +88,10 @@ export default ({
       }catch(e) {
         console.log(e);
       }
+    },
+
+    createListing() {
+      // TODO
     }
 
   },
