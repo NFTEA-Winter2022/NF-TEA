@@ -3,12 +3,16 @@ package ca.mcgill.ecse428.nftea.CucumberStepDefinitions;
 
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -23,17 +27,60 @@ public class SearchUserStepDefinitions {
     int errorCounter = 0;
     String error = "";
     UserAccount userAccount = null;
+    List<UserAccount> userAccounts = new ArrayList<>();
 
-    @When("the user search for the user {string} with the numberID")
-    public void the_user_search_for_the_user_with_the_number_id(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @After
+    public void teardown(){
+        errorCounter = 0;
+        error = "";
+        userAccount = null;
+        userAccounts = new ArrayList<>();
+        userAccountService.clear();
+    }
+
+    @Given("the following user accounts exist in the system for search user account")
+    public void theFollowingUserAccountsExistInTheSystem(DataTable dataTable) throws Exception {
+        List<List<String>> rows = dataTable.asLists();
+        int i = 0;
+        for (List<String> columns : rows){
+            if (i == 0){
+                i++;
+            }
+            else {
+
+                String firstname = columns.get(0);
+                String lastname = columns.get(1);
+                String username = columns.get(2);
+                String password = columns.get(3);
+                String email = columns.get(4);
+                UserAccount u = userAccountService.createUser(firstname,lastname,username, email, password);
+                userAccounts.add(u);
+            }
+        }
+    }
+
+    @When("the user search for the user {string} using the numberID")
+    public void the_user_search_for_the_user_with_the_number_id(String username) {
+        try {
+            Long numberID = null;
+            for(UserAccount u : userAccounts) {
+                if(u.getUsername().equals(username)) {
+                    numberID = u.getId();
+                }
+            }
+            userAccount = userAccountService.searchAccountByUserId(numberID);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
     }
 
     @When("the user search for the user with the numberID {int}")
-    public void the_user_search_for_the_user_with_the_number_id(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_user_search_for_the_user_with_the_number_id(Integer numberID) {
+        try {
+            userAccount = userAccountService.searchAccountByUserId(Long.valueOf(numberID));
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
     }
 
     @Then("the user account returned shall have the username {string}")
@@ -53,8 +100,11 @@ public class SearchUserStepDefinitions {
 
     @When("the user search for the user with a null numberID")
     public void the_user_search_for_the_user_with_a_null_number_id() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        try {
+            userAccount = userAccountService.searchAccountByUserId(null);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
     }
     @Then("an error message {string} shall be raised for search user account")
     public void an_error_message_shall_be_raised_for_search_user_account(String errorMsg) {
@@ -62,10 +112,12 @@ public class SearchUserStepDefinitions {
     }
 
     @When("the user search for the user {string}")
-    public void the_user_search_for_the_user(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_user_search_for_the_user(String username) {
+        try {
+            userAccount = userAccountService.searchAccountByUsername(username);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
     }
-
 
 }
