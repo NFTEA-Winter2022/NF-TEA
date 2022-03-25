@@ -58,9 +58,49 @@
                 {{listing.price}}
               </h1>
             </div>
+
             <v-btn class="buy-button">
               Buy
             </v-btn>
+
+
+            <v-dialog max-width="300px">
+              <template v-slot:activator="{ on, attrs }" >
+                <v-btn
+                    class="trade-button"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  Trade
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="Title">Insert amount to trade: </span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                        <v-text-field
+                            v-model="tradePrice"
+                            label="Trading Price"
+                            required
+                        ></v-text-field>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="dialog = false"
+                  >
+                    Send Trade
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card>
         </v-hover>
       </v-flex>
@@ -78,7 +118,8 @@ export default {
     filter: {
       currentFilter: "",
       availableFilters: ["Price Up", "Price Down"]
-    }
+    },
+    tradePrice: '',
   }),
   async created() {
     await this.getListings();
@@ -105,6 +146,15 @@ export default {
       } else if(this.filter.currentFilter === this.filter.availableFilters[1]) {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
+    },
+    sendTrade() {
+      // TODO
+      try {
+        // Call the API to send a trade offer
+
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   beforeMount() {
@@ -146,6 +196,11 @@ div.card-id.on-hover {
   overflow: hidden;
 }
 .buy-button {
+  width:50%;
+  margin-top: 60%;
+}
+
+.trade-button {
   width:50%;
   margin-top: 60%;
 }
