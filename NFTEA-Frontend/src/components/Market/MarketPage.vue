@@ -71,7 +71,7 @@
                     v-bind="attrs"
                     v-on="on"
                 >
-                  Trade
+                  Offer
                 </v-btn>
               </template>
               <v-card>
