@@ -41,7 +41,7 @@
               <v-btn
                   color="blue darken-1"
                   text
-                  @click="createListing(listingPrice)"
+                  @click="createListing(listingPrice, item[9], item[0])"
               >
                 List Your NFT
               </v-btn>
@@ -55,6 +55,7 @@
 
 <script>
 import blockchain from '../api/blockchain.js'
+import facebook from "@/api/facebook";
 export default ({
   data: () => ({
     nft: '',
@@ -64,6 +65,8 @@ export default ({
     media_url: '',
     collection: '',
     listingPrice: '',
+    response: '',
+    error: '',
   }),
   methods: {
     async PutIgPic(){
@@ -90,10 +93,23 @@ export default ({
       }
     },
 
-    createListing() {
-      // TODO
+    async createListing(price, caption, NFTId) {
+      let id = facebook.getCookie("id");
+      console.log(id);
+      try {
+        await this.$http.post('UserProfilePage/createListing', null, {
+          params: {
+            userid: id,
+            title: caption,
+            nftLink: NFTId
+          }
+        }).then(response => {
+          this.response = response.data;
+        })
+      } catch (e) {
+        console.log(e);
+      }
     }
-
   },
 
   beforeMount() {

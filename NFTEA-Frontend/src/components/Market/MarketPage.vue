@@ -109,7 +109,6 @@
 </template>
 
 <script>
-
 import facebook from "@/api/facebook";
 
 export default {
