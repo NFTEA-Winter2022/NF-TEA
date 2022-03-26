@@ -62,5 +62,8 @@ public class TradeOfferService {
             else throw new IllegalArgumentException("TradeOffer already declined");
         }
     }
-
+    @Transactional
+    public void clear() {
+        tradeServiceRepository.deleteAll();
+    }
 }
