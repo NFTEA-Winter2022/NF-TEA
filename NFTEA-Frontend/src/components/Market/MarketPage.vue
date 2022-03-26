@@ -119,7 +119,7 @@ export default {
     search: '',
     filter: {
       currentFilter: "",
-      availableFilters: ["Price Up", "Price Down", "Mine"]
+      availableFilters: ["Price Up", "Price Down"]
     },
     tradePrice: '',
   }),
@@ -162,9 +162,6 @@ export default {
       } else if(this.filter.currentFilter === this.filter.availableFilters[1]) {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
-      else if (this.filter.currentFilter === this.filter.availableFilters[2]) {
-        this.getMyListings()
-      }
     },
 
     sendTrade() {
