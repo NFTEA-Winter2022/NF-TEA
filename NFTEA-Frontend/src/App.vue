@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import API from "@/api/facebook";
 
 window.ethereum.on('accountsChanged', async () => {
   const {ethereum} = window;
@@ -80,7 +81,7 @@ export default {
         window.location.replace('/Notifications');
       },
     goMyListings() {
-      window.location.replace('/myListings');
+      window.location.replace('/myListings/' + API.getCookie("id"));
     }
   },
   beforeMount() {

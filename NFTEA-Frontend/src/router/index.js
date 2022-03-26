@@ -96,9 +96,9 @@ const routes = [
     component: NotificationPage
   },
   {
-    path: '/myListings',
+    path: '/myListings/:userId',
     name: 'MyListings',
-    component: myListings
+    component: myListings,
   }
 ]
 
