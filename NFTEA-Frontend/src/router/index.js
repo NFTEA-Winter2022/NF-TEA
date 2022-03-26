@@ -13,6 +13,7 @@ import NFTCollectionPage from "@/components/NFTCollectionPage";
 import MarketPage from "@/components/Market/MarketPage";
 import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
+import myListings from "@/components/myListings";
 
 Vue.use(VueRouter)
 
@@ -94,6 +95,11 @@ const routes = [
     name: 'NotificationPage',
     component: NotificationPage
   },
+  {
+    path: '/myListings',
+    name: 'MyListings',
+    component: myListings
+  }
 ]
 
 const router = new VueRouter({
