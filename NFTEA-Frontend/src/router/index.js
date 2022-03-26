@@ -11,6 +11,7 @@ import Login from "@/components/Login";
 import NFTPage from "@/components/NFTPage";
 import NFTCollectionPage from "@/components/NFTCollectionPage";
 import MarketPage from "@/components/Market/MarketPage";
+import SearchUserPage from "@/components/SearchUserPage";
 
 Vue.use(VueRouter)
 
@@ -81,7 +82,12 @@ const routes = [
     name: 'Market',
     component: MarketPage
 
-  }
+  },
+  {
+    path: '/SearchUser',
+    name: 'SearchUser',
+    component: SearchUserPage
+  },
 ]
 
 const router = new VueRouter({
