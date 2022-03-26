@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class TradeOfferController {
@@ -35,6 +37,10 @@ public class TradeOfferController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
         }
         return new ResponseEntity<>(convertDto(myTrade), HttpStatus.OK);
+    }
+    @GetMapping(value = {"/Market/onGoingSender", "/Market/onGoingSender/"})
+    public ResponseEntity onGoingSender(@RequestParam Long senderID){
+        List<TradeOffer>
     }
 
     private TradeOfferDto convertDto(TradeOffer tradeOffer) {
