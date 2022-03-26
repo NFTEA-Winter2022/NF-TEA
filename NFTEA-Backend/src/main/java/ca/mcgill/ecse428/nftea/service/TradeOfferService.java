@@ -3,9 +3,13 @@ package ca.mcgill.ecse428.nftea.service;
 
 
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
+import ca.mcgill.ecse428.nftea.dao.NotificationRepository;
 import ca.mcgill.ecse428.nftea.dao.TradeOfferRepository;
 import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
+import ca.mcgill.ecse428.nftea.model.Listing;
+import ca.mcgill.ecse428.nftea.model.Notification;
 import ca.mcgill.ecse428.nftea.model.TradeOffer;
+import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +27,33 @@ public class TradeOfferService {
     @Autowired
     ListingRepository listingRepository;
 
+    @Autowired
+    NotificationRepository notificationRepository;
+
 
 
     @Transactional
     public TradeOffer createTradeOffer(Long senderID, Long receiverID, Long listingID, Long price) throws IllegalArgumentException {
         //verify that trade offer is valid
         if (userAccountRepository.findUserAccountById(senderID) == null) throw new IllegalArgumentException("Invalid senderID");
-        if (userAccountRepository.findUserAccountById(receiverID) == null) throw new IllegalArgumentException("Invalid receiverID");
-        if (listingRepository.findListingByListingID(listingID) == null) throw new IllegalArgumentException("Invalid listingID");
+
+        UserAccount receiver = userAccountRepository.findUserAccountById(receiverID);
+        if (receiver == null) throw new IllegalArgumentException("Invalid receiverID");
+
+        Listing listing = listingRepository.findListingByListingID(listingID);
+        if (listing == null) throw new IllegalArgumentException("Invalid listingID");
         if (price < 0) throw new IllegalArgumentException("Price cannot be less than zero!");
         //create trade
         TradeOffer myTrade = new TradeOffer(senderID,receiverID,listingID,price);
         myTrade.setOnGoing(true);
         tradeServiceRepository.save(myTrade); //save trade
+
+        // Create trade notification
+        Notification notification = new Notification(Notification.NotificationType.TRADE_OFFER, receiver, myTrade, listing);
+        notificationRepository.save(notification);
+
         return myTrade; //return
     }
-
 
     @Transactional
     public TradeOffer acceptTradeOffer(Long id) throws IllegalArgumentException {
@@ -54,7 +69,11 @@ public class TradeOfferService {
             myTrade.setAccepted(true);
             myTrade.setOnGoing(false);
             myTrade.setDeclined(false);
+
             tradeServiceRepository.save(myTrade); //save trade
+            notificationRepository.deleteByListing(listingRepository.findListingByListingID(myTrade.getListingID())); // delete listing & notification(s)
+            listingRepository.deleteById(myTrade.getListingID());
+
             return myTrade;
         }
         else { //unavailable
