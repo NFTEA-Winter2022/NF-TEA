@@ -75,6 +75,7 @@ export default {
     },
     goSearchUser() {
       window.location.replace('/SearchUser');
+
     },
     goNotifications()
       {
