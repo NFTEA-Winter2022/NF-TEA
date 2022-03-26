@@ -5,6 +5,7 @@
       <v-btn @click="goAbout()" v-if="this.logged">About</v-btn>
       <v-btn @click="goMarket()" v-if="this.logged">Market</v-btn>
       <v-btn @click="goSearchUser()" v-if="this.logged">Search User</v-btn>
+      <v-btn @click="goNotifications()" v-if="this.logged">Notifications</v-btn>
       <v-btn @click="goProfile()" v-if="this.logged">User Profile</v-btn>
       <v-btn @click="goUsername()" v-if="this.logged">Edit Username</v-btn>
       <v-btn @click="goPassword()" v-if="this.logged">Edit Password</v-btn>
@@ -72,6 +73,9 @@ export default {
     },
     goSearchUser() {
       window.location.replace('/SearchUser');
+    },
+    goNotifications() {
+      window.location.replace('/Notifications');
     }
   },
   beforeMount() {
