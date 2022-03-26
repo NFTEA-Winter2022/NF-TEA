@@ -39,6 +39,7 @@ public class TradeOfferController {
 
     private TradeOfferDto convertDto(TradeOffer tradeOffer) {
         return new TradeOfferDto(
+                tradeOffer.getId(),
                 tradeOffer.getSenderID(),
                 tradeOffer.getReceiverID(),
                 tradeOffer.getListingID(),
