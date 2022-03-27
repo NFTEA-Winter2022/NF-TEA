@@ -12,7 +12,6 @@
       <v-btn @click="goDelete()" v-if="this.logged">Delete Account</v-btn>
       <v-btn @click="goNFT()" v-if="this.logged">NFT Page</v-btn>
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
-      <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -20,7 +19,6 @@
 </template>
 
 <script>
-import API from "@/api/facebook";
 
 window.ethereum.on('accountsChanged', async () => {
   const {ethereum} = window;
@@ -76,12 +74,8 @@ export default {
     goSearchUser() {
       window.location.replace('/SearchUser');
     },
-    goNotifications()
-      {
-        window.location.replace('/Notifications');
-      },
-    goMyListings() {
-      window.location.replace('/myListings/' + API.getCookie("id"));
+    goNotifications() {
+      window.location.replace('/Notifications');
     }
   },
   beforeMount() {
