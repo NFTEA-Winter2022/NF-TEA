@@ -14,12 +14,71 @@
                 Listing {{notification.listing.listingID}} has been sold.
               </v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn v-if="notification.type === 'TRADE_OFFER'" @click="acceptTradeOffer(notification)">Accept</v-btn>
-            <v-btn v-if="notification.type === 'TRADE_OFFER'"  @click="declineTradeOffer(notification)">Decline</v-btn>
-            <v-btn v-else @click="dismissNotification(notification)">Dismiss</v-btn>
+
+          <v-btn v-if="notification.type === 'TRADE_OFFER'" @click="dialog1 = true; dialogNotification1=notification">Accept</v-btn>
+          <v-btn v-if="notification.type === 'TRADE_OFFER'" @click="dialog = true; dialogNotification=notification">Decline</v-btn>
+          <v-btn v-else @click="dismissNotification(notification)">Dismiss</v-btn>
         </v-list-item>
       </v-list>
     </v-card>
+    <v-dialog
+        v-model="dialog1"
+        max-width="290"
+        :retain-focus="false"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Accept Transaction
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog1 = false; dialogNotification1 = null"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog1 = false; acceptTradeOffer(dialogNotification1); dialogNotification1 = null;"
+          >
+            Confirm
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+        v-model="dialog"
+        max-width="290"
+        :retain-focus="false"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Decline Transaction
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog = false; dialogNotification = null"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog = false; declineTradeOffer(dialogNotification); dialogNotification= null"
+          >
+            Decline
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -30,6 +89,10 @@ export default {
   name: "NotificationPages",
   data: () => ({
     notifications: [],
+    dialog1: false,
+    dialog: false,
+    dialogNotification1: null,
+    dialogNotification: null
   }),
   async created() {
     await this.getNotifications();
@@ -58,23 +121,28 @@ export default {
 
     },
     async acceptTradeOffer(notification) {
-
+      console.log(JSON.stringify(notification))
       try{
         await this.$http.put('/Market/acceptTradeOffer/', null, {
           params: {
             id: notification.tradeOffer.id
           }
         })
+        console.log(notification.tradeOffer.id)
         await this.getNotifications();
       } catch (e) {
         console.error(e, "Failure to accept offer.")
       }
+
     },
     async declineTradeOffer(notification) {
       try{
-        await this.$http.put('/Market/declineTradeOffer/', {
+        await this.$http.put('/Market/declineTradeOffer/', null, {
+          params: {
             id: notification.tradeOffer.id
+          }
         })
+        await this.dismissNotification(notification);
         await this.getNotifications();
       } catch (e) {
         console.error(e, "Failure to accept offer.")

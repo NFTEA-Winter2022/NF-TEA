@@ -26,7 +26,16 @@
 
     <v-tab-item :key="2" value="tab-2">
       <v-card flat>
-
+        <v-list v-bind:key="Atrade.id" v-for="Atrade in  AcceptedT">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title> {{ Atrade.listingID }}</v-list-item-title>
+              <v-list-item-subtitle>
+                For {{Atrade.price}} ETH | From User {{Atrade.senderID}}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-card>
     </v-tab-item>
 
@@ -40,6 +49,7 @@ import apifacebook from "../api/facebook";
 export default {
   name: "TradeOffersPage",
   data: () => ({
+    tab: null,
     OngoingT: [],
     AcceptedT: [],
   }),
@@ -49,45 +59,55 @@ export default {
     await this.getacceptedtrade();
   },
   methods:{
-
     async getongoingtrade(){
       try{
         let id = apifacebook.getCookie("id");
-        this.OngoingT= (await this.$http.get('/Market/onGoingReceiver/'+id)).data;
+        this.OngoingT = (await this.$http.get('/Market/onGoingReceiver/', {
+          params: {
+            receiverID: id
+          }
+        })).data;
       }catch (e) {
         console.error(e, "Failure to Load trade offers.")
       }
-      
     },
-
     async getacceptedtrade(){
       try{
         let id = apifacebook.getCookie("id");
-        this.AcceptedTT= (await this.$http.get('/Market/acceptedReceiver/'+id)).data;
+        this.AcceptedT = (await this.$http.get('/Market/acceptedReceiver/', {
+          params: {
+            receiverID: id
+          }
+        })).data;
       }catch (e) {
         console.error(e, "Failure to Load trade offers.")
       }
 
     },
     async acceptTradeOffer(TradeOffer) {
-
       try{
         await this.$http.put('/Market/acceptTradeOffer/', null, {
           params: {
             id: TradeOffer.id
           }
         })
-        await this.getNotifications();
+
+        await this.getongoingtrade();
+        await this.getacceptedtrade();
       } catch (e) {
         console.error(e, "Failure to accept offer.")
       }
     },
     async declineTradeOffer(TradeOffer) {
       try{
-        await this.$http.put('/Market/declineTradeOffer/', {
-          id: TradeOffer.id
+        await this.$http.put('/Market/declineTradeOffer/', null,{
+          params: {
+            id: TradeOffer.id
+          }
         })
-        await this.getNotifications();
+
+        await this.getongoingtrade();
+        await this.getacceptedtrade();
       } catch (e) {
         console.error(e, "Failure to accept offer.")
       }
