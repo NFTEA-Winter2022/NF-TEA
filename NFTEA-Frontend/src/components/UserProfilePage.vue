@@ -1,19 +1,5 @@
 <template>
   <div>
-<!--  <div class="UserProfile">-->
-<!--    <h1>User Profile Page</h1>-->
-<!--    <h2>Username: {{ username }}</h2>-->
-<!--    <ul id="images">-->
-<!--    <div v-for="item in insta" :key="item.id" >-->
-<!--      <img v-if="item.media_type === 'IMAGE'" v-bind:src="item.media_url" width="800" height="682"/>-->
-<!--      <p v-if="item.media_type === 'IMAGE'"> {{ item.caption }} </p>-->
-<!--      <v-btn id="createNFTBtn" @click="NFT(item)">-->
-<!--        NFTEAFY!-->
-<!--      </v-btn>-->
-<!--    </div>-->
-<!--    </ul>-->
-<!--  </div>-->
-
   <v-tabs v-model="tab" background-color="transparent" grow>
       <v-tab href="#tab-1"> Instagram Content </v-tab>
       <v-tab href="#tab-2"> NFT Collections </v-tab>
@@ -68,9 +54,6 @@
           </div>
         </ul>
       </v-card>
-<!--      <div>-->
-<!--        Hello-->
-<!--      </div>-->
 
       <v-sheet
           class="px-7 pt-7 pb-4 mx-auto text-center d-inline-block"

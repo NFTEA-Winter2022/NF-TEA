@@ -26,10 +26,8 @@
         <v-card flat>
             <v-list subheader two-line>
                 <template v-for="(userAccount, index) in userAccounts">
-<!--                    TODO: change the router to display the user profile instead-->
-<!--
-                            @click="$router.push({name: 'Market', params: {}})"-->
                     <v-list-item
+                            @click="$router.push({name: 'MyListings', params: {userId: userAccount.numberID}})"
                             :key="userAccount.numberID"
                     >
                         <v-list-item-content>
