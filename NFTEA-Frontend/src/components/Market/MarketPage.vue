@@ -63,7 +63,6 @@
               Buy
             </v-btn>
 
-
             <v-dialog max-width="300px">
               <template v-slot:activator="{ on, attrs }" >
                 <v-btn

@@ -95,12 +95,21 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
+
                   <v-btn
                       color="blue darken-1"
                       text
                       @click="editListing(listing)"
                   >
                     Confirm Edit
+                  </v-btn>
+
+                  <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="removeListing(listing)"
+                  >
+                    Remove
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -166,6 +175,7 @@ export default {
     },
     tradePrice: '',
     newTitle: '',
+    response: '',
   }),
   async created() {
     await this.getListings();
@@ -247,8 +257,23 @@ export default {
       }
 
       this.tradePrice = '';
-    }
+    },
+    async removeListing(listing) {
+      console.log(JSON.stringify(listing))
+      try {
+        await this.$http.delete('UserProfilePage/deleteListing', {
+          params: {
+            listingId: listing.listingID,
+          }
+        }).then(response => {
+          this.response = response.data;
+        })
+      } catch (e) {
+        console.error(e, "Failure to remove Listing");
+      }
+    },
   },
+
   beforeMount() {
     let cookies = document.cookie;
     let split = cookies.split(';');
