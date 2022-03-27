@@ -12,6 +12,7 @@ import NFTPage from "@/components/NFTPage";
 import NFTCollectionPage from "@/components/NFTCollectionPage";
 import MarketPage from "@/components/Market/MarketPage";
 import SearchUserPage from "@/components/SearchUserPage";
+import NotificationPage from "@/components/NotificationPage";
 
 Vue.use(VueRouter)
 
@@ -87,6 +88,11 @@ const routes = [
     path: '/SearchUser',
     name: 'SearchUser',
     component: SearchUserPage
+  },
+  {
+    path: '/Notifications',
+    name: 'NotificationPage',
+    component: NotificationPage
   },
 ]
 
