@@ -12,6 +12,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.catalina.User;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
@@ -37,8 +38,19 @@ public class BackendNotificationStepDefinitions {
     TradeOffer tradeOffer = null;
     List<Notification> notification = new ArrayList<>();
 
+    @Before
+    public void setup(){
+        tradeService.clear();
+        userAccountService.clear();
+        listingService.clear();
+        notificationService.clear();
+        error = "";
+        tradeOffer = null;
+        notification = new ArrayList<>();
+    }
+
     @After
-    public void teardown(){
+    public void destroy(){
         tradeService.clear();
         userAccountService.clear();
         listingService.clear();
@@ -57,14 +69,14 @@ public class BackendNotificationStepDefinitions {
                 i++;
             }
             else {
-//                String emailSender = columns.get(0);
-//                Long senderID = userAccountService.getUserAccountByEmail(emailSender).getId();
-//                String emailReceiver = columns.get(1);
-//                Long receiverID = userAccountService.getUserAccountByEmail(emailReceiver).getId();
-//                String listingLink = columns.get(2);
-//                Long listingID = listingService.getListingsByNFTLink(listingLink).get(0).getListingID();
-//                Long price = Long.parseLong(columns.get(3));
-//                tradeOffer = tradeService.createTradeOffer(senderID, receiverID, listingID, price);
+                String emailSender = columns.get(0);
+                Long senderID = userAccountService.getUserAccountByEmail(emailSender).getId();
+                String emailReceiver = columns.get(1);
+                Long receiverID = userAccountService.getUserAccountByEmail(emailReceiver).getId();
+                String listingLink = columns.get(2);
+                Long listingID = listingService.getListingsByNFTLink(listingLink).get(0).getListingID();
+                Long price = Long.parseLong(columns.get(3));
+                tradeOffer = tradeService.createTradeOffer(senderID, receiverID, listingID, price);
             }
         }
     }
