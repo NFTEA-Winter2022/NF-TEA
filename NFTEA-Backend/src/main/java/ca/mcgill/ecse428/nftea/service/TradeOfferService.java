@@ -120,4 +120,27 @@ public class TradeOfferService {
     public void clear() {
         tradeServiceRepository.deleteAll();
     }
+
+    @Transactional
+    public TradeOffer declineTradeOffer(Long id) throws IllegalArgumentException {
+        //get current trade offer
+        TradeOffer myTrade = tradeServiceRepository.findTradeOfferById(id);
+
+        //verify that trade offer is valid
+        if (myTrade == null) throw new IllegalArgumentException("Invalid TradeOffer");
+
+        //check status of the offer
+        if (!myTrade.isAccepted() && !myTrade.isDeclined() && myTrade.isOnGoing()) { //check status available -> initially each offer must have accepted -> false; declined -> false;
+            //change status of trade
+            myTrade.setAccepted(false);
+            myTrade.setOnGoing(false);
+            myTrade.setDeclined(true);
+            tradeServiceRepository.save(myTrade); //save trade
+            return myTrade;
+        }
+        else { //unavailable
+            if (myTrade.isAccepted()) throw new IllegalArgumentException("TradeOffer already accepted");
+            else throw new IllegalArgumentException("TradeOffer already declined");
+        }
+    }
 }

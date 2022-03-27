@@ -14,6 +14,7 @@ import MarketPage from "@/components/Market/MarketPage";
 import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
+import TradeOffersPage from "@/components/TradeOffersPage";
 
 Vue.use(VueRouter)
 
@@ -98,8 +99,13 @@ const routes = [
   {
     path: '/myListings/:userId',
     name: 'MyListings',
-    component: myListings,
-  }
+    component: myListings
+  },
+  {
+    path: '/myTradeOffers',
+    name: 'MyTradeOffers',
+    component: TradeOffersPage
+  },
 ]
 
 const router = new VueRouter({

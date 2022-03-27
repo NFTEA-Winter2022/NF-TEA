@@ -13,6 +13,7 @@
       <v-btn @click="goNFT()" v-if="this.logged">NFT Page</v-btn>
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
+      <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -75,6 +76,7 @@ export default {
     },
     goSearchUser() {
       window.location.replace('/SearchUser');
+
     },
     goNotifications()
       {
@@ -82,6 +84,9 @@ export default {
       },
     goMyListings() {
       window.location.replace('/myListings/' + API.getCookie("id"));
+    },
+    goTradeOffers() {
+      window.location.replace('/TradeOffers');
     }
   },
   beforeMount() {
