@@ -24,4 +24,9 @@ public class NotificationService {
 
         return notificationRepository.findNotificationByUserId(userId);
     }
+
+//    @Transactional
+//    public void clear(){
+//        notificationRepository.deleteAll();
+//    }
 }

@@ -17,5 +17,5 @@ Feature: Backend Notifications
       | Email1    | Email2     | linkA     | 100    |
 
   Scenario: Notification exist when Listing has been made
-    When searching for notification with user "Email3"
+    When searching for notification with user "Email2"
     Then a list of notifications should appear
