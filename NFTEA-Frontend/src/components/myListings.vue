@@ -1,31 +1,35 @@
 <template>
   <v-container grid-list-md>
+    <v-row class="title" v-if="isCurrentUser">
+      My Listings
+    </v-row>
+    <v-row class="title" v-else>
+      Listings for User {{this.$route.params.userId}}
+    </v-row>
     <v-row no-gutters>
       <v-col>
         <input
-        type="text"
-        name="text"
-        placeholder="Search NFT"
-        autocomplete="on"
-        class="pa-2"
-        v-model="search"
-      />
+            type="text"
+            name="text"
+            placeholder="Search Listing"
+            autocomplete="on"
+            class="pa-2"
+            v-model="search"
+        />
       </v-col>
       <v-col
           cols="12"
           md="4"
       >
         <v-select
-                  class="pa-2"
-                  v-model="filter.currentFilter"
-                  :items="filter.availableFilters"
-                  @change="sortPrice"
-                  outlined
-                  label="Filter By"
+            class="pa-2"
+            v-model="filter.currentFilter"
+            :items="filter.availableFilters"
+            @change="sortPrice"
+            outlined
+            label="Filter By"
         ></v-select>
       </v-col>
-    </v-row>
-    <v-row>
     </v-row>
     <v-layout row wrap>
       <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
@@ -59,33 +63,33 @@
               </h1>
             </div>
 
-            <v-btn class="buy-button">
-              Buy
-            </v-btn>
-
-
-            <v-dialog max-width="300px">
+            <v-dialog max-width="300px" v-if="isCurrentUser">
               <template v-slot:activator="{ on, attrs }" >
                 <v-btn
                     class="trade-button"
                     v-bind="attrs"
                     v-on="on"
                 >
-                  Offer
+                  Edit Listing
                 </v-btn>
               </template>
               <v-card>
                 <v-card-title>
-                  <span class="Title">Insert amount to trade: </span>
+                  <span class="Title">Listing Details: </span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
                     <v-row>
-                        <v-text-field
-                            v-model="tradePrice"
-                            label="Trading Price"
-                            required
-                        ></v-text-field>
+                      <v-text-field
+                          v-model="newTitle"
+                          label="New Title"
+                          required
+                      ></v-text-field>
+                      <v-text-field
+                          v-model="tradePrice"
+                          label="New Trading Price"
+                          required
+                      ></v-text-field>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -94,9 +98,48 @@
                   <v-btn
                       color="blue darken-1"
                       text
-                      @click="sendTrade(tradePrice)"
+                      @click="editListing(listing)"
                   >
-                    Send Trade
+                    Confirm Edit
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog max-width="300px" v-else>
+              <template v-slot:activator="{ on, attrs }" >
+                <v-btn
+                    class="trade-button"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  Make Offer
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="Title">Listing Details: </span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-text-field
+                          v-model="tradePrice"
+                          label="Trading Price"
+                          required
+                      ></v-text-field>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="sendTrade(listing, tradePrice)"
+                  >
+                    <span >Send Trade</span>
+
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -112,8 +155,9 @@
 import facebook from "@/api/facebook";
 
 export default {
-  name: "MarketPage",
+  name: "MyListings",
   data: () => ({
+    isCurrentUser: false,
     listings: [],
     search: '',
     filter: {
@@ -121,6 +165,7 @@ export default {
       availableFilters: ["Price Up", "Price Down"]
     },
     tradePrice: '',
+    newTitle: '',
   }),
   async created() {
     await this.getListings();
@@ -134,16 +179,9 @@ export default {
   },
   methods: {
     async getListings() {
-      try {
-        // Call API
-        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;
-      } catch (e) {
-        console.error(e, "Failure to Load Listings.")
-      }
-    },
+      let id = this.$route.params.userId || facebook.getCookie("id");
+      this.isCurrentUser = !this.$route.params.userId || this.$route.params.userId === facebook.getCookie("id");
 
-    async getMyListings() {
-      let id = facebook.getCookie("id");
       try {
         this.listings = (await this.$http.get('UserProfilePage/getMyListings/', {
           params: {
@@ -154,7 +192,6 @@ export default {
         console.error(e, "Failure to Load My Listings.");
       }
     },
-
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -162,15 +199,54 @@ export default {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
     },
-
-    sendTrade() {
-      // TODO
+    async editListing(listing) {
+      console.log(JSON.stringify(listing))
       try {
-        // Call the API to send a trade offer
+        // Edit all of the listing properties
+        if(this.newTitle) {
+          await this.$http.put('UserProfilePage/editListingTitle', null, {
+            params: {
+              listingId: listing.listingID,
+              title: this.newTitle
+            },
+          });
+        }
+
+        if(!isNaN(this.tradePrice) && Number(this.tradePrice) > 0) {
+          await this.$http.put('UserProfilePage/editListingPrice', null, {
+            params: {
+              listingId: listing.listingID,
+              price: this.tradePrice
+            },
+          });
+        }
+
+        this.tradePrice = '';
+        this.newTitle = '';
+
+        // Refresh the list
+        await this.getListings();
+      } catch (e) {
+        console.error(e, "Failure to Load My Listings.");
+      }
+    },
+    async sendTrade(listing, tradePrice) {
+      try{
+        console.log(JSON.stringify(listing))
+        await this.$http.post('/Market/createTradeOffer', null, {
+          params: {
+            senderID: facebook.getCookie("id"),
+            receiverID: listing.owner.numberID,
+            listingID: listing.listingID,
+            price: tradePrice ,
+          },
+        });
 
       } catch (e) {
-        console.error(e);
+        console.error(e, "Failure to send offer.");
       }
+
+      this.tradePrice = '';
     }
   },
   beforeMount() {
@@ -187,7 +263,11 @@ export default {
 </script>
 
 <style scoped>
-
+.title {
+ justify-content: center;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
 div.card-id {
   height: 40px;
   width: 10%;
