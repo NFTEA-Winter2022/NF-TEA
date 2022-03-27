@@ -23,9 +23,9 @@ Feature: Accept Trade Offer
   Scenario: User accepts a declined trade offer
     Given a tradeOffer is declined
     When a tradeOffer tries to get accepted
-    Then an error message shall be raised "TradeOffer already declined"
+    Then an error message will be raised "TradeOffer already declined"
 
   Scenario: User accepts an already accepted trade offer
     Given a tradeOffer is accepted
     When a tradeOffer tries to get accepted
-    Then an error message shall be raised "TradeOffer already accepted"
+    Then an error message will be raised "TradeOffer already accepted"

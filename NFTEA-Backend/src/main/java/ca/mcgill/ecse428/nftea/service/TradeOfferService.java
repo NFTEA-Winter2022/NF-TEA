@@ -62,6 +62,17 @@ public class TradeOfferService {
             else throw new IllegalArgumentException("TradeOffer already declined");
         }
     }
+
+    @Transactional
+    public TradeOffer editTradeOfferStatus(Long tradeOfferID, boolean onGoing, boolean accepted, boolean declined){
+        TradeOffer tradeOffer = tradeServiceRepository.findTradeOfferById(tradeOfferID);
+        tradeOffer.setOnGoing(onGoing);
+        tradeOffer.setAccepted(accepted);
+        tradeOffer.setDeclined(declined);
+        tradeServiceRepository.save(tradeOffer);
+        return tradeOffer;
+    }
+
     @Transactional
     public void clear() {
         tradeServiceRepository.deleteAll();

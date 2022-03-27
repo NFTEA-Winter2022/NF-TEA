@@ -66,29 +66,25 @@ public class AcceptTradeOffersStepDefinitions {
 
     @Given("a tradeOffer is OnGoing")
     public void a_tradeOffer_is_OnGoing(){
-        tradeOffer.setOnGoing(true);
-        tradeOffer.setAccepted(false);
-        tradeOffer.setDeclined(false);
+        tradeOffer = tradeService.editTradeOfferStatus(tradeOffer.getId(), true, false, false);
     }
 
     @Given("a tradeOffer is declined")
     public void a_tradeOffer_is_declined(){
-        tradeOffer.setOnGoing(false);
-        tradeOffer.setAccepted(false);
-        tradeOffer.setDeclined(true);
+        tradeOffer = tradeService.editTradeOfferStatus(tradeOffer.getId(), false, false, true);
+
     }
 
     @Given("a tradeOffer is accepted")
     public void a_tradeOffer_is_accepted(){
-        tradeOffer.setOnGoing(false);
-        tradeOffer.setAccepted(true);
-        tradeOffer.setDeclined(false);
+        tradeOffer = tradeService.editTradeOfferStatus(tradeOffer.getId(), false, true, false);
     }
 
     @When("a tradeOffer tries to get accepted")
     public void a_tradeOffer_tries_to_get_accepted(){
         try{
-            tradeService.acceptTradeOffer(tradeOffer.getId());
+            tradeOffer = tradeService.acceptTradeOffer(tradeOffer.getId());
+            System.out.println();
         }
         catch (Exception e){
             error += e.getMessage();
@@ -98,6 +94,11 @@ public class AcceptTradeOffersStepDefinitions {
     @Then("the tradeOffer is Accepted")
     public void the_tradeOffer_is_Accepted(){
         assertTrue(tradeOffer.isAccepted());
+    }
+
+    @Then("an error message will be raised {string}")
+    public void an_error_message_will_be_raised(String message){
+        assertTrue(error.contains(message));
     }
 
 
