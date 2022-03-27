@@ -2,11 +2,9 @@ package ca.mcgill.ecse428.nftea.utils;
 
 import ca.mcgill.ecse428.nftea.dto.CollectionNFTDto;
 import ca.mcgill.ecse428.nftea.dto.ListingDto;
-import ca.mcgill.ecse428.nftea.dto.NotificationDto;
 import ca.mcgill.ecse428.nftea.dto.UserAccountDto;
 import ca.mcgill.ecse428.nftea.model.CollectionNFT;
 import ca.mcgill.ecse428.nftea.model.Listing;
-import ca.mcgill.ecse428.nftea.model.Notification;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +50,4 @@ public class DtoUtils {
     }
 
 
-    public static NotificationDto convertToDto(Notification notification) {
-        if(notification == null) {
-            throw new IllegalArgumentException("Notification does not exist");
-        }
-
-       return  new NotificationDto(notification.getId(), notification.getType(), notification.getUser(), notification.getTradeOffer(), notification.getListing());
-    }
 }

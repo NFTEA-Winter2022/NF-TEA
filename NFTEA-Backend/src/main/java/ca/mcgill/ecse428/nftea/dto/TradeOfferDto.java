@@ -19,8 +19,7 @@ public class TradeOfferDto {
     public TradeOfferDto() {}
 
 
-    public TradeOfferDto(Long id, Long senderID, Long receiverID, Long listingID, Long price) {
-        this.id = id;
+    public TradeOfferDto(Long senderID, Long receiverID, Long listingID, Long price) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.listingID = listingID;
