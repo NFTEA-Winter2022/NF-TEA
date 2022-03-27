@@ -1,5 +1,6 @@
 package ca.mcgill.ecse428.nftea.CucumberStepDefinitions;
 
+import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.Notification;
 import ca.mcgill.ecse428.nftea.model.TradeOffer;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
@@ -34,30 +35,21 @@ public class BackendNotificationStepDefinitions {
     @Autowired
     NotificationService notificationService;
 
-    String error = "";
+    UserAccount userAccount = null;
+    Listing listing = null;
     TradeOffer tradeOffer = null;
-    List<Notification> notification = new ArrayList<>();
-
-    @Before
-    public void setup(){
-        tradeService.clear();
-        userAccountService.clear();
-        listingService.clear();
-        notificationService.clear();
-        error = "";
-        tradeOffer = null;
-        notification = new ArrayList<>();
-    }
+    String error = "";
+    List<Notification> notifications = new ArrayList<>();
 
     @After
     public void destroy(){
-        tradeService.clear();
-        userAccountService.clear();
-        listingService.clear();
         notificationService.clear();
+        tradeService.clear();
+        listingService.clear();
+        userAccountService.clear();
         error = "";
         tradeOffer = null;
-        notification = new ArrayList<>();
+        notifications = new ArrayList<>();
     }
 
     @Given("the following tradeOffers exist in the database:")
@@ -85,7 +77,7 @@ public class BackendNotificationStepDefinitions {
     public void searching_for_notification_with_user(String userEmail){
         try{
             UserAccount userAccount = userAccountService.getUserAccountByEmail(userEmail);
-            notification = notificationService.getNotifications(userAccount.getId());
+            notifications = notificationService.getNotifications(userAccount.getId());
         } catch (Exception e){
             error += e.getMessage();
         }
@@ -93,6 +85,6 @@ public class BackendNotificationStepDefinitions {
 
     @Then("a list of notifications appears")
     public void a_list_of_notifications_should_appear(){
-        assertEquals(1, notification.size());
+        assertEquals(1, notifications.size());
     }
 }
