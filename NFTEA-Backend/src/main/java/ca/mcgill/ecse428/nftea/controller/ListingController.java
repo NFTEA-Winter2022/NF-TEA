@@ -1,14 +1,12 @@
 package ca.mcgill.ecse428.nftea.controller;
 
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
-import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
 import ca.mcgill.ecse428.nftea.dto.ListingDto;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import ca.mcgill.ecse428.nftea.service.ListingService;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import ca.mcgill.ecse428.nftea.utils.DtoUtils;
-import jdk.internal.net.http.ResponseTimerEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
