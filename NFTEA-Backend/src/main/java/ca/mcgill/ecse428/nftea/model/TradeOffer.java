@@ -43,6 +43,10 @@ public class TradeOffer {
     // Getters and Setters
     //------------------------
 
+    public Long getId() {
+        return id;
+    }
+
     public boolean isOnGoing() {
         return onGoing;
     }
