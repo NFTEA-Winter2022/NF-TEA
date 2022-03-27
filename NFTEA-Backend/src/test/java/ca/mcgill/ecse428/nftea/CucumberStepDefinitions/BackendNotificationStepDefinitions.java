@@ -39,13 +39,13 @@ public class BackendNotificationStepDefinitions {
 
     @After
     public void teardown(){
-//        tradeService.clear();
-//        userAccountService.clear();
-//        listingService.clear();
-//        notificationService.clear();
-//        error = "";
-//        tradeOffer = null;
-//        notification = new ArrayList<>();
+        tradeService.clear();
+        userAccountService.clear();
+        listingService.clear();
+        notificationService.clear();
+        error = "";
+        tradeOffer = null;
+        notification = new ArrayList<>();
     }
 
     @Given("the following tradeOffers exist in the database:")
@@ -57,31 +57,30 @@ public class BackendNotificationStepDefinitions {
                 i++;
             }
             else {
-                String emailSender = columns.get(0);
-                Long senderID = userAccountService.getUserAccountByEmail(emailSender).getId();
-                String emailReceiver = columns.get(1);
-                Long receiverID = userAccountService.getUserAccountByEmail(emailReceiver).getId();
-                String listingLink = columns.get(2);
-                Long listingID = listingService.getListingsByNFTLink(listingLink).get(0).getListingID();
-                Long price = Long.parseLong(columns.get(3));
-                tradeOffer = tradeService.createTradeOffer(senderID, receiverID, listingID, price);
-
+//                String emailSender = columns.get(0);
+//                Long senderID = userAccountService.getUserAccountByEmail(emailSender).getId();
+//                String emailReceiver = columns.get(1);
+//                Long receiverID = userAccountService.getUserAccountByEmail(emailReceiver).getId();
+//                String listingLink = columns.get(2);
+//                Long listingID = listingService.getListingsByNFTLink(listingLink).get(0).getListingID();
+//                Long price = Long.parseLong(columns.get(3));
+//                tradeOffer = tradeService.createTradeOffer(senderID, receiverID, listingID, price);
             }
         }
     }
 
     @When("searching for notification with user {string}")
     public void searching_for_notification_with_user(String userEmail){
-//        try{
-//            UserAccount userAccount = userAccountService.getUserAccountByEmail(userEmail);
-//            notification = notificationService.getNotifications(userAccount.getId());
-//        } catch (Exception e){
-//            error += e.getMessage();
-//        }
+        try{
+            UserAccount userAccount = userAccountService.getUserAccountByEmail(userEmail);
+            notification = notificationService.getNotifications(userAccount.getId());
+        } catch (Exception e){
+            error += e.getMessage();
+        }
     }
 
-    @Then("a list of notifications should appear")
+    @Then("a list of notifications appears")
     public void a_list_of_notifications_should_appear(){
-//        assertEquals(1, notification.size());
+        assertEquals(1, notification.size());
     }
 }

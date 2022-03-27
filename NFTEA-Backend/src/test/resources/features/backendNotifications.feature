@@ -18,4 +18,4 @@ Feature: Backend Notifications
 
   Scenario: Notification exist when Listing has been made
     When searching for notification with user "Email2"
-    Then a list of notifications should appear
+    Then a list of notifications appears
