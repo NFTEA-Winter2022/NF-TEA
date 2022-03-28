@@ -4,6 +4,7 @@
   <v-tabs v-model="tab" background-color="transparent" grow>
     <v-tab href="#tab-1"> Ongoing </v-tab>
     <v-tab href="#tab-2"> Accepted </v-tab>
+    <v-tab href="#tab-3"> Declined </v-tab>
   </v-tabs>
   <v-tabs-items v-model="tab">
     <v-tab-item :key="1" value="tab-1">
@@ -39,6 +40,21 @@
       </v-card>
     </v-tab-item>
 
+    <v-tab-item :key="3" value="tab-3">
+      <v-card flat>
+        <v-list v-bind:key="Dtrade.id" v-for="Dtrade in  DeclinedT">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title> {{ Dtrade.listingID }}</v-list-item-title>
+              <v-list-item-subtitle>
+                For {{Dtrade.price}} ETH | From User {{Dtrade.senderID}}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-tab-item>
+
 
   </v-tabs-items>
 </div>
@@ -52,11 +68,13 @@ export default {
     tab: null,
     OngoingT: [],
     AcceptedT: [],
+    DeclinedT: [],
+    notifications: [],
   }),
   async created() {
-
     await this.getongoingtrade();
     await this.getacceptedtrade();
+    await this.getDeclinedTrade();
   },
   methods:{
     async getongoingtrade(){
@@ -94,6 +112,7 @@ export default {
 
         await this.getongoingtrade();
         await this.getacceptedtrade();
+        await this.getDeclinedTrade();
       } catch (e) {
         console.error(e, "Failure to accept offer.")
       }
@@ -108,12 +127,24 @@ export default {
 
         await this.getongoingtrade();
         await this.getacceptedtrade();
+        await this.getDeclinedTrade();
       } catch (e) {
-        console.error(e, "Failure to accept offer.")
+        console.error(e, "Failure to decline offer.")
       }
     },
-    
-    
+
+    async getDeclinedTrade() {
+      try {
+        let id = apifacebook.getCookie("id");
+        this.DeclinedT = (await this.$http.get('/Market/declinedReceiver/', {
+          params: {
+            receiverID: id,
+          }
+        })).data;
+      } catch (e) {
+        console.error(e, "Failure to Load Declined Trade Offers")
+      }
+    }
   }
 }
 </script>

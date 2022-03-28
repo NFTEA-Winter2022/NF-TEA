@@ -92,10 +92,12 @@ export default {
     dialog1: false,
     dialog: false,
     dialogNotification1: null,
-    dialogNotification: null
+    dialogNotification: null,
+    response: '',
   }),
   async created() {
     await this.getNotifications();
+    console.log(this.notifications);
   },
   computed: {
     noNotifications: function() {
@@ -118,7 +120,6 @@ export default {
       } catch (e) {
       console.error(e, "Failure to Load Notifications.")
       }
-
     },
     async acceptTradeOffer(notification) {
       console.log(JSON.stringify(notification))

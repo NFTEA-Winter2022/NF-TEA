@@ -86,7 +86,7 @@ export default {
       window.location.replace('/myListings/' + API.getCookie("id"));
     },
     goTradeOffers() {
-      window.location.replace('/TradeOffers');
+      window.location.replace('/myTradeOffers');
     }
   },
   beforeMount() {

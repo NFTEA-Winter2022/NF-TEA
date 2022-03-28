@@ -239,8 +239,8 @@ export default {
       }
     },
     async sendTrade(listing, tradePrice) {
+      console.log(JSON.stringify(tradePrice))
       try{
-        console.log(JSON.stringify(listing))
         await this.$http.post('/Market/createTradeOffer', null, {
           params: {
             senderID: facebook.getCookie("id"),
@@ -248,8 +248,9 @@ export default {
             listingID: listing.listingID,
             price: tradePrice ,
           },
-        });
-
+        }).then(response => {
+          this.response = response.data;
+        })
       } catch (e) {
         console.error(e, "Failure to send offer.");
       }
