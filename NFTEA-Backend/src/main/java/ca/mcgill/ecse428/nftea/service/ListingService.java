@@ -18,9 +18,11 @@ public class ListingService {
 
     @Transactional
     public Listing createInitialListing(String title, Long price, String nftLink, UserAccount user) throws IllegalArgumentException {
-        if (title == null || nftLink == null) {
+        if (title == null || nftLink == null || title.equals("") || nftLink.equals("")) {
             throw new IllegalArgumentException("Title and/or NFTLink cannot be empty");
         }
+        if (price == null) price = Long.valueOf(0);
+        if (user == null) throw new IllegalArgumentException("Missing user");
         Listing aListing = new Listing(title, price, nftLink, user);
         listingRepository.save(aListing);
         return aListing;

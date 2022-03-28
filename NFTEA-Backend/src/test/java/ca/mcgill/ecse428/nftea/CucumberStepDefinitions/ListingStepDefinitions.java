@@ -72,6 +72,55 @@ public class ListingStepDefinitions {
         userAccount = userAccountService.setUserOnline(arg0);
     }
 
+    @When("the user tries to create a listing with title {string} and price {string} and email {string}")
+    public void userCreatesListingNoNFTLINK(String title, String price, String email) {
+        try {
+            long priceL = Long.valueOf(price);
+            UserAccount owner = userAccountService.getUserAccountByEmail(email);
+            Listing l = listingService.createInitialListing(title, priceL, null, owner);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+    }
+
+    @Then("no listing shall be created")
+    public void noListingCreated() {
+        assertEquals(2, listings.size());
+    }
+
+    @And("the error message {string} shall be raised")
+    public void errorRaised(String errorMsg) {
+        assertEquals(errorMsg, error);
+    }
+
+    @When("the user tries to create a listing with title {string} and price {string} and nftLink {string}")
+    public void userCreatesListingNoUser(String title, String price, String nft) {
+        try {
+            long priceL = Long.valueOf(price);
+            Listing l = listingService.createInitialListing(title, priceL, nft, null);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+    }
+
+    @When("the user tries to create a listing with title {string} and price {string} and nftLink {string} and email {string}")
+    public void userTriesToCreateListing(String title, String price, String nftLink, String email) {
+        try {
+            long priceL = Long.valueOf(price);
+            UserAccount owner = userAccountService.getUserAccountByEmail(email);
+            Listing l = listingService.createInitialListing(title, priceL, nftLink, owner);
+            listings.add(l);
+        } catch (Exception e) {
+            errorCounter++;
+            error += e.getMessage();
+        }
+    }
+
+    @Then("the listing shall be created successfully")
+    public void createdListingSuccessful() {
+        assertEquals(3, listings.size());
+    }
+
     @When("the user tries to delete the listing {string}")
     public void the_user_tries_to_delete_the_listing(String title) {
         try {
@@ -92,6 +141,7 @@ public class ListingStepDefinitions {
     }
     @Then("the listing shall be deleted successfully")
     public void the_listing_shall_be_deleted_successfully() {
+        //TODO: uncomment line
         assertNull(listingService.getListingByID(listing.getListingID()));
     }
     @Then("no error message shall be raised for listings")
