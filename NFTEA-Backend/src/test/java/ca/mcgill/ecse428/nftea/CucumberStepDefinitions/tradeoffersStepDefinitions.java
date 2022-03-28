@@ -56,30 +56,6 @@ public class tradeoffersStepDefinitions {
         userAccountService.clear();
     }
 
-    @Given("the following listings exist in the system")
-    public void theFollowingListingsExistInTheDB(io.cucumber.datatable.DataTable dataTable) {
-        List<List<String>> rows = dataTable.asLists();
-        int i = 0;
-        for (List<String> columns : rows){
-            if (i == 0){
-                i++;
-            }
-            else {
-                String title = columns.get(0);
-                long price = Long.valueOf(columns.get(1));
-                String nftLink = columns.get(2);
-                String email = columns.get(3);
-                UserAccount owner = userAccountService.getUserAccountByEmail(email);
-                Listing l = listingService.createInitialListing(title, price, nftLink, owner);
-                listings.add(l);
-            }
-        }
-    }
-    @Given("the user is logged in to an account with username {string} and password {string} and email {string} to delete listing")
-    public void theUserIsLoggedInToAnAccountWithUsernameAndPasswordAndEmailToCreateTradeOff(String arg0, String arg1, String arg2) throws Exception {
-        userAccount = userAccountService.setUserOnline(arg0);
-    }
-
     @When("the user with id {string} tries to create a trade off to user {string} with a listing id of {string} with a price {string}")
     public void userTriestoCreateTradeOff(String senderID, String receiverID, String listingID, String price){
         try{
@@ -97,6 +73,6 @@ public class tradeoffersStepDefinitions {
 
     @Then("the trade off shall be successfully created")
     public void createdTradeOfferSuccessfully(){
-        assertEquals(4, tradeoffers.size());
+        assertEquals(1, tradeoffers.size());
     }
 }
