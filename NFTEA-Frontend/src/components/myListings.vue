@@ -98,6 +98,13 @@
                   <v-btn
                       color="blue darken-1"
                       text
+                      @click="removeListing(listing)"
+                  >
+                    Remove
+                  </v-btn>
+                  <v-btn
+                      color="blue darken-1"
+                      text
                       @click="editListing(listing)"
                   >
                     Confirm Edit
@@ -166,6 +173,7 @@ export default {
     },
     tradePrice: '',
     newTitle: '',
+    response: '',
   }),
   async created() {
     await this.getListings();
@@ -231,8 +239,8 @@ export default {
       }
     },
     async sendTrade(listing, tradePrice) {
+      console.log(JSON.stringify(tradePrice))
       try{
-        console.log(JSON.stringify(listing))
         await this.$http.post('/Market/createTradeOffer', null, {
           params: {
             senderID: facebook.getCookie("id"),
@@ -240,15 +248,31 @@ export default {
             listingID: listing.listingID,
             price: tradePrice ,
           },
-        });
-
+        }).then(response => {
+          this.response = response.data;
+        })
       } catch (e) {
         console.error(e, "Failure to send offer.");
       }
 
       this.tradePrice = '';
-    }
+    },
+    async removeListing(listing) {
+      console.log(JSON.stringify(listing))
+      try {
+        await this.$http.delete('UserProfilePage/deleteListing', {
+          params: {
+            listingId: listing.listingID,
+          }
+        }).then(response => {
+          this.response = response.data;
+        })
+      } catch (e) {
+        console.error(e, "Failure to remove Listing");
+      }
+    },
   },
+
   beforeMount() {
     let cookies = document.cookie;
     let split = cookies.split(';');

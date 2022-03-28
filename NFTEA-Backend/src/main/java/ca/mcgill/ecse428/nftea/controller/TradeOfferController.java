@@ -102,6 +102,21 @@ public class TradeOfferController {
         return new ResponseEntity<>(tradeOfferDtos, HttpStatus.OK);
     }
 
+    @GetMapping(value = {"/Market/declinedReceiver", "/Market/declinedReceiver/"})
+    public ResponseEntity declinedReceiver(@RequestParam Long receiverID){
+        List<TradeOffer> tradeOffers = new ArrayList<>();
+        List<TradeOfferDto> tradeOfferDtos = new ArrayList<>();
+        try{
+            tradeOffers = tradeOfferService.getTradeOfferByDeclinedAndReceiverID(true, receiverID);
+            for (TradeOffer t : tradeOffers){
+                tradeOfferDtos.add(convertDto(t));
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return new ResponseEntity<>(tradeOfferDtos, HttpStatus.OK);
+    }
+
     @PutMapping(value = {"/Market/declineTradeOffer", "/Market/declineTradeOffer/"})
     public ResponseEntity DeclineTradeOffer(@RequestParam Long id) {
         TradeOffer myTrade;

@@ -117,6 +117,16 @@ public class TradeOfferService {
         return tradeOffers;
     }
     @Transactional
+    public List<TradeOffer> getTradeOfferByDeclinedAndReceiverID(boolean declined, long receiverID){
+        List<TradeOffer> tradeOffers = new ArrayList<>();
+        for (TradeOffer t:tradeServiceRepository.findAllByDeclinedAndReceiverID(true, receiverID)) {
+            tradeOffers.add(t);
+        }
+        return tradeOffers;
+    }
+
+
+    @Transactional
     public void clear() {
         tradeServiceRepository.deleteAll();
     }
@@ -135,10 +145,11 @@ public class TradeOfferService {
             myTrade.setAccepted(false);
             myTrade.setOnGoing(false);
             myTrade.setDeclined(true);
+
             tradeServiceRepository.save(myTrade); //save trade
+            notificationRepository.deleteByListing(listingRepository.findListingByListingID(myTrade.getListingID()));
             return myTrade;
-        }
-        else { //unavailable
+        } else { //unavailable
             if (myTrade.isAccepted()) throw new IllegalArgumentException("TradeOffer already accepted");
             else throw new IllegalArgumentException("TradeOffer already declined");
         }

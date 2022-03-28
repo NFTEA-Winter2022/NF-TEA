@@ -63,7 +63,6 @@
               Buy
             </v-btn>
 
-
             <v-dialog max-width="300px">
               <template v-slot:activator="{ on, attrs }" >
                 <v-btn
@@ -94,7 +93,7 @@
                   <v-btn
                       color="blue darken-1"
                       text
-                      @click="sendTrade(tradePrice)"
+                      @click="sendTrade(listing, tradePrice)"
                   >
                     Send Trade
                   </v-btn>
@@ -109,6 +108,7 @@
 </template>
 
 <script>
+
 import facebook from "@/api/facebook";
 
 export default {
@@ -142,19 +142,6 @@ export default {
       }
     },
 
-    async getMyListings() {
-      let id = facebook.getCookie("id");
-      try {
-        this.listings = (await this.$http.get('UserProfilePage/getMyListings/', {
-          params: {
-            id: id,
-          },
-        })).data;
-      } catch (e) {
-        console.error(e, "Failure to Load My Listings.");
-      }
-    },
-
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -163,15 +150,25 @@ export default {
       } // Add more filters here later if wanted
     },
 
-    sendTrade() {
-      // TODO
-      try {
-        // Call the API to send a trade offer
-
+    async sendTrade(listing, tradePrice) {
+      console.log(JSON.stringify(tradePrice))
+      try{
+        await this.$http.post('/Market/createTradeOffer', null, {
+          params: {
+            senderID: facebook.getCookie("id"),
+            receiverID: listing.owner.numberID,
+            listingID: listing.listingID,
+            price: tradePrice ,
+          },
+        }).then(response => {
+          this.response = response.data;
+        })
       } catch (e) {
-        console.error(e);
+        console.error(e, "Failure to send offer.");
       }
-    }
+
+      this.tradePrice = '';
+    },
   },
   beforeMount() {
     let cookies = document.cookie;

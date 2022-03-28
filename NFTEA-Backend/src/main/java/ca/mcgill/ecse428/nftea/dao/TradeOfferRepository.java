@@ -13,4 +13,6 @@ public interface TradeOfferRepository extends CrudRepository<TradeOffer,Long> {
     List<TradeOffer> findAllByAcceptedAndSenderID(boolean accepted, long senderID);
     List<TradeOffer> findAllByAcceptedAndReceiverID(boolean accepted, long receiverID);
     List<TradeOffer> findAllByReceiverID(long receiverID);
+    List<TradeOffer> findAllByDeclinedAndReceiverID(boolean declined, long receiverID);
+
 }
