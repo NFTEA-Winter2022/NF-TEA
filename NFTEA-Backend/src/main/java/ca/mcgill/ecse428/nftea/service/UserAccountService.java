@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 @Service
 public class UserAccountService {
@@ -164,5 +165,14 @@ public class UserAccountService {
         UserAccount user = userAccountRepository.findUserAccountById(id);
         if (user == null) throw new Exception("User does not exist");
         return user;
+    }
+
+    @Transactional
+    public ArrayList<UserAccount> getUserAccounts(){
+        ArrayList<UserAccount> userAccounts = new ArrayList<>();
+        for (UserAccount userAccount: userAccountRepository.findAll()){
+            userAccounts.add(userAccount);
+        }
+        return userAccounts;
     }
 }
