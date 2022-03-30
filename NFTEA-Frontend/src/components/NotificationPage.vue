@@ -84,6 +84,7 @@
 
 <script>
 import API from "../api/facebook"; // Only for the getCookie() utility method
+import blockchain from "../api/blockchain";
 
 export default {
   name: "NotificationPages",
@@ -124,6 +125,8 @@ export default {
     async acceptTradeOffer(notification) {
       console.log(JSON.stringify(notification))
       try{
+        await blockchain(TradeOffer.listing.nftLink, TradeOffer.senderAddress);
+
         await this.$http.put('/Market/acceptTradeOffer/', null, {
           params: {
             id: notification.tradeOffer.id
