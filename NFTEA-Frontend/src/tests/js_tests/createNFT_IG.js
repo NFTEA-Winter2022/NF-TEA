@@ -63,10 +63,11 @@ Given('the user has a post on their Instagram account', async function () {
 });
 
 Given("a NFT contract has been deployed", async function () {
+    let userAccounts =  await web3.eth.getAccounts();
     const deployable = new web3.eth.Contract(abi)
         .deploy({
             data: bytecode,
-            arguments: []
+            arguments: [userAccounts[9]]
         })
 
     contract = await deployable.send({
