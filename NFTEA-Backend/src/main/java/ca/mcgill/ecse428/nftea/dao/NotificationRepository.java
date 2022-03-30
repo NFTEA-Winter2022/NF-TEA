@@ -10,4 +10,5 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
     ArrayList<Notification> findNotificationByUserId(Long userId);
     void deleteById(Long id);
     void deleteByListing(Listing listing);
+
 }

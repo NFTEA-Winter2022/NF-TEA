@@ -139,4 +139,30 @@ public class ListingService {
         }
         return listings;
     }
+
+    @Transactional
+    public Listing discountPrice(Long ID, Long percent) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(percent < 0 || percent > 1) {
+            throw new IllegalArgumentException("Invalid discount percentage");
+        }
+
+        listing.setDiscount(percent);
+        return listingRepository.save(listing);
+    }
+
+    @Transactional
+    public Listing resetPrice(Long ID) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        listing.unsetDiscount();
+        return listingRepository.save(listing);
+    }
+
+
 }
