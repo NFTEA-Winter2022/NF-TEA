@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //pragma experimental ABIEncoderV2;
 pragma solidity ^0.8.0;
-// source : https://www.youtube.com/watch?v=t_vTQEQVCkQ&ab_channel=TechWithTim
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
