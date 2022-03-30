@@ -115,7 +115,7 @@ contract NFTea is ERC721Royalty {
         require(_exists(tokenId), "NFT with tokenID does not exist.");
         require(buyer != ownerOf(tokenId), "User already owns the NFT.");
 
-        // Determine Royalty & Commision
+        // Determine Royalty & Commission
         (address receiver, uint256 royalty) = this.royaltyInfo(tokenId, price);
         uint256 commissionValue = price * commission / 100;
 

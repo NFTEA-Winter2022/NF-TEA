@@ -215,7 +215,7 @@ export default {
       }
     },
     async getImage(nftLink) {
-      return await blockchain.getNFT(listing.nftLink);
+      return await blockchain.getNFT(nftLink);
     },
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {

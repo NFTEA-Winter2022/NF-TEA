@@ -62,6 +62,8 @@
 
 <script>
 import apifacebook from "../api/facebook";
+import blockchain from "../api/blockchain";
+
 export default {
   name: "TradeOffersPage",
   data: () => ({
