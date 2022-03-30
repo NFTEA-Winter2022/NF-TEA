@@ -22,10 +22,11 @@ Given("an user account is registered on the blockchain", async function () {
 });
 
 Given("A NFT contract has been deployedd", async function () {
+    let userAccounts =  await web3.eth.getAccounts();
     const deployable = new web3.eth.Contract(abi)
         .deploy({
             data: bytecode,
-            arguments: []
+            arguments: [userAccounts[9]]
         })
 
     contract = await deployable.send({
