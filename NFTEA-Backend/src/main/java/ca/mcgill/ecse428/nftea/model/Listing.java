@@ -132,7 +132,7 @@ public class Listing
     return wasSet;
   }
 
-  public boolean unsetDiscount() {
+  public boolean resetDiscount() {
     boolean wasSet = false;
     this.percentDiscount = Long.valueOf(0);
     this.discountedPrice = this.price;

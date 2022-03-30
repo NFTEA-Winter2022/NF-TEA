@@ -160,7 +160,7 @@ public class ListingService {
         if(listing == null) {
             throw new IllegalArgumentException("listing not found");
         }
-        listing.unsetDiscount();
+        listing.resetDiscount();
         return listingRepository.save(listing);
     }
 

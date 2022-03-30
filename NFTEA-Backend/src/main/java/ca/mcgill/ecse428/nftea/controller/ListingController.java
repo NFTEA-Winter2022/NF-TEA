@@ -185,7 +185,7 @@ public class ListingController {
     }
 
     @PutMapping(value = {"/UserProfilePage/undiscountListingPrice", "/UserProfilePage/undiscountListingPrice/"})
-    public ResponseEntity undiscountListingPrice(@RequestParam Long listingId) {
+    public ResponseEntity resetListingPrice(@RequestParam Long listingId) {
         Listing listing;
         try {
             listing = listingService.resetPrice(listingId);
