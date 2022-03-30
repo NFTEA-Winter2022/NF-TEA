@@ -23,6 +23,12 @@ public class Listing
   private String title;
   private Long price;
   private String nftLink;
+
+  //For discount
+  private Long percentDiscount;
+  private Long discountedPrice;
+  private boolean isPriceDiscounted;
+
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private UserAccount owner;
 
@@ -37,6 +43,11 @@ public class Listing
     price = aPrice;
     nftLink = aNftLink;
     this.owner = userAccount;
+
+    //for discount
+    this.percentDiscount = Long.valueOf(0);
+    this.discountedPrice = this.price;
+    this.isPriceDiscounted = false;
   }
 
   //------------------------
@@ -95,6 +106,7 @@ public class Listing
 
   public Long getPrice()
   {
+    if (isPriceDiscounted) return discountedPrice;
     return price;
   }
 
@@ -111,8 +123,28 @@ public class Listing
   {}
 
 
+  public boolean setDiscount(Long percent) {
+    boolean wasSet = false;
+    this.percentDiscount = percent;
+    this.discountedPrice = this.price - (this.percentDiscount*this.price);
+    this.isPriceDiscounted = true;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetDiscount() {
+    boolean wasSet = false;
+    this.percentDiscount = Long.valueOf(0);
+    this.discountedPrice = this.price;
+    this.isPriceDiscounted = false;
+    wasSet = true;
+    return wasSet;
+  }
+
+
   public String toString()
   {
+
     return super.toString() + "["+
             "listingID" + ":" + getListingID()+ "," +
             "title" + ":" + getTitle()+ "," +
