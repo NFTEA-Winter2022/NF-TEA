@@ -1,11 +1,14 @@
 package ca.mcgill.ecse428.nftea.dto;
 
+import ca.mcgill.ecse428.nftea.model.Listing;
+
 public class TradeOfferDto {
 
     private Long id;
     private Long senderID;
     private Long receiverID;
-    private Long listingID;
+    private String senderAddress;
+    private Listing listing;
     private boolean onGoing;
     private boolean accepted;
     private boolean declined;
@@ -19,15 +22,16 @@ public class TradeOfferDto {
     public TradeOfferDto() {}
 
 
-    public TradeOfferDto(Long id, Long senderID, Long receiverID, Long listingID, Long price) {
+    public TradeOfferDto(Long id, Long senderID, Long receiverID, Listing listing, Long price, String senderAddress) {
         this.id = id;
         this.senderID = senderID;
         this.receiverID = receiverID;
-        this.listingID = listingID;
+        this.listing = listing;
         this.price = price;
         this.onGoing = false;
         this.accepted = false;
         this.declined = false;
+        this.senderAddress = senderAddress;
     }
 
 
@@ -43,8 +47,12 @@ public class TradeOfferDto {
         return receiverID;
     }
 
-    public Long getListingID() {
-        return listingID;
+    public Listing getListing() {
+        return listing;
+    }
+
+    public String getSenderAddress() {
+        return senderAddress;
     }
 
     public boolean isOnGoing() {

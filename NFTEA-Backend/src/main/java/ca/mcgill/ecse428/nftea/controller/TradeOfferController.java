@@ -22,10 +22,11 @@ public class TradeOfferController {
     private TradeOfferService tradeOfferService;
 
     @PostMapping(value = {"/Market/createTradeOffer", "/Market/createTradeOffer/"})
-    public ResponseEntity CreateTradeOffer(@RequestParam Long senderID, @RequestParam Long receiverID, @RequestParam Long listingID, @RequestParam Long price) {
+    public ResponseEntity CreateTradeOffer(@RequestParam Long senderID, @RequestParam Long receiverID,
+                                           @RequestParam Long listingID, @RequestParam Long price, @RequestParam String senderAddress) {
         TradeOffer myTrade;
         try {
-            myTrade = tradeOfferService.createTradeOffer(senderID,receiverID,listingID, price);
+            myTrade = tradeOfferService.createTradeOffer(senderID,receiverID,listingID, price, senderAddress);
         } catch (Exception msg) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
         }
@@ -133,8 +134,9 @@ public class TradeOfferController {
                 tradeOffer.getId(),
                 tradeOffer.getSenderID(),
                 tradeOffer.getReceiverID(),
-                tradeOffer.getListingID(),
-                tradeOffer.getPrice()
+                tradeOffer.getListing(),
+                tradeOffer.getPrice(),
+                tradeOffer.getSenderAddress()
         );
     }
 }
