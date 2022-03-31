@@ -93,13 +93,8 @@ export default {
         let userAddress = FacebookAPI.getCookie("address");
         let bid = transactionFees * price;
 
-        try {
-            await NFTContract.methods.buy(nftID, web3.utils.toWei(bid.toString(), "ether"))
-                .send({from: userAddress.toString(), value:web3.utils.toWei(price.toString(), "ether"), gas: "6721975"})
-
-        } catch (e) {
-            console.log(e);
-        }
+        await NFTContract.methods.buy(nftID, web3.utils.toWei(bid.toString(), "ether"))
+            .send({from: userAddress.toString(), value:web3.utils.toWei(price.toString(), "ether"), gas: "6721975"})
     },
     async offerTrade(nftID, price) {
         let userAddress = FacebookAPI.getCookie("address");
@@ -114,11 +109,8 @@ export default {
     async acceptTrade(nftID, buyerAddress) {
         let userAddress = FacebookAPI.getCookie("address");
 
-        try {
-            await NFTContract.methods.acceptTradeOffer(media1.id, buyerAddress.toString())
-                .send({from: userAddress.toString(), gas: "6721975"})
-        } catch(e) {
-            console.log(e);
-        }
+        await NFTContract.methods.acceptTradeOffer(nftID, buyerAddress.toString())
+            .send({from: userAddress.toString(), gas: "6721975"})
+
     }
 }
