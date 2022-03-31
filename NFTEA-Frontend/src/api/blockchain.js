@@ -111,6 +111,5 @@ export default {
 
         await NFTContract.methods.acceptTradeOffer(nftID, buyerAddress.toString())
             .send({from: userAddress.toString(), gas: "6721975"})
-
     }
 }
