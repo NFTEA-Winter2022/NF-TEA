@@ -75,7 +75,6 @@ public class TradeOfferService {
 
             tradeServiceRepository.save(myTrade); //save trade
             notificationRepository.deleteByListing(myTrade.getListing()); // delete listing & notification(s)
-            listingRepository.delete(myTrade.getListing());
 
             return myTrade;
         }

@@ -33,7 +33,15 @@ public class DtoUtils {
         if(listing == null) {
             throw new IllegalArgumentException("Listing does not exist");
         }
-        ListingDto listingDto = new ListingDto(listing.getListingID(), listing.getTitle(), listing.getPrice(), listing.getNftLink());
+        ListingDto listingDto = new ListingDto(
+                listing.getListingID(),
+                listing.getTitle(),
+                listing.getPrice(),
+                listing.getNftLink(),
+                listing.getPercentDiscount(),
+                listing.getDiscountedPrice(),
+                listing.isPriceDiscounted()
+        );
         listingDto.setOwner(convertToDto(listing.getOwner()));
         return listingDto;
     }
