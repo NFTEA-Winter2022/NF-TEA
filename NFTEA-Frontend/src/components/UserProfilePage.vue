@@ -154,31 +154,6 @@ export default ({
         });
     },
 
-
-    // CreateNFTandListing(item) {
-    //     var nft = this.NFT(item);
-    //     let title = "Summer vibes~";
-    //     let nftLink = "17845582262609336";
-    //     let userid = "17841404551416684";
-    //     console.log(nft.data);
-    //     try {
-    //       this.createInitialNFTListing(title, nftLink, userid);
-    //     } catch(e) {
-    //       console.log(e);
-    //     }
-    // },
-    //
-    // createInitialNFTListing(title, nftLink, userid) {
-    //     this.$http.post("/UserProfilePage/createListing?userid=" + userid + "&title=" + title + "&nftlink=" + nftLink)
-    //     .then(response => {
-    //       this.listing = response.data;
-    //     }).catch(e => {
-    //       this.error = e.response;
-    //       console.log(e);
-    //     })
-    //
-    // },
-
     NFT(item) {
       try {
         return blockchain.mintNFT(item);
@@ -207,23 +182,13 @@ export default ({
     }
   },
   async beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
-
-    else {
       await this.verifyIGContent();
 
       // Display collection names
       this.collections = [...new Set(await blockchain.getCollectionNamesForUser())];
       // this.collections = this.collections.splice(this.collections.indexOf('None') -1, 1)
       console.log(JSON.stringify(this.collections));
-    }
+
   }
 })
 

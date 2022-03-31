@@ -141,13 +141,14 @@ export default {
         this.listings = [];
 
         listings.forEach(listing => {
-          const imageLink = this.getImage(listing.nftLink).URL;
-          listings.push(
-              {
-                image: imageLink,
-                ... listing
-              }
-          )
+          this.getImage(listing.nftLink).then(nft => {
+            this.listings.push(
+                {
+                  image:nft.URL,
+                  ... listing
+                }
+            )
+          })
         })
 
       } catch (e) {
@@ -196,16 +197,6 @@ export default {
 
       this.tradePrice = '';
     },
-  },
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
   },
 }
 </script>
