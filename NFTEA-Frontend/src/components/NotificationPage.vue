@@ -125,7 +125,7 @@ export default {
     async acceptTradeOffer(notification) {
       console.log(JSON.stringify(notification))
       try{
-        await blockchain(notification.tradeOffer.listing.nftLink, notification.tradeOffer.senderAddress);
+        await blockchain.acceptTrade(notification.tradeOffer.listing.nftLink, notification.tradeOffer.senderAddress);
 
         await this.$http.put('/Market/acceptTradeOffer/', null, {
           params: {
@@ -176,16 +176,6 @@ export default {
         )
       })
     },
-  },
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
   },
 }
 </script>

@@ -106,7 +106,8 @@ export default {
     },
     async acceptTradeOffer(TradeOffer) {
       try{
-        await blockchain(TradeOffer.listing.nftLink, TradeOffer.senderAddress);
+        console.log(JSON.stringify(TradeOffer))
+        await blockchain.acceptTrade(TradeOffer.listing.nftLink, TradeOffer.senderAddress);
 
         await this.$http.put('/Market/acceptTradeOffer/', null, {
           params: {
