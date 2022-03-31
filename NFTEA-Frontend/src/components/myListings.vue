@@ -34,7 +34,7 @@
     <v-layout row wrap>
       <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
+          <v-card :img="listing.image" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
               <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
@@ -160,6 +160,7 @@
 
 <script>
 import facebook from "@/api/facebook";
+import blockchain from "@/api/blockchain";
 
 export default {
   name: "MyListings",
@@ -191,14 +192,31 @@ export default {
       this.isCurrentUser = !this.$route.params.userId || this.$route.params.userId === facebook.getCookie("id");
 
       try {
-        this.listings = (await this.$http.get('UserProfilePage/getMyListings/', {
+        const listings = (await this.$http.get('UserProfilePage/getMyListings/', {
           params: {
             id: id,
           },
         })).data;
+
+        this.listings = [];
+
+        listings.forEach(listing => {
+          this.getImage(listing.nftLink).then(nft => {
+            this.listings.push(
+                {
+                  image:nft.URL,
+                  ... listing
+                }
+            )
+          })
+        })
+
       } catch (e) {
         console.error(e, "Failure to Load My Listings.");
       }
+    },
+    async getImage(nftLink) {
+      return await blockchain.getNFT(nftLink);
     },
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
@@ -208,7 +226,6 @@ export default {
       } // Add more filters here later if wanted
     },
     async editListing(listing) {
-      console.log(JSON.stringify(listing))
       try {
         // Edit all of the listing properties
         if(this.newTitle) {
@@ -239,18 +256,20 @@ export default {
       }
     },
     async sendTrade(listing, tradePrice) {
-      console.log(JSON.stringify(tradePrice))
       try{
-        await this.$http.post('/Market/createTradeOffer', null, {
+        // Backend Record
+        this.response = (await this.$http.post('/Market/createTradeOffer', null, {
           params: {
             senderID: facebook.getCookie("id"),
             receiverID: listing.owner.numberID,
             listingID: listing.listingID,
-            price: tradePrice ,
+            price: tradePrice,
+            senderAddress: facebook.getCookie("address")
           },
-        }).then(response => {
-          this.response = response.data;
-        })
+        })).data;
+
+        // Blockchain transaction
+        await blockchain.offerTrade(listing.nftLink, tradePrice);
       } catch (e) {
         console.error(e, "Failure to send offer.");
       }
@@ -271,17 +290,6 @@ export default {
         console.error(e, "Failure to remove Listing");
       }
     },
-  },
-
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
   },
 }
 </script>

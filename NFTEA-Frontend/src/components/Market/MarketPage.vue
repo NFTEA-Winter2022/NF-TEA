@@ -30,7 +30,7 @@
     <v-layout row wrap>
       <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
+          <v-card :img="listing.image" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
               <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
@@ -59,7 +59,7 @@
               </h1>
             </div>
 
-            <v-btn class="buy-button">
+            <v-btn class="buy-button" @click="purchaseListing(listing)">
               Buy
             </v-btn>
 
@@ -110,6 +110,7 @@
 <script>
 
 import facebook from "@/api/facebook";
+import blockchain from "@/api/blockchain";
 
 export default {
   name: "MarketPage",
@@ -136,12 +137,27 @@ export default {
     async getListings() {
       try {
         // Call API
-        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;
+        const listings = (await this.$http.get('UserProfilePage/getListing/')).data;
+        this.listings = [];
+
+        listings.forEach(listing => {
+          this.getImage(listing.nftLink).then(nft => {
+            this.listings.push(
+                {
+                  image:nft.URL,
+                  ... listing
+                }
+            )
+          })
+        })
+
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
     },
-
+    async getImage(nftLink) {
+      return await blockchain.getNFT(nftLink);
+    },
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -149,36 +165,38 @@ export default {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
     },
+    async purchaseListing(listing) {
+      // Smart Contract transaction
+      try {
+        await blockchain.buyNFT(listing.nftLink, listing.price);
 
+        // TODO: US024-T02: Handle backend transaction logic
+
+      } catch (e) {
+        console.log("Could not perform smart contract transaction: \n" + e.toString());
+      }
+    },
     async sendTrade(listing, tradePrice) {
-      console.log(JSON.stringify(tradePrice))
       try{
-        await this.$http.post('/Market/createTradeOffer', null, {
+        // Backend Record
+        this.response = (await this.$http.post('/Market/createTradeOffer', null, {
           params: {
             senderID: facebook.getCookie("id"),
             receiverID: listing.owner.numberID,
             listingID: listing.listingID,
-            price: tradePrice ,
+            price: tradePrice,
+            senderAddress: facebook.getCookie("address")
           },
-        }).then(response => {
-          this.response = response.data;
-        })
+        })).data;
+
+        // Blockchain transaction
+        await blockchain.offerTrade(listing.nftLink, tradePrice);
       } catch (e) {
         console.error(e, "Failure to send offer.");
       }
 
       this.tradePrice = '';
     },
-  },
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
   },
 }
 </script>

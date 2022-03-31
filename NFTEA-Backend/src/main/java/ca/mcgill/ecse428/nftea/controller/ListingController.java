@@ -29,13 +29,15 @@ public class ListingController {
     public ResponseEntity createListingFromNFT(
             @RequestParam String userid,
             @RequestParam String title,
-            @RequestParam String nftLink) {
+            @RequestParam String nftLink,
+            @RequestParam Long price
+    ) {
 
         UserAccount user;
         Listing listing;
         try {
             user = userAccountService.getAccount(Long.parseLong(userid));
-            listing = listingService.createInitialListing(title, 0L, nftLink, user);
+            listing = listingService.createInitialListing(title, price, nftLink, user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

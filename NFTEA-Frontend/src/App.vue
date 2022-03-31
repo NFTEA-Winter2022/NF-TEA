@@ -14,7 +14,7 @@
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
-      <v-btn v-if="this.logged">Logout</v-btn>
+      <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
   </v-app>
@@ -30,7 +30,7 @@ window.ethereum.on('accountsChanged', async () => {
     console.log("user is connected");
     document.cookie = "address=" + accounts[0] + "; path=/";
   } else {
-    document.cookie = 'metamask=;Max-Age=0;address=';
+    document.cookie = 'metamask=;Max-Age=0;address=;';
     console.log("user not connected");
     window.location.reload();
     //Please use router.replace because router.push seems to not work on an already async function
@@ -87,14 +87,36 @@ export default {
     },
     goTradeOffers() {
       window.location.replace('/myTradeOffers');
+    },
+    async logout() {
+      try {
+        await this.$http.put("user/logout/"+ API.getCookie("id"))
+
+        this.logged = false;
+
+        let cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i];
+          let eqPos = cookie.indexOf("=");
+          let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          console.log(name)
+          document.cookie = name + "=;";
+        }
+
+        window.location.replace('/');
+      } catch (e) {
+        console.log("Logout failed." + e)
+      }
     }
   },
   beforeMount() {
     let cookies = document.cookie;
-    let split = cookies.split(';');
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') this.logged = true;
+    console.log(JSON.stringify(cookies))
+
+    if (cookies && API.getCookie("id")) this.logged = true;
+    else if (window.location.pathname !== "/" && window.location.pathname !== "") {
+      window.location.replace('/');
     }
   }
 }
