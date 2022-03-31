@@ -14,6 +14,7 @@
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
+      <v-btn @click="goAdminPage()" v-if="this.logged">Admin Page</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -87,7 +88,10 @@ export default {
     },
     goTradeOffers() {
       window.location.replace('/myTradeOffers');
-    }
+    },
+    goAdminPage(){
+      window.location.replace('/adminPage');
+    },
   },
   beforeMount() {
     let cookies = document.cookie;

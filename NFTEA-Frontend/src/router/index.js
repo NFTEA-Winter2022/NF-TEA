@@ -15,6 +15,7 @@ import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
+import AdminPage from "@/components/AdminPage";
 
 Vue.use(VueRouter)
 
@@ -106,6 +107,13 @@ const routes = [
     name: 'MyTradeOffers',
     component: TradeOffersPage
   },
+  {
+    path: '/adminPage',
+    name: 'AdminPage',
+    component: AdminPage
+  },
+
+
 ]
 
 const router = new VueRouter({
