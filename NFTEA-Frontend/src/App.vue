@@ -90,7 +90,7 @@ export default {
       window.location.replace('/myTradeOffers');
     },
     goAdminPage(){
-      window.location.replace('/adminPage');
+      window.location.replace('/adminPageListing');
     },
     async logout() {
       try {

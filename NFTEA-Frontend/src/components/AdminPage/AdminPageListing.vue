@@ -3,6 +3,11 @@
     <v-row class="title">
     Existing Listings
     </v-row>
+    <v-layout align-center justify-center>
+      <v-btn @click="changeToUserAccounts()">
+        Existing Users
+      </v-btn>
+    </v-layout>
     <v-layout row wrap>
       <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
@@ -126,7 +131,7 @@
 
 <script>
 export default {
-  name: "AdminPage",
+  name: "AdminPageListing",
   data: () => ({
     isCurrentUser: false,
     listings: [],
@@ -161,6 +166,9 @@ export default {
         console.error(e, "Failure to remove Listing");
       }
     },
+    async changeToUserAccounts(){
+      window.location.replace('/adminPageUserAccount')
+    }
   },
   beforeMount() {
     let cookies = document.cookie;

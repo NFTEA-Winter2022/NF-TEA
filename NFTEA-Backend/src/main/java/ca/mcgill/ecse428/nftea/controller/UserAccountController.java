@@ -107,6 +107,17 @@ public class UserAccountController {
         return new ResponseEntity<>(userAccountDtos, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = {"/admin/deleteUserAccount", "/admin/deleteUserAccount/"})
+    public ResponseEntity deleteUserAccountFromAdmin(@RequestParam Long id){
+        try {
+            String userPassword = userAccountService.getAccount(id).getPassword();
+            userAccountService.deleteUser(id, userPassword);
+        } catch (Exception msg) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg.getMessage());
+        }
+        return new ResponseEntity<String>("Account no longer exists.", HttpStatus.OK);
+    }
+
 
     private UserAccountDto covertDto(UserAccount userAccount) {
         return new UserAccountDto(

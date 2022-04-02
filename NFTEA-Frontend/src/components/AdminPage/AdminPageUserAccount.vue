@@ -1,169 +1,93 @@
-<template>
+<template onload="getAllUserAccounts()">
   <v-container grid-list-md>
     <v-row class="title">
       Existing Users
     </v-row>
-    <v-layout row wrap>
-      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
-        <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <h1 class="card-id" v-if="!hover">#</h1>
-              <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
-            </div>
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <v-icon
-                  class="card-id"
-                  v-if="!hover"
-              >
-                mdi-information-variant
-              </v-icon>
-              <h1 class="card-id" v-else>{{listing.title}}</h1>
-            </div>
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <v-icon
-                  class="card-id"
-                  v-if="!hover"
-              >
-                mdi-ethereum
-              </v-icon>
-              <h1 class="card-id" v-else>
-                <v-icon>
-                  mdi-ethereum
-                </v-icon>
-                {{listing.price}}
-              </h1>
-            </div>
-
-            <v-dialog max-width="300px" v-if="isCurrentUser">
-              <template v-slot:activator="{ on, attrs }" >
-                <v-btn
-                    class="trade-button"
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                  Edit Listing
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="Title">Listing Details: </span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-text-field
-                          v-model="newTitle"
-                          label="New Title"
-                          required
-                      ></v-text-field>
-                      <v-text-field
-                          v-model="tradePrice"
-                          label="New Trading Price"
-                          required
-                      ></v-text-field>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="removeListing(listing)"
-                  >
-                    Remove
-                  </v-btn>
-                  <!--                  <v-btn-->
-                  <!--                      color="blue darken-1"-->
-                  <!--                      text-->
-                  <!--                      @click="editListing(listing)"-->
-                  <!--                  >-->
-                  <!--                    Confirm Edit-->
-                  <!--                  </v-btn>-->
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
-            <v-dialog max-width="300px" v-else>
-              <template v-slot:activator="{ on, attrs }" >
-                <v-btn
-                    class="trade-button"
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                  Make Offer
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="Title">Listing Details: </span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-text-field
-                          v-model="tradePrice"
-                          label="Trading Price"
-                          required
-                      ></v-text-field>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-card>
-        </v-hover>
-      </v-flex>
+    <v-layout align-center justify-center>
+      <v-btn @click="changeToListings()">
+        Existing Listings
+      </v-btn>
     </v-layout>
-
+    <span style="white-space: pre;">
+      <v-card flat>
+        <v-list subheader two-line>
+          <template v-for="(userAccount, index) in userAccounts">
+            <v-list-item
+                @click="$router.push({name: 'MyListings', params: {userId: userAccount.numberID}})"
+                :key="userAccount.numberID">
+              <v-list-item-content>
+                <v-list-item-title v-text="userAccount.username"></v-list-item-title>
+                <v-list-item-subtitle v-text="userAccount.numberID"></v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider
+                v-if="index < userAccounts.length - 1"
+                :key="index"
+            ></v-divider>
+          </template>
+        </v-list>
+      </v-card>
+    </span>
   </v-container>
-
 </template>
 
 <script>
 export default {
-  name: "AdminPage",
+  name: "AdminPageUserAccount",
   data: () => ({
-    isCurrentUser: false,
-    // listings: [],
-    userAccounts: [],
-    search: '',
-    tradePrice: '',
-    newTitle: '',
+    userAccounts: [
+      // {
+      //   numberID: 1,
+      //   firstName: "Joe",
+      //   lastName: "Doe",
+      //   userEmail: "jdoe@mail.com",
+      //   username: "jd12345",
+      // },
+      // {
+      //   numberID: 3,
+      //   firstName: "Jane",
+      //   lastName: "Smith",
+      //   userEmail: "jsmith@mail.com",
+      //   username: "jane3421",
+      // },
+    ],
     response: '',
+    errorMessage: '',
   }),
-  async created(){
-    await this.getAllListings();
-  },
-  methods:{
-    async getAllUserAccounts(){
-      try{
-        this.userAccounts = (await this.$http.get('/user-account/allAccounts')).data;
-      } catch (e){
-        console.error(e, "Failure to load all users");
-      }
+  methods: {
+    async getAllUserAccounts() {
+      await this.$http.get('/user-account/allAccounts').then(response => {
+        this.response = response.data;
+        this.userAccounts.push(response.data);
+        this.errorMessage = "";
+      })
+          .catch(e => {
+            let errorMsg = e.response.data;
+            console.log(errorMsg);
+          })
     },
 
-    async removeUserAccount(userAccount){
-      console.log(JSON.stringify(userAccount))
-      try{
-        await this.$http.delete('/user-account/delete', {
-          params:{
-            userAccountId: userAccount.userAccountId,
+    async removeUserAccount(userAccountID) {
+      try {
+        await this.$http.delete('/admin/deleteUserAccount', {
+          params: {
+            id: userAccountID,
           }
         }).then(response => {
           this.response = response.data;
         })
-      } catch (e){
+      } catch (e) {
         console.error(e, "Failure to remove UserAccount")
       }
     },
+    async changeToListings() {
+      window.location.replace('/adminPageListing')
+    },
+
   },
-  beforeMount() {
+
+
+  async beforeMount() {
     let cookies = document.cookie;
     let split = cookies.split(';');
     let log = false;
@@ -172,6 +96,7 @@ export default {
       if (name === 'id') log = true;
     }
     if (!log) window.location.replace('/');
+    await this.getAllUserAccounts();
   },
 }
 </script>
@@ -182,10 +107,11 @@ export default {
   margin-top: 4rem;
   margin-bottom: 4rem;
 }
+
 div.card-id {
   height: 40px;
   width: 10%;
-  background-color: rgba(255,255,255, 1);
+  background-color: rgba(255, 255, 255, 1);
   color: #5c584e;
   font-size: 0.8rem;
   text-align: center;
@@ -197,8 +123,9 @@ div.card-id {
   align-content: center;
   flex-direction: column;
 }
+
 div.card-id.on-hover {
-  background-color: rgba(255,255,255, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   width: max-content;
   min-width: 40%;
   max-width: 70%;
