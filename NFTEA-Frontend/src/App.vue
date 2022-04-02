@@ -14,6 +14,7 @@
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
+      <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>      
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -43,7 +44,8 @@ window.ethereum.on('accountsChanged', async () => {
 export default {
   data() {
     return {
-      logged: false
+      logged: false,
+      dark: true,
     }
   },
   methods: {
@@ -88,6 +90,10 @@ export default {
     goTradeOffers() {
       window.location.replace('/myTradeOffers');
     },
+    darkMode(){
+      this.$vuetify.theme.dark = this.dark;
+      this.dark = !this.dark;
+    },
     async logout() {
       try {
         await this.$http.put("user/logout/"+ API.getCookie("id"))
@@ -112,7 +118,9 @@ export default {
   },
   beforeMount() {
     let cookies = document.cookie;
-    console.log(JSON.stringify(cookies))
+    console.log(JSON.stringify(cookies));
+
+    document.getElementById("app").className = "dark-mode";
 
     if (cookies && API.getCookie("id")) this.logged = true;
     else if (window.location.pathname !== "/" && window.location.pathname !== "") {
