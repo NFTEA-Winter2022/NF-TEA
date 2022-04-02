@@ -1,16 +1,16 @@
 <template>
   <div>
     <div>
-      <h1 v-if="checkM()">Connect your wallet</h1>
-      <h2 v-if="!checkM()">Metamask connected! To disconnect:</h2>
-      <h3 style="padding-bottom: 60px;" v-if="!checkM()">Go through your extension->Connected->three dots->Disconnect this account</h3>
+      <h1 v-if="showConnectWallet">Connect your wallet</h1>
+      <h2 v-if="!showConnectWallet">Metamask connected! To disconnect:</h2>
+      <h3 style="padding-bottom: 60px;" v-if="!showConnectWallet">Go through your extension->Connected->three dots->Disconnect this account</h3>
       <vue-metamask
           userMessage="msg"
           @onComplete="onComplete"
           v-if = "showMask"
       >
       </vue-metamask>
-      <v-btn v-if="checkM()"
+      <v-btn v-if="showConnectWallet"
           class="ma-2"
           dark
           color="orange"
@@ -33,9 +33,9 @@
       >
         {{msg1}}
       </v-alert>
-      <h1 v-if="checkIG()">Import your data</h1>
-      <h1 style="padding-top: 60px;" v-if="!checkIG()">Instagram Succesfully Connected!</h1>
-      <v-btn v-if="checkIG()"
+      <h1 v-if="showConnectIG">Import your data</h1>
+      <h1 style="padding-top: 60px;" v-if="!showConnectIG">Instagram Succesfully Connected!</h1>
+      <v-btn v-if="showConnectIG"
 
           class="ma-2"
           dark
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import FacebookAPI from "../api/facebook"
+import FacebookAPI from "../api/facebook";
 import VueMetamask from 'vue-metamask';
 
 export default {
@@ -85,12 +85,17 @@ export default {
     alert: false,
     msg1: "String",
     alert1: false,
+    showConnectWallet : true,
+    showConnectIG : true
   }),
 
-  created() {
+  async created() {
+    // Metamask connection dialog
+    this.showConnectWallet = (await this.checkM());
+    this.showConnectIG = (await this.checkIG())
+    this.checkFullConnection();
+
     // Instagram will redirect back to this page with an auth code or with errors in the url
-
-
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const error = {
@@ -101,13 +106,16 @@ export default {
 
     if(code) {
       this.alert = true
-      this.msg = "Authorization successful, redirecting in 2 seconds"
+      this.msg = "Authorization successful, Redirecting in 2 seconds"
 
       // Use the single-use auth code to get a short lived token (valid for 1 hr)
-      FacebookAPI.getToken(code.replace('#_', ''));
+      await FacebookAPI.getToken(code.replace('#_', ''));
+      console.log(this.checkIG())
+      this.showConnectIG =  this.checkIG()
+      this.checkFullConnection();
     } else if(error.value) {
       this.alert = true
-      this.msg="You have cancelled the authorization process,Refresh the page for another attempt"
+      this.msg="You have cancelled the authorization process, please try again"
     }
   },
   methods: {
@@ -117,30 +125,31 @@ export default {
     connectToMetaMask() {
       this.showMask = true
     },
-    checkM() {
-      let splits = document.cookie.split(';');
-      let bool = true;
-      function checkMeta(element, bool) {
-        let name = element.split('=')[0];
-        if (name === 'metamask' || name === ' metamask' || !bool) return false;
-        return true;
+    async checkM() {
+      const {ethereum} = window;
+      const accounts = await ethereum.request({method: 'eth_accounts'});
+
+      if(accounts && accounts.length > 0 && !FacebookAPI.getCookie("address")) {
+        document.cookie = "address=" + accounts[0] + "; path=/";
       }
-      splits.forEach(element => bool = checkMeta(element, bool));
-      return bool;
+
+      if((!accounts || accounts.length == 0) && FacebookAPI.getCookie("address")) {
+        document.cookie = "address=;";
+      }
+
+      this.checkFullConnection();
+
+      return !FacebookAPI.getCookie("address");
     },
     checkIG() {
-      let splitsIG = document.cookie.split(';');
-      let boolIG = true;
-      function checkInsta(element, boolIG) {
-        let nameIG = element.split('=')[0];
-        if (nameIG === 'shortIGToken' || nameIG === ' shortIGToken' || !boolIG){
-          return false;
-        } else {
-          return true;
-        }
+      return !FacebookAPI.getCookie("shortIGToken");
+    },
+    checkFullConnection() {
+      if(!this.showConnectWallet && !this.showConnectIG) {
+        setTimeout(function(){
+          window.location.replace(window.location.origin + '/UserProfile/');
+        }, 1500);
       }
-      splitsIG.forEach(element => boolIG = checkInsta(element, boolIG));
-      return boolIG;
     },
     async onComplete(data) {
       if (data && data.web3) {
@@ -150,27 +159,19 @@ export default {
 
         this.alert1 = true
         this.msg1 = "Connection successful"
+        this.showConnectWallet = false;
+        this.checkFullConnection();
       }
       else {
         console.log('data:', data);
         document.cookie = 'metamask=;Max-Age=0;address=;';
         this.alert1 = true
-        this.msg1 = "Connection unsuccessful, Refresh the page for another attempt"
+        this.msg1 = "Connection unsuccessful, please try again."
       }
       this.showMask = false
       //window.location.reload();
     }
   },
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
-  }
 }
 </script>
 

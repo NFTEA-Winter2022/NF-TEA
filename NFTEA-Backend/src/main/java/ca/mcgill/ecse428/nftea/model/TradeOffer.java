@@ -1,12 +1,7 @@
 package ca.mcgill.ecse428.nftea.model;
 
 import java.util.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class TradeOffer {
@@ -16,7 +11,9 @@ public class TradeOffer {
     private Long id;
     private Long senderID;
     private Long receiverID;
-    private Long listingID;
+    private String senderAddress;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Listing listing;
     private boolean onGoing;
     private boolean accepted;
     private boolean declined;
@@ -29,14 +26,15 @@ public class TradeOffer {
     //------------------------
     public TradeOffer() {}
 
-    public TradeOffer(Long senderID, Long receiverID, Long listingID, Long price) {
+    public TradeOffer(Long senderID, Long receiverID, Listing listing, Long price, String senderAddress) {
         this.senderID = senderID;
         this.receiverID = receiverID;
-        this.listingID = listingID;
+        this.listing = listing;
         this.price = price;
         this.onGoing = false;
         this.accepted = false;
         this.declined = false;
+        this.senderAddress = senderAddress;
     }
 
     //------------------------
@@ -75,8 +73,16 @@ public class TradeOffer {
         return senderID;
     }
 
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
     public void setSenderID(Long senderID) {
         this.senderID = senderID;
+    }
+
+    public void setSenderAddress(String senderAddress) {
+        this.senderAddress = senderAddress;
     }
 
     public Long getReceiverID() {
@@ -87,12 +93,12 @@ public class TradeOffer {
         this.receiverID = receiverID;
     }
 
-    public Long getListingID() {
-        return listingID;
+    public Listing getListing() {
+        return listing;
     }
 
-    public void setListingID(Long listingID) {
-        this.listingID = listingID;
+    public void setListing(Listing listing) {
+        this.listing = listing;
     }
 
     public Long getPrice() {

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <h1>This is the login page</h1>
-    <v-form v-model="valid" id="login-form">
+    <v-form id="login-form">
       <v-container>
         <span v-if="errorMessage" class="errorMessage">{{errorMessage}} </span>
         <v-row>
@@ -51,7 +51,8 @@
   }
 </style>
 <script>
-    import * as vm from "vm";
+     import * as vm from "vm";
+    import API from "@/api/facebook";
 
     export default {
     data() {
@@ -71,42 +72,27 @@
       }
     },
     methods: {
-      logInClientUser(userEmail, userPassword) {
+      async logInClientUser(userEmail, userPassword) {
         //let currentUserEmail
-        this.$http.get('/home/login', {
-          params: {
-            email: userEmail,
-            password: userPassword,
-          }
-        })
-            .then(response => {
-              this.response = response.data;
-              document.cookie = "id=" + this.response.numberID.toString() + "; path=/";
-              window.location.replace("/userProfile");
-              vm.$forceUpdate();
-            })
-            .catch(e => {
-              let errorMsg = e.response.data;
-
-              console.log(errorMsg)
-              // this.errorPerson = errorMsg
-              // alert(e.message)
-              this.errorMessage = errorMsg
-
-            })
+        try {
+          const id = (await this.$http.get('/home/login', {
+            params: {
+              email: userEmail,
+              password: userPassword,
+            }
+          })).data.numberID
+          console.log(JSON.stringify(id))
+          document.cookie = "id=" + id.toString() + "; path=/";
+          window.location.replace("/userProfile");
+          vm.$forceUpdate();
+        } catch (e) {
+          console.log(e)
+          this.errorMessage = e.response.data;
+        }
       }
     },
       beforeMount() {
-        let cookies = document.cookie;
-        let split = cookies.split(';');
-        let log = false;
-        for (const element of split) {
-          let name = element.split('=')[0];
-          if (name === 'id') {
-            log = true;
-          }
-        }
-        if (log) window.location.replace('/home');
+        if (document.cookie && API.getCookie("id")) window.location.replace('/home');
       }
 }
 </script>

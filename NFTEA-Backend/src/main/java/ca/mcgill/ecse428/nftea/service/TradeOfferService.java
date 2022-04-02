@@ -35,9 +35,10 @@ public class TradeOfferService {
 
 
     @Transactional
-    public TradeOffer createTradeOffer(Long senderID, Long receiverID, Long listingID, Long price) throws IllegalArgumentException {
+    public TradeOffer createTradeOffer(Long senderID, Long receiverID, Long listingID, Long price, String senderAddress) throws IllegalArgumentException {
         //verify that trade offer is valid
         if (userAccountRepository.findUserAccountById(senderID) == null) throw new IllegalArgumentException("Invalid senderID");
+        if (senderAddress == null || senderAddress.equals("")) throw new IllegalArgumentException("Invalid sender address");
 
         UserAccount receiver = userAccountRepository.findUserAccountById(receiverID);
         if (receiver == null) throw new IllegalArgumentException("Invalid receiverID");
@@ -46,7 +47,7 @@ public class TradeOfferService {
         if (listing == null) throw new IllegalArgumentException("Invalid listingID");
         if (price < 0) throw new IllegalArgumentException("Price cannot be less than zero!");
         //create trade
-        TradeOffer myTrade = new TradeOffer(senderID,receiverID,listingID,price);
+        TradeOffer myTrade = new TradeOffer(senderID,receiverID,listing,price, senderAddress);
         myTrade.setOnGoing(true);
         tradeServiceRepository.save(myTrade); //save trade
 
@@ -73,8 +74,8 @@ public class TradeOfferService {
             myTrade.setDeclined(false);
 
             tradeServiceRepository.save(myTrade); //save trade
-            notificationRepository.deleteByListing(listingRepository.findListingByListingID(myTrade.getListingID())); // delete listing & notification(s)
-            listingRepository.deleteById(myTrade.getListingID());
+            notificationRepository.deleteByListing(myTrade.getListing()); // delete listing & notification(s)
+            //listingRepository.delete(myTrade.getListing()); // This doesn't work because of associations, future TODO maybe
 
             return myTrade;
         }
@@ -147,7 +148,7 @@ public class TradeOfferService {
             myTrade.setDeclined(true);
 
             tradeServiceRepository.save(myTrade); //save trade
-            notificationRepository.deleteByListing(listingRepository.findListingByListingID(myTrade.getListingID()));
+            notificationRepository.deleteByListing(myTrade.getListing());
             return myTrade;
         } else { //unavailable
             if (myTrade.isAccepted()) throw new IllegalArgumentException("TradeOffer already accepted");

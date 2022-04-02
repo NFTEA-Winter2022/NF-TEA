@@ -28,9 +28,6 @@ export default {
 
             document.cookie = "shortIGToken=" + JSON.stringify(shortIGToken) + "; path=/"; //shortIGtoken: {access_token, user_id}
             console.log(JSON.stringify(shortIGToken) );
-            setTimeout(function(){
-                window.location.replace(userProfile);
-            }, 1500);
         } catch(e) {
             console.log(e);
         }

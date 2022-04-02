@@ -21,7 +21,7 @@ public class ListingService {
         if (title == null || nftLink == null || title.equals("") || nftLink.equals("")) {
             throw new IllegalArgumentException("Title and/or NFTLink cannot be empty");
         }
-        if (price == null) price = Long.valueOf(0);
+        if (price == null || price < 0) price = Long.valueOf(0);
         if (user == null) throw new IllegalArgumentException("Missing user");
         Listing aListing = new Listing(title, price, nftLink, user);
         listingRepository.save(aListing);

@@ -101,7 +101,8 @@ export default ({
           params: {
             userid: id,
             title: caption,
-            nftLink: NFTId
+            nftLink: NFTId,
+            price: price
           }
         }).then(response => {
           this.response = response.data;
@@ -113,18 +114,7 @@ export default ({
   },
 
   beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
-
-    else {
       this.PutIgPic();
-    }
   }
 
 })

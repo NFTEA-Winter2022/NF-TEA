@@ -122,6 +122,11 @@ public class Listing
   public void delete()
   {}
 
+  public Long getPercentDiscount() { return this.percentDiscount; }
+
+  public Long getDiscountedPrice() { return this.discountedPrice; }
+
+  public boolean isPriceDiscounted() { return this.isPriceDiscounted; }
 
   public boolean setDiscount(Long percent) {
     boolean wasSet = false;
