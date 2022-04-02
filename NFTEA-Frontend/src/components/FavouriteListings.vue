@@ -3,34 +3,34 @@
     <v-row no-gutters>
       <v-col>
         <input
-        type="text"
-        name="text"
-        placeholder="Search NFT"
-        autocomplete="on"
-        class="pa-2"
-        v-model="search"
-      />
+            type="text"
+            name="text"
+            placeholder="Search NFT"
+            autocomplete="on"
+            class="pa-2"
+            v-model="search"
+        />
       </v-col>
       <v-col
           cols="12"
           md="4"
       >
         <v-select
-                  class="pa-2"
-                  v-model="filter.currentFilter"
-                  :items="filter.availableFilters"
-                  @change="sortPrice"
-                  outlined
-                  label="Filter By"
+            class="pa-2"
+            v-model="filter.currentFilter"
+            :items="filter.availableFilters"
+            @change="sortPrice"
+            outlined
+            label="Filter By"
         ></v-select>
       </v-col>
     </v-row>
     <v-row>
     </v-row>
     <v-layout row wrap>
-      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
+      <v-flex xs12 md4 lg3 v-bind:key="listing.listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
+          <v-card :img="listing.listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
               <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
@@ -39,10 +39,10 @@
                 class="card-id"
                 icon
                 color="orange"
-                @click="AddToFav(listing.listingID)"
+                @click="AddToFav(listing.listing.listingID)"
             >
-            <v-icon
-                  v-if="ArrayL[listing.listingID]">mdi-star</v-icon>
+              <v-icon
+                  v-if="ArrayL[listing.listing.listingID]">mdi-star</v-icon>
               <v-icon v-else>mdi-star-off</v-icon>
             </v-btn>
             <div class="card-id" :class="{ 'on-hover': hover }">
@@ -52,7 +52,7 @@
               >
                 mdi-information-variant
               </v-icon>
-              <h1 class="card-id" v-else>{{listing.title}}</h1>
+              <h1 class="card-id" v-else>{{listing.listing.title}}</h1>
             </div>
             <div class="card-id" :class="{ 'on-hover': hover }">
               <v-icon
@@ -65,7 +65,7 @@
                 <v-icon>
                   mdi-ethereum
                 </v-icon>
-                {{listing.price}}
+                {{listing.listing.price}}
               </h1>
 
             </div>
@@ -93,11 +93,11 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                        <v-text-field
-                            v-model="tradePrice"
-                            label="Trading Price"
-                            required
-                        ></v-text-field>
+                      <v-text-field
+                          v-model="tradePrice"
+                          label="Trading Price"
+                          required
+                      ></v-text-field>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -133,6 +133,7 @@ export default {
     starOn:true,
     ArrayL:[],
     listings: [],
+    favlistings:[],
     search: '',
     filter: {
       currentFilter: "",
@@ -147,22 +148,29 @@ export default {
     filteredData: function() {
       return this.listings.filter((listing)=>{
         this.Stars(listing.listingID)
-        return listing.title.toLowerCase().match(this.search.toLowerCase());
+        return listing.listing.title.toLowerCase().match(this.search.toLowerCase());
       })
     },
   },
   methods: {
+    // async getListings() {
+    //   await this.getFavListings();
+    //   console.log(JSON.stringify(this.favlistings))
+    //   for (let i = 0;i<this.favlistings.length;i++){
+    //     this.listings[i]=this.favlistings[i].listing
+    //   }
+    //   console.log(JSON.stringify(this.listings))
+    // }
     async getListings() {
       try {
         // Call API
-        this.listings = (await this.$http.get('UserProfilePage/getListing/')).data;
+        this.listings = (await this.$http.get('/UserProfilePage/getFavourites/?userid='+facebook.getCookie("id"))).data
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
 
     }
     ,
-
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -223,9 +231,9 @@ export default {
       }
       this.Stars(listing)
     },
-      async Stars(listing) {
+    async Stars(listing) {
       this.ArrayL[listing]=true;
-       try {
+      try {
         await this.$http.get('/UserProfilePage/getFavourite/?' + 'userid=' + facebook.getCookie("id") + '&listingid=' + listing, null, {
           params: {
             userid: facebook.getCookie("id"),

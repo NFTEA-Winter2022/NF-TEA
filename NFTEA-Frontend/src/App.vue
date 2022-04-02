@@ -14,6 +14,7 @@
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
+      <v-btn @click="goFavourites()" v-if="this.logged">Favourite Listings</v-btn>
       <v-btn v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -87,6 +88,9 @@ export default {
     },
     goTradeOffers() {
       window.location.replace('/myTradeOffers');
+    },
+    goFavourites() {
+      window.location.replace('/myFavourites');
     }
   },
   beforeMount() {
