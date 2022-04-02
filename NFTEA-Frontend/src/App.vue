@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" :dark="setTheme">
     <div id="nav">
       <v-btn @click="goHome()" v-if="this.logged">Home</v-btn>
       <v-btn @click="goAbout()" v-if="this.logged">About</v-btn>
@@ -11,10 +11,12 @@
       <v-btn @click="goPassword()" v-if="this.logged">Edit Password</v-btn>
       <v-btn @click="goDelete()" v-if="this.logged">Delete Account</v-btn>
       <v-btn @click="goNFT()" v-if="this.logged">NFT Page</v-btn>
-      <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
+      <v-btn @click="goCollection()" v-if="this.logged"
+        >NFT Collection Page</v-btn
+      >
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
-      <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>      
+      <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -23,15 +25,16 @@
 
 <script>
 import API from "@/api/facebook";
+// import vuetify from "./plugins/vuetify";
 
-window.ethereum.on('accountsChanged', async () => {
-  const {ethereum} = window;
-  const accounts = await ethereum.request({method: 'eth_accounts'});
+window.ethereum.on("accountsChanged", async () => {
+  const { ethereum } = window;
+  const accounts = await ethereum.request({ method: "eth_accounts" });
   if (accounts && accounts.length > 0) {
     console.log("user is connected");
     document.cookie = "address=" + accounts[0] + "; path=/";
   } else {
-    document.cookie = 'metamask=;Max-Age=0;address=;';
+    document.cookie = "metamask=;Max-Age=0;address=;";
     console.log("user not connected");
     window.location.reload();
     //Please use router.replace because router.push seems to not work on an already async function
@@ -45,58 +48,59 @@ export default {
   data() {
     return {
       logged: false,
-      dark: true,
-    }
+      dark: false,
+    };
   },
+  
   methods: {
     goHome() {
-      window.location.replace('/home');
+      window.location.replace("/home");
     },
     goAbout() {
-      window.location.replace('/about');
+      window.location.replace("/about");
     },
     goProfile() {
-      window.location.replace('/userProfile');
+      window.location.replace("/userProfile");
     },
     goUsername() {
-      window.location.replace('/user-account/editUsername');
+      window.location.replace("/user-account/editUsername");
     },
     goPassword() {
-      window.location.replace('/user-account/editPassword');
+      window.location.replace("/user-account/editPassword");
     },
     goDelete() {
-      window.location.replace('/delete');
+      window.location.replace("/delete");
     },
     goNFT() {
-      window.location.replace('/NFTPage');
+      window.location.replace("/NFTPage");
     },
     goCollection() {
-      window.location.replace('/NFTCollection');
+      window.location.replace("/NFTCollection");
     },
     goMarket() {
-      window.location.replace('/Market');
+      window.location.replace("/Market");
     },
     goSearchUser() {
-      window.location.replace('/SearchUser');
-
+      window.location.replace("/SearchUser");
     },
-    goNotifications()
-      {
-        window.location.replace('/Notifications');
-      },
+    goNotifications() {
+      window.location.replace("/Notifications");
+    },
     goMyListings() {
-      window.location.replace('/myListings/' + API.getCookie("id"));
+      window.location.replace("/myListings/" + API.getCookie("id"));
     },
     goTradeOffers() {
-      window.location.replace('/myTradeOffers');
+      window.location.replace("/myTradeOffers");
     },
-    darkMode(){
-      this.$vuetify.theme.dark = this.dark;
-      this.dark = !this.dark;
+    darkMode() {
+      // this.$vuetify.theme.dark = this.dark;
+      // this.dark = !this.dark;
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
     },
     async logout() {
       try {
-        await this.$http.put("user/logout/"+ API.getCookie("id"))
+        await this.$http.put("user/logout/" + API.getCookie("id"));
 
         this.logged = false;
 
@@ -106,28 +110,45 @@ export default {
           let cookie = cookies[i];
           let eqPos = cookie.indexOf("=");
           let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-          console.log(name)
+          console.log(name);
           document.cookie = name + "=;";
         }
 
-        window.location.replace('/');
+        window.location.replace("/");
       } catch (e) {
-        console.log("Logout failed." + e)
+        console.log("Logout failed." + e);
       }
+    },
+  },
+  mounted() {
+    const theme = localStorage.getItem("dark_theme");
+    if (theme) {
+      if (theme === "true") {
+        this.$vuetify.theme.dark = true;
+      } else {
+        this.$vuetify.theme.dark = false;
+      }
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      this.$vuetify.theme.dark = true;
+      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
     }
   },
   beforeMount() {
     let cookies = document.cookie;
     console.log(JSON.stringify(cookies));
 
-    document.getElementById("app").className = "dark-mode";
-
     if (cookies && API.getCookie("id")) this.logged = true;
-    else if (window.location.pathname !== "/" && window.location.pathname !== "") {
-      window.location.replace('/');
+    else if (
+      window.location.pathname !== "/" &&
+      window.location.pathname !== ""
+    ) {
+      window.location.replace("/");
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">
