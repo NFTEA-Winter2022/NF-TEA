@@ -35,7 +35,7 @@ public class UserAccountController {
         return new ResponseEntity<>(covertDto(user), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/user-account", "/user-account/"})
+    @DeleteMapping(value = {"/user-account/delete", "/user-account/delete/"})
     public ResponseEntity<String> deleteLibrarianByUsername(@RequestParam Long id, @RequestParam String password) {
         try {
             userAccountService.deleteUser(id, password);
