@@ -15,7 +15,7 @@
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
       <v-btn @click="goAdminPage()" v-if="this.logged">Admin Page</v-btn>
-      <v-btn v-if="this.logged">Logout</v-btn>
+      <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
   </v-app>
@@ -92,6 +92,27 @@ export default {
     goAdminPage(){
       window.location.replace('/adminPage');
     },
+    async logout() {
+      try {
+        await this.$http.put("user/logout/"+ API.getCookie("id"))
+
+        this.logged = false;
+
+        let cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i];
+          let eqPos = cookie.indexOf("=");
+          let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          console.log(name)
+          document.cookie = name + "=;";
+        }
+
+        window.location.replace('/');
+      } catch (e) {
+        console.log("Logout failed." + e)
+      }
+    }
   },
   beforeMount() {
     let cookies = document.cookie;
