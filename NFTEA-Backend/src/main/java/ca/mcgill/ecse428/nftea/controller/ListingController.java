@@ -45,7 +45,7 @@ public class ListingController {
     }
 
     @DeleteMapping(value = {"/UserProfilePage/deleteListing", "/UserProfilePage/deleteListing/"})
-    public ResponseEntity deleteListing(@RequestParam Long listingId) {
+    public ResponseEntity deleteListing(@RequestParam(required=false) Long listingId) {
         boolean result;
         try {
             result = listingService.deleteListing(listingId);

@@ -1,144 +1,46 @@
 <template>
   <v-container grid-list-md>
-    <v-row class="title">
-    Existing Listings
-    </v-row>
     <v-layout align-center justify-center>
       <v-btn @click="changeToUserAccounts()">
         Existing Users
       </v-btn>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
-        <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <h1 class="card-id" v-if="!hover">#</h1>
-              <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
-            </div>
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <v-icon
-                  class="card-id"
-                  v-if="!hover"
-              >
-                mdi-information-variant
-              </v-icon>
-              <h1 class="card-id" v-else>{{listing.title}}</h1>
-            </div>
-            <div class="card-id" :class="{ 'on-hover': hover }">
-              <v-icon
-                  class="card-id"
-                  v-if="!hover"
-              >
-                mdi-ethereum
-              </v-icon>
-              <h1 class="card-id" v-else>
-                <v-icon>
-                  mdi-ethereum
-                </v-icon>
-                {{listing.price}}
-              </h1>
-            </div>
-
-            <v-dialog max-width="300px" v-if="isCurrentUser">
-              <template v-slot:activator="{ on, attrs }" >
-                <v-btn
-                    class="trade-button"
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                  Edit Listing
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="Title">Listing Details: </span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-text-field
-                          v-model="newTitle"
-                          label="New Title"
-                          required
-                      ></v-text-field>
-                      <v-text-field
-                          v-model="tradePrice"
-                          label="New Trading Price"
-                          required
-                      ></v-text-field>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="removeListing(listing)"
-                  >
-                    Remove
+    <v-row class="title">
+      Existing Listings
+    </v-row>
+    <v-layout align-center justify-center>
+      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in listings">
+        <v-list>
+          <template>
+            <v-list-item v-bind:key="listing.listingID">
+              <v-content>
+                <v-list-item-title v-text="listing.title"></v-list-item-title>
+                <v-list-item-subtitle v-text="listing.listingID"></v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  <v-btn color="primary" text @click="removeListing(listing.listingID)" align-center> Delete
                   </v-btn>
-<!--                  <v-btn-->
-<!--                      color="blue darken-1"-->
-<!--                      text-->
-<!--                      @click="editListing(listing)"-->
-<!--                  >-->
-<!--                    Confirm Edit-->
-<!--                  </v-btn>-->
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                </v-list-item-subtitle>
+              </v-content>
 
-            <v-dialog max-width="300px" v-else>
-              <template v-slot:activator="{ on, attrs }" >
-                <v-btn
-                    class="trade-button"
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                  Make Offer
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="Title">Listing Details: </span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-text-field
-                          v-model="tradePrice"
-                          label="Trading Price"
-                          required
-                      ></v-text-field>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-card>
-        </v-hover>
+            </v-list-item>
+            <v-divider
+                v-if="index < listings.length - 1"
+                :key="index"
+            ></v-divider>
+          </template>
+        </v-list>
       </v-flex>
     </v-layout>
-
   </v-container>
 
 </template>
-
 <script>
 export default {
   name: "AdminPageListing",
   data: () => ({
-    isCurrentUser: false,
     listings: [],
-    search: '',
-    tradePrice: '',
-    newTitle: '',
-    response: '',
+    response: [],
+    errorMessage: '',
   }),
   async created(){
     await this.getAllListings();
@@ -146,21 +48,26 @@ export default {
   methods:{
     async getAllListings(){
       // let id = this.$route.params.userId;
-      try {
-        this.listings = (await this.$http.get('UserProfilePage/getListing')).data;
-      } catch (e) {
-        console.error(e, "Failure to load all listings")
-      }
+      await this.$http.get('UserProfilePage/getListing').then(response => {
+        this.response = response.data;
+        this.listings = (response.data);
+        this.errorMessage = "";
+      }).catch(e => {
+        let errorMsg = e.response.data;
+        console.log(errorMsg);
+      })
+
     },
-    async removeListing(listing) {
+    removeListing(listing) {
       console.log(JSON.stringify(listing))
       try {
-        await this.$http.delete('UserProfilePage/deleteListing', {
+        this.$http.delete('UserProfilePage/deleteListing', {
           params: {
-            listingId: listing.listingID,
+            listingId: listing,
           }
         }).then(response => {
           this.response = response.data;
+          window.location.reload();
         })
       } catch (e) {
         console.error(e, "Failure to remove Listing");

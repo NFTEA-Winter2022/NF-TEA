@@ -1,33 +1,35 @@
-<template onload="getAllUserAccounts()">
-  <v-container grid-list-md>
-    <v-row class="title">
-      Existing Users
-    </v-row>
+<template>
+  <v-container list>
     <v-layout align-center justify-center>
       <v-btn @click="changeToListings()">
         Existing Listings
       </v-btn>
     </v-layout>
-    <span style="white-space: pre;">
-      <v-card flat>
-        <v-list subheader two-line>
-          <template v-for="(userAccount, index) in userAccounts">
-            <v-list-item
-                @click="$router.push({name: 'MyListings', params: {userId: userAccount.numberID}})"
-                :key="userAccount.numberID">
-              <v-list-item-content>
-                <v-list-item-title v-text="userAccount.username"></v-list-item-title>
-                <v-list-item-subtitle v-text="userAccount.numberID"></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider
-                v-if="index < userAccounts.length - 1"
-                :key="index"
-            ></v-divider>
-          </template>
+    <v-row class="title">
+      Existing Users
+    </v-row>
+    <v-layout row wrap align-center justify-center>
+      <v-flex xs12 md4 lg3 v-bind:key="userAccount.numberID" v-for="userAccount in userAccounts">
+        <v-list>
+            <template>
+              <v-list-item v-bind:key="userAccount.numberID">
+                <v-content>
+                  <v-list-item-title v-text="userAccount.username"></v-list-item-title>
+                  <v-list-item-subtitle v-text="userAccount.numberID"></v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    <v-btn color="primary" text @click="removeUserAccount(userAccount.numberID)" align-center> Delete
+                    </v-btn>
+                  </v-list-item-subtitle>
+                </v-content>
+              </v-list-item>
+              <v-divider
+                  v-if="index < userAccounts.length - 1"
+                  :key="index"
+              ></v-divider>
+            </template>
         </v-list>
-      </v-card>
-    </span>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -51,14 +53,20 @@ export default {
       //   username: "jane3421",
       // },
     ],
-    response: '',
+    response: [],
     errorMessage: '',
   }),
+  async created(){
+    await this.getAllUserAccounts();
+  },
   methods: {
     async getAllUserAccounts() {
       await this.$http.get('/user-account/allAccounts').then(response => {
+        console.log("heyyyyyyyyyyyyyy");
         this.response = response.data;
-        this.userAccounts.push(response.data);
+        this.userAccounts = (response.data);
+        console.log(this.userAccounts);
+        console.log(response.data);
         this.errorMessage = "";
       })
           .catch(e => {
@@ -66,15 +74,16 @@ export default {
             console.log(errorMsg);
           })
     },
-
-    async removeUserAccount(userAccountID) {
+    removeUserAccount(userAccountID) {
+      console.log("hit")
       try {
-        await this.$http.delete('/admin/deleteUserAccount', {
+        this.$http.delete('/admin/deleteUserAccount', {
           params: {
             id: userAccountID,
           }
         }).then(response => {
           this.response = response.data;
+          window.location.reload();
         })
       } catch (e) {
         console.error(e, "Failure to remove UserAccount")

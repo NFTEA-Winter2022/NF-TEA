@@ -12,3 +12,12 @@ Feature:
   Scenario: Seeing all the listings
     When an admin checks all the listings
     Then a list of listings should show
+
+  Scenario: Seeing all the users
+    When an admin checks all the users
+    Then a list of users should show
+
+  Scenario: Deleting user with listings attached to them
+    When an admin deletes an account "user2@gmail.com"
+    Then the user "user2@gmail.com" would be deleted from the database
+    And the listings of the user "user2@gmail.com" will be empty

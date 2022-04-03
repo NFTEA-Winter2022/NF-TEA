@@ -14,7 +14,7 @@
       <v-btn @click="goCollection()" v-if="this.logged">NFT Collection Page</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
-      <v-btn @click="goAdminPage()" v-if="this.logged">Admin Page</v-btn>
+      <v-btn @click="goAdminPage()" v-if="this.admin && this.logged">Admin Page</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
     </div>
     <router-view />
@@ -42,11 +42,15 @@ window.ethereum.on('accountsChanged', async () => {
 });
 
 export default {
+
   data() {
     return {
-      logged: false
+      logged: false,
+      admin: false,
+      response:'',
     }
   },
+
   methods: {
     goHome() {
       window.location.replace('/home');
@@ -97,6 +101,8 @@ export default {
         await this.$http.put("user/logout/"+ API.getCookie("id"))
 
         this.logged = false;
+        this.admin =false;
+        this.response = '';
 
         let cookies = document.cookie.split(";");
 
@@ -119,7 +125,34 @@ export default {
     let split = cookies.split(';');
     for (const element of split) {
       let name = element.split('=')[0];
-      if (name === 'id') this.logged = true;
+      let numberID = element.split('=')[1];
+      if (name === 'id') {
+        this.logged = true;
+
+        console.log(numberID);
+        try {
+          this.$http.get('/user-account/searchAccountByUserId', {
+            params: {
+              id: numberID,
+            }
+          }).then(response => {
+            this.response = response.data;
+
+            let userAccount = response.data;
+            let userAccountUR = JSON.stringify(userAccount.userRole);
+            if (userAccountUR.includes("Admin")){
+              this.admin = true;
+              console.log(this.admin);
+            } else {
+              this.admin = false;
+              console.log(this.admin);
+            }
+          })
+        } catch (e) {
+          console.error(e, "Failure to get UserAccount")
+        }
+
+      }
     }
   }
 }
