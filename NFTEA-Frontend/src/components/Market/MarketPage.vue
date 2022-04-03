@@ -67,7 +67,7 @@
                 </v-icon>
                 {{listing.price}}
               </h1>
-
+            </div>
 
             <v-btn class="buy-button" @click="purchaseListing(listing)">
               Buy
@@ -76,18 +76,18 @@
                     v-model="purchaseDialog"
                     width="300"
             >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                        color="red lighten-2"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                        class="buy-button"
-                        @click="errorMessage = ''"
-                >
-                  Buy
-                </v-btn>
-              </template>
+<!--              <template v-slot:activator="{ on, attrs }">-->
+<!--                <v-btn-->
+<!--                        color="red lighten-2"-->
+<!--                        dark-->
+<!--                        v-bind="attrs"-->
+<!--                        v-on="on"-->
+<!--                        class="buy-button"-->
+<!--                        @click="errorMessage = ''"-->
+<!--                >-->
+<!--                  Buy-->
+<!--                </v-btn>-->
+<!--              </template>-->
 
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
@@ -272,6 +272,7 @@ export default {
     },
     async purchaseListing(listing) {
       // Smart Contract transaction
+      console.log(listing);
       try {
         await blockchain.buyNFT(listing.nftLink, listing.price);
 
@@ -318,32 +319,32 @@ export default {
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===false
+            this.ArrayL[listing]=false
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }else{
         try {
-          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/?'+'userid='+facebook.getCookie("id")+'&listingid='+listing, null, {
+          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/', {
             params: {
               userid: facebook.getCookie("id"),
               listingid: listing,
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===true
+            this.ArrayL[listing]=true;
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }
-      this.Stars(listing)
+      await this.Stars(listing)
     },
       async Stars(listing) {
       this.ArrayL[listing]=true;
        try {
-        await this.$http.get('/UserProfilePage/getFavourite/?' + 'userid=' + facebook.getCookie("id") + '&listingid=' + listing, null, {
+        await this.$http.get('/UserProfilePage/getFavourite/',  {
           params: {
             userid: facebook.getCookie("id"),
             listingid: listing,
@@ -356,8 +357,7 @@ export default {
       } catch (e){
         console.log("An error occured")
       }
-    }
-
+    },
     async createTransaction(buyerId, listingId) {
       console.log("creating transaction");
       await this.$http.post('/market/createTransaction',null, {
@@ -369,7 +369,7 @@ export default {
               .then(response => {
                 console.log(response);
                 this.response = response.data;
-                console(response.data);
+                console.log(response.data);
                 this.transaction = response.data;
                 this.errorMessage = "";
               })

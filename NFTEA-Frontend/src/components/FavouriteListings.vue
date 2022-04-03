@@ -127,7 +127,7 @@
 import facebook from "@/api/facebook";
 
 export default {
-  name: "MarketPage",
+  name: "FavouriteListings",
   data: () => ({
     i:0,
     starOn:true,
@@ -209,32 +209,32 @@ export default {
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===false
+            this.ArrayL[listing]=false
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }else{
         try {
-          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/?'+'userid='+facebook.getCookie("id")+'&listingid='+listing, null, {
+          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/',  {
             params: {
               userid: facebook.getCookie("id"),
               listingid: listing,
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===true
+            this.ArrayL[listing]=true
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }
-      this.Stars(listing)
+      await this.Stars(listing)
     },
     async Stars(listing) {
       this.ArrayL[listing]=true;
       try {
-        await this.$http.get('/UserProfilePage/getFavourite/?' + 'userid=' + facebook.getCookie("id") + '&listingid=' + listing, null, {
+        await this.$http.get('/UserProfilePage/getFavourite/', {
           params: {
             userid: facebook.getCookie("id"),
             listingid: listing,
