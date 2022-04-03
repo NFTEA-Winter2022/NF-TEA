@@ -14,7 +14,7 @@
               <v-list-item-content>
                 <v-list-item-title> {{ Breceipt.title }}</v-list-item-title>
                 <v-list-item-subtitle>
-                  For {{Breceipt.price}} ETH | From User {{Breceipt.seller.username, Breceipt.seller.numberID}} | At {{Breceipt.transactionTime}} }
+                  For {{Breceipt.price}} ETH | From User {{Breceipt.seller.username}} {{Breceipt.seller.numberID}} | At {{Breceipt.transactionTime}} }
                 </v-list-item-subtitle>
 
               </v-list-item-content>
@@ -30,7 +30,7 @@
               <v-list-item-content>
                 <v-list-item-title> {{ Sreceipt.title }}</v-list-item-title>
                 <v-list-item-subtitle>
-                  For {{Sreceipt.price}} ETH | By User {{Sreceipt.buyer.username, Sreceipt.buyer.numberID}}| At {{Sreceipt.transactionTime}}}
+                  For {{Sreceipt.price}} ETH | By User {{Sreceipt.buyer.username}} {{Sreceipt.buyer.numberID}} | At {{Sreceipt.transactionTime}}}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
