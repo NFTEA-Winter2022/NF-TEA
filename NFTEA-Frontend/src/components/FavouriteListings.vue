@@ -30,7 +30,7 @@
     <v-layout row wrap>
       <v-flex xs12 md4 lg3 v-bind:key="listing.listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
+          <v-card :img="listing.image" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
               <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
@@ -125,9 +125,10 @@
 <script>
 
 import facebook from "@/api/facebook";
+import blockchain from "@/api/blockchain";
 
 export default {
-  name: "MarketPage",
+  name: "FavouriteListings",
   data: () => ({
     i:0,
     starOn:true,
@@ -164,13 +165,30 @@ export default {
     async getListings() {
       try {
         // Call API
-        this.listings = (await this.$http.get('/UserProfilePage/getFavourites/?userid='+facebook.getCookie("id"))).data
+        const listing = (await this.$http.get('/UserProfilePage/getFavourites/?userid='+facebook.getCookie("id"))).data
+        this.listings = []
+
+        listing.forEach(listing => {
+          console.log(listing.listing.nftLink)
+          this.getImage(listing.listing.nftLink).then(nft => {
+            this.listings.push(
+                {
+                  image:nft.URL,
+                  ... listing
+                }
+            )
+          })
+        })
+
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
+    },
 
-    }
-    ,
+    async getImage(nftLink) {
+      return await blockchain.getNFT(nftLink);
+    },
+
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -209,32 +227,32 @@ export default {
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===false
+            this.ArrayL[listing]=false
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }else{
         try {
-          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/?'+'userid='+facebook.getCookie("id")+'&listingid='+listing, null, {
+          await this.$http.delete('/UserProfilePage/delFavouriteByUserAndListing/',  {
             params: {
               userid: facebook.getCookie("id"),
               listingid: listing,
             },
           }).then(response => {
             this.response = response.data;
-            this.ArrayL[listing]===true
+            this.ArrayL[listing]=true
           })
         } catch (e) {
           console.error(e, "Failure to send offer.");
         }
       }
-      this.Stars(listing)
+      await this.Stars(listing)
     },
     async Stars(listing) {
       this.ArrayL[listing]=true;
       try {
-        await this.$http.get('/UserProfilePage/getFavourite/?' + 'userid=' + facebook.getCookie("id") + '&listingid=' + listing, null, {
+        await this.$http.get('/UserProfilePage/getFavourite/', {
           params: {
             userid: facebook.getCookie("id"),
             listingid: listing,
@@ -249,16 +267,6 @@ export default {
       }
     }
 
-  },
-  beforeMount() {
-    let cookies = document.cookie;
-    let split = cookies.split(';');
-    let log = false;
-    for (const element of split) {
-      let name = element.split('=')[0];
-      if (name === 'id') log = true;
-    }
-    if (!log) window.location.replace('/');
   },
 }
 </script>

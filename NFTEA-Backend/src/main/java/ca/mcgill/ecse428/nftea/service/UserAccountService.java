@@ -3,6 +3,7 @@ package ca.mcgill.ecse428.nftea.service;
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
 import ca.mcgill.ecse428.nftea.dao.UserAccountRepository;
 import ca.mcgill.ecse428.nftea.exception.WrongInputException;
+import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 @Service
 public class UserAccountService {
@@ -132,6 +134,10 @@ public class UserAccountService {
     	} else if (!user.getPassword().equals(password)) {
     		throw new Exception("Invalid password for user " + id + ".");
     	} else {
+            ArrayList<Listing> listings = listingRepository.findListingByOwner(user);
+            for (Listing l: listings) {
+                listingRepository.delete(l);
+            }
     		userAccountRepository.delete(user);
     	}
     }
@@ -165,4 +171,14 @@ public class UserAccountService {
         if (user == null) throw new Exception("User does not exist");
         return user;
     }
+
+    @Transactional
+    public ArrayList<UserAccount> getUserAccounts(){
+        ArrayList<UserAccount> userAccounts = new ArrayList<>();
+        for (UserAccount userAccount: userAccountRepository.findAll()){
+            userAccounts.add(userAccount);
+        }
+        return userAccounts;
+    }
+
 }

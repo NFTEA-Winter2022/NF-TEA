@@ -18,7 +18,7 @@
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
       <v-btn @click="goFavourites()" v-if="this.logged">Favourite Listings</v-btn>
-      <v-btn v-if="this.logged">Logout</v-btn>
+      <v-btn @click="goAdminPage()" v-if="this.admin && this.logged">Admin Page</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
 
@@ -53,6 +53,8 @@ export default {
     return {
       logged: false,
       dark: false,
+      admin: false,
+      response:'',
     };
   },
   
@@ -99,8 +101,13 @@ export default {
     goFavourites() {
       window.location.replace('/myFavourites');
     },
+
     goReceipts() {
       window.location.replace("/myReceipts");
+    },
+
+    goAdminPage() {
+      window.location.replace('/adminPageListing');
     },
     darkMode() {
       // this.$vuetify.theme.dark = this.dark;
@@ -149,8 +156,38 @@ export default {
   beforeMount() {
     let cookies = document.cookie;
     console.log(JSON.stringify(cookies));
+    let split = cookies.split(';');
+    for (const element of split) {
+      let name = element.split('=')[0];
+      let numberID = element.split('=')[1];
+      if (name === 'id') {
+        console.log(numberID);
+        try {
+          this.$http.get('/user-account/searchAccountByUserId', {
+            params: {
+              id: numberID,
+            }
+          }).then(response => {
+            this.response = response.data;
 
+            let userAccount = response.data;
+            let userAccountUR = JSON.stringify(userAccount.userRole);
+            if (userAccountUR.includes("Admin")) {
+              this.admin = true;
+              console.log(this.admin);
+            } else {
+              this.admin = false;
+              console.log(this.admin);
+            }
+          })
+        } catch (e) {
+          console.error(e, "Failure to get UserAccount")
+        }
+
+      }
+    }
     if (cookies && API.getCookie("id")) this.logged = true;
+
     else if (
       window.location.pathname !== "/" &&
       window.location.pathname !== ""
