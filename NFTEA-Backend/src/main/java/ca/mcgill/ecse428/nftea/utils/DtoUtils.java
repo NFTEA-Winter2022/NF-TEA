@@ -1,13 +1,7 @@
 package ca.mcgill.ecse428.nftea.utils;
 
-import ca.mcgill.ecse428.nftea.dto.CollectionNFTDto;
-import ca.mcgill.ecse428.nftea.dto.ListingDto;
-import ca.mcgill.ecse428.nftea.dto.NotificationDto;
-import ca.mcgill.ecse428.nftea.dto.UserAccountDto;
-import ca.mcgill.ecse428.nftea.model.CollectionNFT;
-import ca.mcgill.ecse428.nftea.model.Listing;
-import ca.mcgill.ecse428.nftea.model.Notification;
-import ca.mcgill.ecse428.nftea.model.UserAccount;
+import ca.mcgill.ecse428.nftea.dto.*;
+import ca.mcgill.ecse428.nftea.model.*;
 import ca.mcgill.ecse428.nftea.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +51,16 @@ public class DtoUtils {
         }
         collectionNFTDto.setListings(listings);
         return collectionNFTDto;
+    }
+
+    public static TransactionDto convertToDto(Transaction transaction) {
+        if(transaction == null) {
+            throw new IllegalArgumentException("Collection does not exist");
+        }
+        TransactionDto transactionDto = new TransactionDto(transaction.getId(), convertToDto(transaction.getBuyer()),
+                convertToDto(transaction.getSeller()), transaction.getTitle(), transaction.getPrice(), transaction.getNftLink(),
+                transaction.getDiscountedPrice(), transaction.getTransactionTime());
+        return transactionDto;
     }
 
 

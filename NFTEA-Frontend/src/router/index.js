@@ -15,8 +15,7 @@ import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
-import AdminPageListing from "@/components/AdminPage/AdminPageListing";
-import AdminPageUserAccount from "@/components/AdminPage/AdminPageUserAccount";
+import FavouriteListings from "@/components/FavouriteListings";
 
 Vue.use(VueRouter)
 
@@ -109,22 +108,10 @@ const routes = [
     component: TradeOffersPage
   },
   {
-    path: '/adminPageListing',
-    name: 'AdminPageListing',
-    component: AdminPageListing,
-  },
-  {
-    path: '/adminPageUserAccount',
-    name: 'adminPageUserAccount',
-    component: AdminPageUserAccount,
-  },
-  // {
-  //   path: '/adminPage',
-  //   name: 'AdminPage',
-  //   component: AdminPage
-  // },
-
-
+    path: '/myFavourites',
+    name: 'FavouriteListings',
+    component: FavouriteListings
+  }
 ]
 
 const router = new VueRouter({
