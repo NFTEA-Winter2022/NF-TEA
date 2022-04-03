@@ -298,7 +298,7 @@ export default {
               .then(response => {
                 console.log(response);
                 this.response = response.data;
-                console(response.data);
+                console.log(response.data);
                 this.transaction = response.data;
                 this.errorMessage = "";
               })
