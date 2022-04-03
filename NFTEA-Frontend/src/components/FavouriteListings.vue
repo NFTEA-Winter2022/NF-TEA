@@ -3,34 +3,34 @@
     <v-row no-gutters>
       <v-col>
         <input
-        type="text"
-        name="text"
-        placeholder="Search NFT"
-        autocomplete="on"
-        class="pa-2"
-        v-model="search"
-      />
+            type="text"
+            name="text"
+            placeholder="Search NFT"
+            autocomplete="on"
+            class="pa-2"
+            v-model="search"
+        />
       </v-col>
       <v-col
           cols="12"
           md="4"
       >
         <v-select
-                  class="pa-2"
-                  v-model="filter.currentFilter"
-                  :items="filter.availableFilters"
-                  @change="sortPrice"
-                  outlined
-                  label="Filter By"
+            class="pa-2"
+            v-model="filter.currentFilter"
+            :items="filter.availableFilters"
+            @change="sortPrice"
+            outlined
+            label="Filter By"
         ></v-select>
       </v-col>
     </v-row>
     <v-row>
     </v-row>
     <v-layout row wrap>
-      <v-flex xs12 md4 lg3 v-bind:key="listing.listingID" v-for="listing in filteredData">
+      <v-flex xs12 md4 lg3 v-bind:key="listing.listing.listingID" v-for="listing in filteredData">
         <v-hover  v-slot="{ hover }">
-          <v-card :img="listing.image" height="400px" :class="{ 'on-hover': hover }">
+          <v-card :img="listing.listing.nftLink" height="400px" :class="{ 'on-hover': hover }">
             <div class="card-id" :class="{ 'on-hover': hover }">
               <h1 class="card-id" v-if="!hover">#</h1>
               <h1 class="card-id" v-else>#{{listing.listingID}}</h1>
@@ -39,10 +39,10 @@
                 class="card-id"
                 icon
                 color="orange"
-                @click="AddToFav(listing.listingID)"
+                @click="AddToFav(listing.listing.listingID)"
             >
-            <v-icon
-                  v-if="ArrayL[listing.listingID]">mdi-star</v-icon>
+              <v-icon
+                  v-if="ArrayL[listing.listing.listingID]">mdi-star</v-icon>
               <v-icon v-else>mdi-star-off</v-icon>
             </v-btn>
             <div class="card-id" :class="{ 'on-hover': hover }">
@@ -52,7 +52,7 @@
               >
                 mdi-information-variant
               </v-icon>
-              <h1 class="card-id" v-else>{{listing.title}}</h1>
+              <h1 class="card-id" v-else>{{listing.listing.title}}</h1>
             </div>
             <div class="card-id" :class="{ 'on-hover': hover }">
               <v-icon
@@ -65,95 +65,13 @@
                 <v-icon>
                   mdi-ethereum
                 </v-icon>
-                {{listing.price}}
+                {{listing.listing.price}}
               </h1>
 
-            <v-btn class="buy-button" @click="purchaseListing(listing)">
+            </div>
+            <v-btn class="buy-button">
               Buy
             </v-btn>
-            
-            <v-dialog
-                    v-model="purchaseDialog"
-                    width="300"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                        color="red lighten-2"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                        class="buy-button"
-                        @click="errorMessage = ''"
-                >
-                  Buy
-                </v-btn>
-              </template>
-
-              <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
-                  Purchase Confirmation
-                </v-card-title>
-
-                <v-card-text>
-                  <span v-if="errorMessage" class="errorMessage">{{errorMessage}} </span> <br>
-                  Listing #{{listing.listingID}}
-                  <br>
-                  Price: {{listing.price}}
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                          color="red lighten-2"
-                          text
-                          @click="purchaseDialog = false"
-                  >
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                          color="blue lighten-2"
-                          text
-                          @click="purchaseListing(listing);"
-                  >
-                    Confirm
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
-            <v-dialog
-                    v-model="transactionDialog"
-                    width="500"
-            >
-              <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
-                  Purchase Success!
-                </v-card-title>
-
-                <v-card-text>
-                  Transaction details <br>
-                  Transaction Time: {{transaction.transactionTime}}<br>
-                  NFT Link: {{transaction.nftLink}} <br>
-                  Price: {{transaction.price}}<br>
-                  Discounted price: {{transaction.discountedPrice}}<br>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                          color="primary"
-                          text
-                          @click="transactionDialog = false"
-                  >
-                    Close
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
 
             <v-dialog max-width="300px">
               <template v-slot:activator="{ on, attrs }" >
@@ -175,11 +93,11 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                        <v-text-field
-                            v-model="tradePrice"
-                            label="Trading Price"
-                            required
-                        ></v-text-field>
+                      <v-text-field
+                          v-model="tradePrice"
+                          label="Trading Price"
+                          required
+                      ></v-text-field>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -207,7 +125,6 @@
 <script>
 
 import facebook from "@/api/facebook";
-import blockchain from "@/api/blockchain";
 
 export default {
   name: "MarketPage",
@@ -216,16 +133,13 @@ export default {
     starOn:true,
     ArrayL:[],
     listings: [],
+    favlistings:[],
     search: '',
     filter: {
       currentFilter: "",
       availableFilters: ["Price Up", "Price Down"]
     },
     tradePrice: '',
-    transaction: {},
-    errorMessage: '',
-    purchaseDialog: false,
-    transactionDialog: false,
   }),
   async created() {
     await this.getListings();
@@ -234,35 +148,29 @@ export default {
     filteredData: function() {
       return this.listings.filter((listing)=>{
         this.Stars(listing.listingID)
-        return listing.title.toLowerCase().match(this.search.toLowerCase());
+        return listing.listing.title.toLowerCase().match(this.search.toLowerCase());
       })
     },
   },
   methods: {
+    // async getListings() {
+    //   await this.getFavListings();
+    //   console.log(JSON.stringify(this.favlistings))
+    //   for (let i = 0;i<this.favlistings.length;i++){
+    //     this.listings[i]=this.favlistings[i].listing
+    //   }
+    //   console.log(JSON.stringify(this.listings))
+    // }
     async getListings() {
       try {
         // Call API
-        const listings = (await this.$http.get('UserProfilePage/getListing/')).data;
-        this.listings = [];
-
-        listings.forEach(listing => {
-          this.getImage(listing.nftLink).then(nft => {
-            this.listings.push(
-                {
-                  image:nft.URL,
-                  ... listing
-                }
-            )
-          })
-        })
-
+        this.listings = (await this.$http.get('/UserProfilePage/getFavourites/?userid='+facebook.getCookie("id"))).data
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
-    },
-    async getImage(nftLink) {
-      return await blockchain.getNFT(nftLink);
-    },
+
+    }
+    ,
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
@@ -270,36 +178,20 @@ export default {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
     },
-    async purchaseListing(listing) {
-      // Smart Contract transaction
-      try {
-        await blockchain.buyNFT(listing.nftLink, listing.price);
 
-        await this.createTransaction(facebook.getCookie("id"), listing.listingID);
-        if(!this.errorMessage) {
-          this.purchaseDialog = false;
-          this.transactionDialog = true;
-        }
-
-      } catch (e) {
-        console.log("Could not perform smart contract transaction: \n" + e.toString());
-      }
-    },
     async sendTrade(listing, tradePrice) {
+      console.log(JSON.stringify(tradePrice))
       try{
-        // Backend Record
-        this.response = (await this.$http.post('/Market/createTradeOffer', null, {
+        await this.$http.post('/Market/createTradeOffer', null, {
           params: {
             senderID: facebook.getCookie("id"),
             receiverID: listing.owner.numberID,
             listingID: listing.listingID,
-            price: tradePrice,
-            senderAddress: facebook.getCookie("address")
+            price: tradePrice ,
           },
-        })).data;
-
-        // Blockchain transaction
-        await blockchain.offerTrade(listing.nftLink, tradePrice);
+        }).then(response => {
+          this.response = response.data;
+        })
       } catch (e) {
         console.error(e, "Failure to send offer.");
       }
@@ -339,9 +231,9 @@ export default {
       }
       this.Stars(listing)
     },
-      async Stars(listing) {
+    async Stars(listing) {
       this.ArrayL[listing]=true;
-       try {
+      try {
         await this.$http.get('/UserProfilePage/getFavourite/?' + 'userid=' + facebook.getCookie("id") + '&listingid=' + listing, null, {
           params: {
             userid: facebook.getCookie("id"),
@@ -356,28 +248,17 @@ export default {
         console.log("An error occured")
       }
     }
-    async createTransaction(buyerId, listingId) {
-      console.log("creating transaction");
-      await this.$http.post('/market/createTransaction',null, {
-        params: {
-          buyerId: buyerId,
-          listingId: listingId
-        }
-      })
-              .then(response => {
-                console.log(response);
-                this.response = response.data;
-                console.log(response.data);
-                this.transaction = response.data;
-                this.errorMessage = "";
-              })
-              .catch(e => {
-                let errorMsg = e.response.data;
-                console.log(errorMsg);
-                this.errorMessage = errorMsg;
-                this.transaction = {};
-              })
-    },
+
+  },
+  beforeMount() {
+    let cookies = document.cookie;
+    let split = cookies.split(';');
+    let log = false;
+    for (const element of split) {
+      let name = element.split('=')[0];
+      if (name === 'id') log = true;
+    }
+    if (!log) window.location.replace('/');
   },
 }
 </script>
@@ -420,9 +301,6 @@ input[type="text"] {
   width: 130px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
-}
-.errorMessage {
-  color: red;
 }
 
 /* When the input field gets focus, change its width to 100% */

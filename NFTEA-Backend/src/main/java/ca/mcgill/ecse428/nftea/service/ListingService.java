@@ -146,7 +146,7 @@ public class ListingService {
         if(listing == null) {
             throw new IllegalArgumentException("listing not found");
         }
-        if(percent < 0 || percent > 1) {
+        if(percent < 0 || percent > 100) {
             throw new IllegalArgumentException("Invalid discount percentage");
         }
 

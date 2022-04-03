@@ -16,6 +16,7 @@ import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
 import ReceiptsPage from "@/components/ReceiptsPage";
+import FavouriteListings from "@/components/FavouriteListings";
 
 Vue.use(VueRouter)
 
@@ -112,6 +113,10 @@ const routes = [
     name: 'MyReceipt',
     component: ReceiptsPage
   },
+    path: '/myFavourites',
+    name: 'FavouriteListings',
+    component: FavouriteListings
+  }
 ]
 
 const router = new VueRouter({

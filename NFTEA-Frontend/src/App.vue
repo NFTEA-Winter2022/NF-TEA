@@ -17,6 +17,8 @@
       <v-btn @click="goReceipts()" v-if="this.logged">Receipts</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
+      <v-btn @click="goFavourites()" v-if="this.logged">Favourite Listings</v-btn>
+      <v-btn v-if="this.logged">Logout</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
 
@@ -92,7 +94,10 @@ export default {
       window.location.replace("/myListings/" + API.getCookie("id"));
     },
     goTradeOffers() {
-      window.location.replace("/myTradeOffers");
+      window.location.replace('/myTradeOffers');
+    },
+    goFavourites() {
+      window.location.replace('/myFavourites');
     },
     goReceipts() {
       window.location.replace("/myReceipts");
