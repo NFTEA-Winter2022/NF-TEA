@@ -125,7 +125,7 @@ public class Listing
 
   public boolean setDiscount(Long percent) {
     boolean wasSet = false;
-    this.percentDiscount = percent;
+    this.percentDiscount = percent/100;
     this.discountedPrice = this.price - (this.percentDiscount*this.price);
     this.isPriceDiscounted = true;
     wasSet = true;
