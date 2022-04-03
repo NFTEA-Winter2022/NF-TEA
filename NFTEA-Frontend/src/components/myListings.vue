@@ -113,6 +113,46 @@
               </v-card>
             </v-dialog>
 
+
+            <v-dialog max-width="300px" v-if="isCurrentUser">
+              <template v-slot:activator="{ on, attrs }" >
+                <v-btn
+                    class="trade-button"
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                  Discount
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="Title">Discount in Percentage: </span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-text-field
+                          v-model="discount"
+                          label="Discount"
+                          required
+                      ></v-text-field>
+
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="discountListing(listing)"
+                  >
+                    Confirm Discount
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
             <v-dialog max-width="300px" v-else>
               <template v-slot:activator="{ on, attrs }" >
                 <v-btn
@@ -175,6 +215,7 @@ export default {
     tradePrice: '',
     newTitle: '',
     response: '',
+    discount:'',
   }),
   async created() {
     await this.getListings();
@@ -225,6 +266,27 @@ export default {
         this.listings.sort((a,b) => a.price <= b.price ? 1 : -1);
       } // Add more filters here later if wanted
     },
+    async discountListing(listing){
+      try {
+      // Edit all of the listing properties
+      if(this.discount) {
+        await this.$http.put('UserProfilePage/discountListingPrice', null, {
+          params: {
+            listingId: listing.listingID,
+            percent: this.discount
+          },
+        });
+      }
+
+
+
+      this.discount = '';
+
+      // Refresh the list
+      await this.getListings();
+    } catch (e) {
+      console.error(e, "Failure to Load My Listings.");
+    }},
     async editListing(listing) {
       try {
         // Edit all of the listing properties
