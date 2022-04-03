@@ -14,10 +14,12 @@
       <v-btn @click="goCollection()" v-if="this.logged"
         >NFT Collection Page</v-btn
       >
+      <v-btn @click="goReceipts()" v-if="this.logged">Receipts</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
+
     </div>
     <router-view />
   </v-app>
@@ -91,6 +93,9 @@ export default {
     },
     goTradeOffers() {
       window.location.replace("/myTradeOffers");
+    },
+    goReceipts() {
+      window.location.replace("/myReceipts");
     },
     darkMode() {
       // this.$vuetify.theme.dark = this.dark;

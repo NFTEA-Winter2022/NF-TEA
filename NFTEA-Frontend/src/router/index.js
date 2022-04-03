@@ -15,6 +15,7 @@ import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
+import ReceiptsPage from "@/components/ReceiptsPage";
 
 Vue.use(VueRouter)
 
@@ -105,6 +106,11 @@ const routes = [
     path: '/myTradeOffers',
     name: 'MyTradeOffers',
     component: TradeOffersPage
+  },
+  {
+    path: '/myReceipts',
+    name: 'MyReceipt',
+    component: ReceiptsPage
   },
 ]
 
