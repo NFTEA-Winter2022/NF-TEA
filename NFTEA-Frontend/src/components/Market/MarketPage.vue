@@ -68,10 +68,92 @@
                 {{listing.price}}
               </h1>
 
-            </div>
+
             <v-btn class="buy-button" @click="purchaseListing(listing)">
               Buy
             </v-btn>
+            <v-dialog
+                    v-model="purchaseDialog"
+                    width="300"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                        color="red lighten-2"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        class="buy-button"
+                        @click="errorMessage = ''"
+                >
+                  Buy
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                  Purchase Confirmation
+                </v-card-title>
+
+                <v-card-text>
+                  <span v-if="errorMessage" class="errorMessage">{{errorMessage}} </span> <br>
+                  Listing #{{listing.listingID}}
+                  <br>
+                  Price: {{listing.price}}
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                          color="red lighten-2"
+                          text
+                          @click="purchaseDialog = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                          color="blue lighten-2"
+                          text
+                          @click="purchaseListing(listing);"
+                  >
+                    Confirm
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog
+                    v-model="transactionDialog"
+                    width="500"
+            >
+              <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                  Purchase Success!
+                </v-card-title>
+
+                <v-card-text>
+                  Transaction details <br>
+                  Transaction Time: {{transaction.transactionTime}}<br>
+                  NFT Link: {{transaction.nftLink}} <br>
+                  Price: {{transaction.price}}<br>
+                  Discounted price: {{transaction.discountedPrice}}<br>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                          color="primary"
+                          text
+                          @click="transactionDialog = false"
+                  >
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
             <v-dialog max-width="300px">
               <template v-slot:activator="{ on, attrs }" >
@@ -140,6 +222,10 @@ export default {
       availableFilters: ["Price Up", "Price Down"]
     },
     tradePrice: '',
+    transaction: {},
+    errorMessage: '',
+    purchaseDialog: false,
+    transactionDialog: false,
   }),
   async created() {
     await this.getListings();
@@ -189,7 +275,11 @@ export default {
       try {
         await blockchain.buyNFT(listing.nftLink, listing.price);
 
-        // TODO: US024-T02: Handle backend transaction logic
+        await this.createTransaction(facebook.getCookie("id"), listing.listingID);
+        if(!this.errorMessage) {
+          this.purchaseDialog = false;
+          this.transactionDialog = true;
+        }
 
       } catch (e) {
         console.log("Could not perform smart contract transaction: \n" + e.toString());
@@ -216,6 +306,7 @@ export default {
 
       this.tradePrice = '';
     },
+
     async AddToFav(listing) {
       console.log(this.ArrayL[listing])
       if (this.ArrayL[listing]) {
@@ -267,6 +358,28 @@ export default {
       }
     }
 
+    async createTransaction(buyerId, listingId) {
+      console.log("creating transaction");
+      await this.$http.post('/market/createTransaction',null, {
+        params: {
+          buyerId: buyerId,
+          listingId: listingId
+        }
+      })
+              .then(response => {
+                console.log(response);
+                this.response = response.data;
+                console(response.data);
+                this.transaction = response.data;
+                this.errorMessage = "";
+              })
+              .catch(e => {
+                let errorMsg = e.response.data;
+                console.log(errorMsg);
+                this.errorMessage = errorMsg;
+                this.transaction = {};
+              })
+    },
   },
 }
 </script>
@@ -309,6 +422,9 @@ input[type="text"] {
   width: 130px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
+}
+.errorMessage {
+  color: red;
 }
 
 /* When the input field gets focus, change its width to 100% */
