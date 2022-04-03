@@ -25,7 +25,7 @@ public class Listing
   private String nftLink;
 
   //For discount
-  private Long percentDiscount;
+  private Double percentDiscount;
   private Long discountedPrice;
   private boolean isPriceDiscounted;
 
@@ -45,7 +45,7 @@ public class Listing
     this.owner = userAccount;
 
     //for discount
-    this.percentDiscount = Long.valueOf(0);
+    this.percentDiscount = 0.0;
     this.discountedPrice = this.price;
     this.isPriceDiscounted = false;
   }
@@ -122,7 +122,7 @@ public class Listing
   public void delete()
   {}
 
-  public Long getPercentDiscount() { return this.percentDiscount; }
+  public Long getPercentDiscount() { return (new Double(this.percentDiscount)).longValue(); }
 
   public Long getDiscountedPrice() { return this.discountedPrice; }
 
@@ -130,8 +130,8 @@ public class Listing
 
   public boolean setDiscount(Long percent) {
     boolean wasSet = false;
-    this.percentDiscount = percent/100;
-    this.discountedPrice = this.price - (this.percentDiscount*this.price);
+    this.percentDiscount = percent/100.0;
+    this.discountedPrice = (new Double(this.price - (this.percentDiscount*this.price))).longValue();
     this.isPriceDiscounted = true;
     wasSet = true;
     return wasSet;
@@ -139,7 +139,7 @@ public class Listing
 
   public boolean resetDiscount() {
     boolean wasSet = false;
-    this.percentDiscount = Long.valueOf(0);
+    this.percentDiscount = 0.0;
     this.discountedPrice = this.price;
     this.isPriceDiscounted = false;
     wasSet = true;

@@ -52,11 +52,11 @@ public class discountStepDef {
         userAccountService.clear();
     }
 
-         @Given("the user is logged in to an account with username {string} and password {string} and email {string} for the purpose of putting a discount$")
+         @Given("the user is logged in to an account with username {string} and password {string} and email {string} for the purpose of putting a discount")
          public void the_user_is_logged_in_to_an_account_with_username_and_password_and_email_for_transaction2(String username, String password, String email) throws Exception{
                  userAccount = userAccountService.setUserOnline(username);}
 
-    @Given("the following listings exist in the system")
+    @Given("the following listings exist in the system for discount")
     public void theFollowingListingsExistInTheSystemDiscount(io.cucumber.datatable.DataTable dataTable) {
         List<List<String>> rows = dataTable.asLists();
         int i = 0;
@@ -76,7 +76,7 @@ public class discountStepDef {
         }
     }
 
-    @Given("the following user accounts exist in the system")
+    @Given("the following user accounts exist in the system for discount")
     public void theFollowingUserAccountsExistInTheSystem(DataTable dataTable) throws Exception {
         List<List<String>> rows = dataTable.asLists();
         int i = 0;
@@ -96,27 +96,24 @@ public class discountStepDef {
         }
     }
 
-    @When("the user tries to put a discount of {long} percent on the listing {string}")
-    public void userputdiscount(long percent,String title){
+    @When("the user tries to put a discount of {string} percent on the listing {string}")
+    public void the_user_tries_to_put_a_discount_of_percent_on_the_listing(String percent,String title){
+        long percents = Long.valueOf(percent);
         try {
             viewListings = listingService.getListingsByTitle(title);
-           listingService.discountPrice(viewListings.get(0).getListingID(),percent) ;
+           listingService.discountPrice(viewListings.get(0).getListingID(),percents) ;
+            viewListings = listingService.getListingsByTitle(title);
         } catch (Exception e) {
             errorCounter++;
             error += e.getMessage();
         }
     }
 
-    @Then("the discounted price will be {long}")
-    public void seeIfpriceisDiscounted(long finalDiscountprice){
-        assertEquals(finalDiscountprice,viewListings.get(0).getDiscountedPrice());
+    @Then("the discounted price will be {string}")
+    public void the_discounted_price_will_be(String finalDiscountprice){
+        long finalDisc = Long.valueOf(finalDiscountprice);
+        assertEquals(finalDisc, viewListings.get(0).getDiscountedPrice());
     }
-
-
-
-
-
-
 }
 
 
