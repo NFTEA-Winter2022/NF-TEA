@@ -9,7 +9,7 @@ public class ListingDto {
     private String nftLink;
     private UserAccountDto owner;
 
-    private Long percentDiscount;
+    private Double percentDiscount;
     private Long discountedPrice;
     private boolean isPriceDiscounted;
 
@@ -28,7 +28,7 @@ public class ListingDto {
         this.title = title;
         this.price = price;
         this.nftLink = nftLink;
-        this.percentDiscount = percentDiscount;
+        this.percentDiscount = (new Double(percentDiscount));
         this.discountedPrice = discountedPrice;
         this.isPriceDiscounted = isPriceDiscounted;
     }
