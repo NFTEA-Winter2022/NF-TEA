@@ -32,11 +32,14 @@ public class TransactionService {
         String error = "";
         if(buyerId == null) {
             error += ("Buyer id can't be null");
-        } else if(listingId == null) {
+        }
+        if(listingId == null) {
             error += ("Listing id can't be null");
-        } else if(userAccountRepository.findUserAccountById(buyerId) == null) {
+        }
+        if(userAccountRepository.findUserAccountById(buyerId) == null) {
             error += ("User account not found");
-        } else if(listingRepository.findListingByListingID(listingId) == null) {
+        }
+        if(listingRepository.findListingByListingID(listingId) == null) {
             error += ("Listing not found");
         }
         error.trim();
