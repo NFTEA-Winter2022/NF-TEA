@@ -9,6 +9,7 @@ const web3 = new Web3('http://127.0.0.1:8545')
 //          'https://eth-ropsten.alchemyapi.io/v2/QObSDMqhnbSGbBQPM0MYX8v6FWBFoQxV'
 //      ));
 const NFTContract = new web3.eth.Contract(NFTDetails.abi, NFTDetails.address);
+const transactionFees = 0.96; // Rougly estimating 5% fees
 
 export default {
     async mintNFT(media) {
@@ -88,5 +89,27 @@ export default {
             console.log(e);
         }
     },
+    async buyNFT(nftID, price) {
+        let userAddress = FacebookAPI.getCookie("address");
+        let bid = transactionFees * price;
 
+        await NFTContract.methods.buy(nftID, web3.utils.toWei(bid.toString(), "ether"))
+            .send({from: userAddress.toString(), value:web3.utils.toWei(price.toString(), "ether"), gas: "6721975"})
+    },
+    async offerTrade(nftID, price) {
+        let userAddress = FacebookAPI.getCookie("address");
+
+        try {
+            await NFTContract.methods.proposeTradeOffer(nftID)
+                .send({from: userAddress.toString(), value:web3.utils.toWei(price.toString(), "ether"), gas: "6721975"})
+        } catch(e) {
+            console.log(e);
+        }
+    },
+    async acceptTrade(nftID, buyerAddress) {
+        let userAddress = FacebookAPI.getCookie("address");
+
+        await NFTContract.methods.acceptTradeOffer(nftID, buyerAddress.toString())
+            .send({from: userAddress.toString(), gas: "6721975"})
+    }
 }

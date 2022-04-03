@@ -15,5 +15,5 @@ Feature: Create Trade Offer
 
   Scenario: Create Trade Offer Successfully
     Given the user is logged in to an account with username "User1111" and password "lol12345" and email "user1@gmail.com"
-    When the user with id "123" tries to create a trade off to user "456" with a listing id of "789" with a price "10"
+    When the user with id "123" tries to create a trade off to user "456" with a listing id of "789" with a price "10" from address "0x00"
     Then the trade off shall be successfully created

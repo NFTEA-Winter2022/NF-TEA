@@ -29,13 +29,15 @@ public class ListingController {
     public ResponseEntity createListingFromNFT(
             @RequestParam String userid,
             @RequestParam String title,
-            @RequestParam String nftLink) {
+            @RequestParam String nftLink,
+            @RequestParam Long price
+    ) {
 
         UserAccount user;
         Listing listing;
         try {
             user = userAccountService.getAccount(Long.parseLong(userid));
-            listing = listingService.createInitialListing(title, 0L, nftLink, user);
+            listing = listingService.createInitialListing(title, price, nftLink, user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -171,5 +173,30 @@ public class ListingController {
         }
         return new ResponseEntity<>(listingDto, HttpStatus.OK);
     }
+
+
+    @PutMapping(value = {"/UserProfilePage/discountListingPrice", "/UserProfilePage/discountListingPrice/"})
+    public ResponseEntity discountListingPrice(@RequestParam Long listingId, @RequestParam Long percent) {
+        Listing listing;
+        try {
+            listing = listingService.discountPrice(listingId,percent);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return new ResponseEntity<>(DtoUtils.convertToDto(listing), HttpStatus.OK);
+    }
+
+    @PutMapping(value = {"/UserProfilePage/undiscountListingPrice", "/UserProfilePage/undiscountListingPrice/"})
+    public ResponseEntity resetListingPrice(@RequestParam Long listingId) {
+        Listing listing;
+        try {
+            listing = listingService.resetPrice(listingId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return new ResponseEntity<>(DtoUtils.convertToDto(listing), HttpStatus.OK);
+    }
+
+
 
 }

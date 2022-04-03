@@ -80,14 +80,14 @@ public class tradeoffersStepDefinitions {
         userAccount = userAccountService.setUserOnline(arg0);
     }
 
-    @When("the user with id {string} tries to create a trade off to user {string} with a listing id of {string} with a price {string}")
-    public void userTriestoCreateTradeOff(String senderID, String receiverID, String listingID, String price){
+    @When("the user with id {string} tries to create a trade off to user {string} with a listing id of {string} with a price {string} from address {string}")
+    public void userTriestoCreateTradeOff(String senderID, String receiverID, String listingID, String price, String senderAddress){
         try{
             long realSenderID = Long.valueOf(senderID);
             long realReceiverID = Long.valueOf(receiverID);
             long realListingID = Long.valueOf(listingID);
             long realPrice = Long.valueOf(price);
-            TradeOffer goodTrade = tradeService.createTradeOffer(realSenderID, realReceiverID, realListingID, realPrice);
+            TradeOffer goodTrade = tradeService.createTradeOffer(realSenderID, realReceiverID, realListingID, realPrice, senderAddress);
             tradeoffers.add(goodTrade);
         }
         catch (Exception e){

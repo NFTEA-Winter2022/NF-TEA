@@ -21,7 +21,7 @@ public class ListingService {
         if (title == null || nftLink == null || title.equals("") || nftLink.equals("")) {
             throw new IllegalArgumentException("Title and/or NFTLink cannot be empty");
         }
-        if (price == null) price = Long.valueOf(0);
+        if (price == null || price < 0) price = Long.valueOf(0);
         if (user == null) throw new IllegalArgumentException("Missing user");
         Listing aListing = new Listing(title, price, nftLink, user);
         listingRepository.save(aListing);
@@ -139,4 +139,30 @@ public class ListingService {
         }
         return listings;
     }
+
+    @Transactional
+    public Listing discountPrice(Long ID, Long percent) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        if(percent < 0 || percent > 100) {
+            throw new IllegalArgumentException("Invalid discount percentage");
+        }
+
+        listing.setDiscount(percent);
+        return listingRepository.save(listing);
+    }
+
+    @Transactional
+    public Listing resetPrice(Long ID) throws IllegalArgumentException {
+        Listing listing = listingRepository.findListingByListingID(ID);
+        if(listing == null) {
+            throw new IllegalArgumentException("listing not found");
+        }
+        listing.resetDiscount();
+        return listingRepository.save(listing);
+    }
+
+
 }
