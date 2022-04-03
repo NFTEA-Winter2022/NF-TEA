@@ -16,6 +16,8 @@ import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
 import FavouriteListings from "@/components/FavouriteListings";
+import AdminPageListing from "@/components/AdminPage/AdminPageListing";
+import AdminPageUserAccount from "@/components/AdminPage/AdminPageUserAccount";
 
 Vue.use(VueRouter)
 
@@ -111,7 +113,17 @@ const routes = [
     path: '/myFavourites',
     name: 'FavouriteListings',
     component: FavouriteListings
-  }
+  },
+  {
+    path: '/adminPageListing',
+    name: 'AdminPageListing',
+    component: AdminPageListing,
+  },
+  {
+    path: '/adminPageUserAccount',
+    name: 'adminPageUserAccount',
+    component: AdminPageUserAccount,
+  },
 ]
 
 const router = new VueRouter({
