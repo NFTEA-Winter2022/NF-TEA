@@ -68,10 +68,10 @@
                 {{listing.price}}
               </h1>
             </div>
-
             <v-btn class="buy-button" @click="purchaseListing(listing)">
               Buy
             </v-btn>
+            
             <v-dialog
                     v-model="purchaseDialog"
                     width="300"
@@ -307,7 +307,6 @@ export default {
 
       this.tradePrice = '';
     },
-
     async AddToFav(listing) {
       console.log(this.ArrayL[listing])
       if (this.ArrayL[listing]) {

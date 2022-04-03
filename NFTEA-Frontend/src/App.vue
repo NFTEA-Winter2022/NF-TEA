@@ -14,12 +14,14 @@
       <v-btn @click="goCollection()" v-if="this.logged"
         >NFT Collection Page</v-btn
       >
+      <v-btn @click="goReceipts()" v-if="this.logged">Receipts</v-btn>
       <v-btn @click="goMyListings()" v-if="this.logged">My Listings</v-btn>
       <v-btn @click="goTradeOffers()" v-if="this.logged">Trade Offers</v-btn>
       <v-btn @click="goFavourites()" v-if="this.logged">Favourite Listings</v-btn>
       <v-btn @click="goAdminPage()" v-if="this.admin && this.logged">Admin Page</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
+
     </div>
     <router-view />
   </v-app>
@@ -99,7 +101,12 @@ export default {
     goFavourites() {
       window.location.replace('/myFavourites');
     },
-    goAdminPage(){
+
+    goReceipts() {
+      window.location.replace("/myReceipts");
+    },
+
+    goAdminPage() {
       window.location.replace('/adminPageListing');
     },
     darkMode() {

@@ -15,6 +15,7 @@ import SearchUserPage from "@/components/SearchUserPage";
 import NotificationPage from "@/components/NotificationPage";
 import myListings from "@/components/myListings";
 import TradeOffersPage from "@/components/TradeOffersPage";
+import ReceiptsPage from "@/components/ReceiptsPage";
 import FavouriteListings from "@/components/FavouriteListings";
 import AdminPageListing from "@/components/AdminPage/AdminPageListing";
 import AdminPageUserAccount from "@/components/AdminPage/AdminPageUserAccount";
@@ -110,6 +111,10 @@ const routes = [
     component: TradeOffersPage
   },
   {
+    path: '/myReceipts',
+    name: 'MyReceipt',
+    component: ReceiptsPage
+  },
     path: '/myFavourites',
     name: 'FavouriteListings',
     component: FavouriteListings
