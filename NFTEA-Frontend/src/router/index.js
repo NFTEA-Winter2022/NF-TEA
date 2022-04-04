@@ -115,6 +115,7 @@ const routes = [
     name: 'MyReceipt',
     component: ReceiptsPage
   },
+  {
     path: '/myFavourites',
     name: 'FavouriteListings',
     component: FavouriteListings
