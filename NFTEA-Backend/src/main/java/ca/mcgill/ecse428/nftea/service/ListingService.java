@@ -1,6 +1,8 @@
 package ca.mcgill.ecse428.nftea.service;
 
 import ca.mcgill.ecse428.nftea.dao.ListingRepository;
+import ca.mcgill.ecse428.nftea.dao.NotificationRepository;
+import ca.mcgill.ecse428.nftea.dao.TradeOfferRepository;
 import ca.mcgill.ecse428.nftea.model.Listing;
 import ca.mcgill.ecse428.nftea.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,12 @@ public class ListingService {
 
     @Autowired
     ListingRepository listingRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
+    @Autowired
+    TradeOfferRepository tradeOfferRepository;
 
     @Transactional
     public Listing createInitialListing(String title, Long price, String nftLink, UserAccount user) throws IllegalArgumentException {
@@ -120,6 +128,8 @@ public class ListingService {
 
     @Transactional
     public void clear() {
+        notificationRepository.deleteAll();
+        tradeOfferRepository.deleteAll();
         listingRepository.deleteAll();
     }
 

@@ -63,4 +63,10 @@ public class NotificationService {
     }
 
 
+    @Transactional
+    public void clear() {
+        notificationRepository.deleteAll();
+    }
+
+
 }
