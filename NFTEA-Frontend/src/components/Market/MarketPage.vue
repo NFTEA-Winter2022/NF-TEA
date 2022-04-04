@@ -54,6 +54,17 @@
               </v-icon>
               <h1 class="card-id" v-else>{{listing.title}}</h1>
             </div>
+
+            <div class="card-id"  v-if="listing.price === 5" :class="{ 'on-hover': hover }">
+              <v-icon
+                  class="card-id"
+                  v-if="!hover"
+              >
+                mdi-information-variant
+              </v-icon>
+              <h1 class="card-id" v-if="listing.price === 5">Discount</h1>
+            </div>
+
             <div class="card-id" :class="{ 'on-hover': hover }">
               <v-icon
                   class="card-id"
@@ -76,19 +87,6 @@
                     v-model="purchaseDialog"
                     width="300"
             >
-<!--              <template v-slot:activator="{ on, attrs }">-->
-<!--                <v-btn-->
-<!--                        color="red lighten-2"-->
-<!--                        dark-->
-<!--                        v-bind="attrs"-->
-<!--                        v-on="on"-->
-<!--                        class="buy-button"-->
-<!--                        @click="errorMessage = ''"-->
-<!--                >-->
-<!--                  Buy-->
-<!--                </v-btn>-->
-<!--              </template>-->
-
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
                   Purchase Confirmation
@@ -226,6 +224,7 @@ export default {
     errorMessage: '',
     purchaseDialog: false,
     transactionDialog: false,
+    discounted: false,
   }),
   async created() {
     await this.getListings();
@@ -234,6 +233,7 @@ export default {
     filteredData: function() {
       return this.listings.filter((listing)=>{
         this.Stars(listing.listingID)
+        //console.log(listing)
         return listing.title.toLowerCase().match(this.search.toLowerCase());
       })
     },
@@ -243,6 +243,7 @@ export default {
       try {
         // Call API
         const listings = (await this.$http.get('UserProfilePage/getListing/')).data;
+        console.log(listings)
         this.listings = [];
 
         listings.forEach(listing => {
@@ -255,14 +256,15 @@ export default {
             )
           })
         })
-
       } catch (e) {
         console.error(e, "Failure to Load Listings.")
       }
+      //console.log(this.listings)
     },
     async getImage(nftLink) {
       return await blockchain.getNFT(nftLink);
     },
+
     sortPrice() {
       if(this.filter.currentFilter === this.filter.availableFilters[0]) {
         this.listings.sort((a,b) => a.price >= b.price ? 1 : -1);
