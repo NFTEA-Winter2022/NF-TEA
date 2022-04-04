@@ -1,4 +1,4 @@
-Feature:
+Feature: Manage Marketplace
   Background:
     Given the following user accounts exist in the system
       | firstname | lastname | username | password | email           |
