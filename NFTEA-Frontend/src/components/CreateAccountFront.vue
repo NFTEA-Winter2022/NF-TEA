@@ -1,12 +1,17 @@
 <template>
+<div class="form">
   <v-container>
+    <div class="logo">
+      <img alt="logo" src="../../public/img/logo/reverseLogo.png" style="width:246px;height:217px">
+    </div>
+
     <vue-metamask
         userMessage="msg"
         @onComplete="onComplete"
     >
     </vue-metamask>
-    <div id="app">
-      <v-app id="inspire">
+<!--    <div id="app">-->
+<!--      <v-app id="inspire">-->
         <v-row justify="center">
           <v-col
               cols="5"
@@ -14,7 +19,7 @@
               md="8"
               lg="6"
           >
-            <v-card ref="form">
+            <v-card color="#D1BE9C" ref="form" outlined="false" >
               <v-card-text>
                 <v-text-field
                     id="myfirstname"
@@ -24,6 +29,8 @@
                     :error-messages="errorMessages"
                     label="FirstName"
                     placeholder="John"
+                    filled
+                    rounded
                     required
                 ></v-text-field>
 
@@ -35,6 +42,8 @@
                     :error-messages="errorMessages"
                     label="LastName"
                     placeholder="Doe"
+                    filled
+                    rounded
                     required
                 ></v-text-field>
 
@@ -45,6 +54,8 @@
                     :rules="[() => !!email || 'This field is required']"
                     label="Email"
                     placeholder="JhonDoe@gmail.com"
+                    filled
+                    rounded
                     required
                 ></v-text-field>
 
@@ -55,10 +66,10 @@
                     :rules="[() => !!username || 'This field is required']"
                     label="Username"
                     placeholder="Sik-K"
+                    filled
+                    rounded
                     required
                 ></v-text-field>
-
-
                   <v-text-field
                       id="mypassword"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -67,13 +78,17 @@
                       name="input-10-1"
                       label="Password"
                       counter
+                      filled
+                      rounded
                       @click:append="show1 = !show1"
                   ></v-text-field>
-
               </v-card-text>
               <v-divider class="mt-12"></v-divider>
               <v-card-actions>
-                <v-btn text @click="cancel()">
+                <v-btn
+                    color="#7D4F50"
+                    text
+                    @click="cancel()">
                   Cancel
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -97,12 +112,12 @@
                   </v-tooltip>
                 </v-slide-x-reverse-transition>
                 <v-btn
-                    color="primary"
+                    background-color="#D1BE9C"
+                    color="#7D4F50"
                     text
                     @click=Createaccount(name,lastname,username,email,password)
                 >
                   Create
-
                 </v-btn>
 
               </v-card-actions>
@@ -119,10 +134,23 @@
             </v-card>
           </v-col>
         </v-row>
-      </v-app>
-    </div>
+<!--      </v-app>-->
+<!--    </div>-->
   </v-container>
+</div>
 </template>
+
+
+<style>
+
+  .form {
+    background-color: #D1BE9C;
+    height: 100%;
+  }
+
+</style>
+
+
 <script src="../components/createAccountFrontScript.js">
 export default {
   name: "createAccountFront"

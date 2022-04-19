@@ -1,6 +1,11 @@
 <template>
-  <div class="login">
-    <h1>This is the login page</h1>
+
+  <div class="login" style="background: #D1BE9C;">
+
+    <div class="logo">
+      <img alt="logo" src="../../public/img/logo/logo.png" style="width:246px;height:217px">
+    </div>
+
     <v-form id="login-form">
       <v-container>
         <span v-if="errorMessage" class="errorMessage">{{errorMessage}} </span>
@@ -30,7 +35,7 @@
             </v-btn>
           </v-col>
           <v-col>
-            <div>
+            <div class="noAcc">
               <router-link :to="{name: 'CreateAccountFrons'}">
                 <p>Don't have an account?</p>
               </router-link>
@@ -41,15 +46,46 @@
     </v-form>
   </div>
 </template>
+
+
+
+
 <style>
+
   #login-form {
     margin: auto;
     width: 300px;
   }
+
   .errorMessage {
     color: red;
   }
+
+  #loginBtn {
+    border-radius: 20px;
+    background-color: #7D4F50;
+    color: #D1BE9C;
+  }
+
+  .logo {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+
+  .login {
+    height: 100%;
+  }
+
+
+
 </style>
+
+
+
+
+
+
 <script>
      import * as vm from "vm";
     import API from "@/api/facebook";
