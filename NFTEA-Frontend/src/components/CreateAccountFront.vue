@@ -31,6 +31,7 @@
                     placeholder="John"
                     filled
                     rounded
+                    outlined
                     required
                 ></v-text-field>
 
@@ -44,6 +45,7 @@
                     placeholder="Doe"
                     filled
                     rounded
+                    outlined
                     required
                 ></v-text-field>
 
@@ -56,6 +58,7 @@
                     placeholder="JhonDoe@gmail.com"
                     filled
                     rounded
+                    outlined
                     required
                 ></v-text-field>
 
@@ -68,6 +71,7 @@
                     placeholder="Sik-K"
                     filled
                     rounded
+                    outlined
                     required
                 ></v-text-field>
                   <v-text-field
@@ -78,15 +82,16 @@
                       name="input-10-1"
                       label="Password"
                       counter
+                      outlined
                       filled
                       rounded
                       @click:append="show1 = !show1"
                   ></v-text-field>
               </v-card-text>
-              <v-divider class="mt-12"></v-divider>
-              <v-card-actions>
+<!--              <v-card-actions>-->
+              <div class="buttons">
                 <v-btn
-                    color="#7D4F50"
+                    id="cancelBtn"
                     text
                     @click="cancel()">
                   Cancel
@@ -112,15 +117,14 @@
                   </v-tooltip>
                 </v-slide-x-reverse-transition>
                 <v-btn
-                    background-color="#D1BE9C"
-                    color="#7D4F50"
+                    id="createBtn"
                     text
                     @click=Createaccount(name,lastname,username,email,password)
                 >
                   Create
                 </v-btn>
-
-              </v-card-actions>
+              </div>
+<!--              </v-card-actions>-->
               <v-alert
                   :value="alert"
                   shaped
@@ -146,6 +150,25 @@
   .form {
     background-color: #D1BE9C;
     height: 100%;
+  }
+
+  .buttons {
+    column-count: 2;
+    height: 50px;
+  }
+
+  #cancelBtn {
+    border-radius: 20px;
+    background-color: #7D4F50;
+    height: 100%;
+    color: #D1BE9C;
+  }
+
+  #createBtn {
+    border-radius: 20px;
+    height: 100%;
+    background-color: #7D4F50;
+    color: #D1BE9C;
   }
 
 </style>

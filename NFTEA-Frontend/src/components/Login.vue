@@ -13,16 +13,22 @@
           <v-text-field
             v-model="userEmail"
             label="Email"
+            filled
+            rounded
             required
+            outlined
           ></v-text-field>
         </v-row>
         <v-row>
           <v-text-field
             v-model="userPassword"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
             label="Password"
+            filled
+            rounded
             required
+            outlined
             @click:append="showPassword = !showPassword"
           ></v-text-field>
         </v-row>
@@ -30,7 +36,7 @@
           <v-col>
             <v-btn id="loginBtn"
             @click="logInClientUser(userEmail, userPassword)"
-            > 
+            >
               Login
             </v-btn>
           </v-col>
@@ -63,6 +69,7 @@
 
   #loginBtn {
     border-radius: 20px;
+    height: 80%;
     background-color: #7D4F50;
     color: #D1BE9C;
   }
@@ -75,19 +82,12 @@
 
   .login {
     height: 100%;
+    overflow-y: auto;
   }
-
-
-
 </style>
 
-
-
-
-
-
 <script>
-     import * as vm from "vm";
+    import * as vm from "vm";
     import API from "@/api/facebook";
 
     export default {
