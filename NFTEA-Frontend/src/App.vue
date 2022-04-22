@@ -21,6 +21,7 @@
       <v-btn @click="goAdminPage()" v-if="this.admin && this.logged">Admin Page</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
+      <v-btn @click="goProfilePage()" v-if="this.logged">Profile</v-btn>
     </div>
     <router-view />
   </v-app>
@@ -60,6 +61,11 @@ export default {
 
 
   methods: {
+
+    goProfilePage() {
+      window.location.replace("/profile");
+    },
+
     goHome() {
       window.location.replace("/home");
     },
@@ -208,6 +214,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #D1BE9C;
 }
 
 #nav {
