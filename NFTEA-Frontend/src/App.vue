@@ -1,6 +1,6 @@
 <template>
   <v-app id="app" :dark="setTheme">
-    <div id="nav">
+    <div id="nav" v-if="this.$router.currentRoute.name !== 'login' && this.$router.currentRoute.name !== 'CreateAccountFrons'">
       <v-btn @click="goHome()" v-if="this.logged">Home</v-btn>
       <v-btn @click="goAbout()" v-if="this.logged">About</v-btn>
       <v-btn @click="goMarket()" v-if="this.logged">Market</v-btn>
@@ -21,7 +21,6 @@
       <v-btn @click="goAdminPage()" v-if="this.admin && this.logged">Admin Page</v-btn>
       <v-btn @click="darkMode()" v-if="this.logged">Dark mode</v-btn>
       <v-btn @click="logout()" v-if="this.logged">Logout</v-btn>
-
     </div>
     <router-view />
   </v-app>
@@ -55,9 +54,11 @@ export default {
       dark: false,
       admin: false,
       response:'',
+      show: false,
     };
   },
-  
+
+
   methods: {
     goHome() {
       window.location.replace("/home");
@@ -139,18 +140,20 @@ export default {
   },
   mounted() {
     const theme = localStorage.getItem("dark_theme");
+    console.log(theme)
     if (theme) {
       if (theme === "true") {
         this.$vuetify.theme.dark = true;
       } else {
         this.$vuetify.theme.dark = false;
       }
-    } else if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      this.$vuetify.theme.dark = true;
-      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+      // } else if (
+      //   window.matchMedia &&
+      //   window.matchMedia("(prefers-color-scheme: dark)").matches
+      // ) {
+      //   this.$vuetify.theme.dark = true;
+      //   localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+      // }
     }
   },
   beforeMount() {
