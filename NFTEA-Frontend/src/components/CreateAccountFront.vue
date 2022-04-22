@@ -127,9 +127,11 @@
 <!--              </v-card-actions>-->
               <v-alert
                   :value="alert"
-                  shaped
+                  color="#2E6171"
+                  text
+                  outlined
                   dense
-                  dark
+                  rounded
                   type="warning"
                   transition="scale-transition"
               >
