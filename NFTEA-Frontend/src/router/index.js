@@ -19,6 +19,7 @@ import ReceiptsPage from "@/components/ReceiptsPage";
 import FavouriteListings from "@/components/FavouriteListings";
 import AdminPageListing from "@/components/AdminPage/AdminPageListing";
 import AdminPageUserAccount from "@/components/AdminPage/AdminPageUserAccount";
+import profilePage from "@/components/profilePage"
 
 Vue.use(VueRouter)
 
@@ -130,6 +131,11 @@ const routes = [
     name: 'adminPageUserAccount',
     component: AdminPageUserAccount,
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: profilePage,
+  }
 ]
 
 const router = new VueRouter({

@@ -90,3 +90,9 @@ export default {
   name: "editAccountUsername"
 }
 </script>
+
+<style>
+  container {
+    background-color: #D1BE9C;
+  }
+</style>
