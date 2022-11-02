@@ -170,7 +170,7 @@ export default {
       }
       this.showMask = false
       //window.location.reload();
-    }
+    },
   },
 }
 </script>
