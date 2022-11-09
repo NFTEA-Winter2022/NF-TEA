@@ -30,7 +30,7 @@ RULES!!!!<br/>
 Team Members (Implementors):<br/>
 Dan Hosi (Proxy Product Owner)<br/>
 Alexandru Bangala (Scrum Master)<br/>
-Abdelmadjid Kamli<br/>	
+Abdelmadjid Kamli (Product Manager)<br/>	
 Ehsan Ahmed<br/>
 Harsh Patel<br/>
 Sebastian Ionascu<br/>
