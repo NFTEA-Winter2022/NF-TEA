@@ -29,8 +29,8 @@ RULES!!!!<br/>
 
 Team Members (Implementors):<br/>
 Dan Hosi (Proxy Product Owner)<br/>
-Alexandru Bangala (Scrum Master)<br/>
-Abdelmadjid Kamli (Product Manager)<br/>	
+Abdelmadjid Kamli (Product Manager/ScrumMaster)<br/>
+Alexandru Bangala <br/>
 Ehsan Ahmed<br/>
 Harsh Patel<br/>
 Sebastian Ionascu<br/>
